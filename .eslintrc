@@ -1,0 +1,23 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["import"],
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
+	},
+	"rules": {
+		"quotes": [2, "double", { "avoidEscape": true }],
+		"indent": ["error", "tab"],
+		"semi": ["error", "always"],
+		"linebreak-style": ["error", "unix"],
+		"no-unused-vars": ["error", { "vars": "all", "args": "none" }],
+		"import/order": 2,
+		"no-tabs": 0,
+		"no-useless-constructor": "error",
+		"no-undefined": "error",
+		"react/prop-types": 0
+	}
+}
