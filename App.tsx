@@ -4,10 +4,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { Text } from "react-native";
 
+import theme from "./src/utils/theme";
+
 const App = () => {
 	return (
 		<SafeAreaProvider>
-			<Text>Habitual Ecommerce</Text>
+			<Text style={theme.textStyles.h1}>Habitual Ecommerce</Text>
 			<Toast />
 		</SafeAreaProvider>
 	);
