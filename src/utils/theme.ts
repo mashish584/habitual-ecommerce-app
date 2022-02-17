@@ -1,8 +1,11 @@
-const rgba = {
+import { TextStyle, ViewStyle } from "react-native";
+
+export const rgba = {
 	yellow: (alpha: number) => `rgba(255, 226, 2, ${alpha})`,
 	blue: (alpha: number) => `rgba(95, 161, 213, ${alpha})`,
 	green: (alpha: number) => `rgba(81, 185, 96, ${alpha})`,
 	black: (alpha: number) => `rgba(0,0,0,${alpha})`,
+	white: (alpha: number) => `rgba(255,255,255,${alpha})`,
 };
 
 /**
@@ -33,7 +36,7 @@ const fontSizes = {
 	xxs: 10,
 };
 
-const textStyles = {
+const textStyles: Record<string, TextStyle> = {
 	//@headings
 	h1: {
 		fontFamily: fonts.lato.bold,
@@ -130,6 +133,11 @@ const textStyles = {
 	},
 };
 
+const containerStyle: ViewStyle = {
+	flex: 1,
+	backgroundColor: rgba.white(1),
+};
+
 const theme = {
 	colors: {
 		primary: {
@@ -166,6 +174,7 @@ const theme = {
 	fonts,
 	fontSizes,
 	textStyles,
+	containerStyle,
 };
 
 export default theme;
