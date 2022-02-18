@@ -131,6 +131,9 @@ const textStyles: Record<string, TextStyle> = {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 	},
+	center: {
+		textAlign: "center",
+	},
 };
 
 const containerStyle: ViewStyle = {
