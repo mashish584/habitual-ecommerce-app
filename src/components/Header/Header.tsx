@@ -23,8 +23,7 @@ const Header = ({ title }: Header) => {
 					borderBottomColor: theme.colors.shades.gray_20,
 					borderBottomWidth: 1,
 				},
-			]}
-		>
+			]}>
 			<TouchableOpacity style={[theme.iconButtonStyle, { position: "absolute", left: 12.5 }]}>
 				<FontAwesomeIcon icon={faClose} />
 			</TouchableOpacity>

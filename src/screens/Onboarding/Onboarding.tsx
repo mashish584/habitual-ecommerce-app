@@ -105,8 +105,7 @@ const Onboarding = () => {
 											height: height * 0.5,
 											paddingBottom: index === 2 ? 50 : 0,
 											opacity,
-										}}
-									>
+										}}>
 										<View
 											style={[styles.circle, { backgroundColor: ovalColor, transform: [{ translateX: translateXPosition }], position: "absolute" }]}
 										/>
@@ -126,8 +125,7 @@ const Onboarding = () => {
 									top: height * (isIOS ? 0.83 : 0.78),
 									height: 20,
 									opacity: dotOpacity,
-								}}
-							>
+								}}>
 								{new Array(3).fill(1).map((_, index) => {
 									return <Dot key={index} currentIndex={index} scrollX={Animated.divide(x, width)} mh={index === 1 ? 6 : 0} />;
 								})}
@@ -148,8 +146,7 @@ const Onboarding = () => {
 							bounces={false}
 							showsHorizontalScrollIndicator={false}
 							horizontal
-							contentContainerStyle={styles.scrollView}
-						>
+							contentContainerStyle={styles.scrollView}>
 							{slides.map(({ title, description, textStyle }, index) => {
 								return (
 									<View key={index} style={{ width, paddingHorizontal: theme.spacing.medium }}>
@@ -166,18 +163,13 @@ const Onboarding = () => {
 								variant="primary"
 								text={isLastSlide ? "Sign me up!" : "Next"}
 								onPress={() => moveToSlide()}
-								style={{ marginHorizontal: theme.spacing.medium, borderRadius: 15 }}
+								style={{ marginHorizontal: theme.spacing.medium }}
 							/>
 						</Animated.View>
 
 						{/* Ask me agin 4th slide */}
 						<Animated.View style={{ opacity: transparentButtonOpacity }}>
-							<Button
-								variant="transparent"
-								text="Ask me again later"
-								onPress={() => {}}
-								style={{ marginHorizontal: theme.spacing.medium, borderRadius: 15 }}
-							/>
+							<Button variant="transparent" text="Ask me again later" onPress={() => {}} style={{ marginHorizontal: theme.spacing.medium }} />
 						</Animated.View>
 
 						{/* Header Components */}
@@ -188,8 +180,7 @@ const Onboarding = () => {
 						</Animated.View>
 
 						<Animated.View
-							style={[{ opacity: transparentButtonOpacity, alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo]}
-						>
+							style={[{ opacity: transparentButtonOpacity, alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo]}>
 							<Image source={require("../../assets/images/full-logo.png")} style={{ width: "100%", height: "100%" }} />
 						</Animated.View>
 					</>

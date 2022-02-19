@@ -58,7 +58,7 @@ const TextInput = ({ ref, label, isOptional, type, message, ...props }: Input) =
 				onBlur={() => setIsFocused(false)}
 				{...props}
 			/>
-			<Error message="Invalid email address." type={type} />
+			{message && <Error message="Invalid email address." type={type} />}
 		</View>
 	);
 };
