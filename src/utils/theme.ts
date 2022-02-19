@@ -3,7 +3,9 @@ import { TextStyle, ViewStyle } from "react-native";
 export const rgba = {
 	yellow: (alpha: number) => `rgba(255, 226, 2, ${alpha})`,
 	blue: (alpha: number) => `rgba(95, 161, 213, ${alpha})`,
+	teal: (alpha: number) => `rgba(48, 214, 176, ${alpha})`,
 	green: (alpha: number) => `rgba(81, 185, 96, ${alpha})`,
+	orange: (alpha: number) => `rgba(254, 134, 104, ${alpha})`,
 	black: (alpha: number) => `rgba(0,0,0,${alpha})`,
 	white: (alpha: number) => `rgba(255,255,255,${alpha})`,
 };
@@ -41,31 +43,37 @@ const textStyles: Record<string, TextStyle> = {
 	h1: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.xxl,
+		color: rgba.black(1),
 	},
 	h2: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.lg,
 		lineHeight: fontSizes.lg + 4,
+		color: rgba.black(1),
 	},
 	h3: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.md,
 		lineHeight: fontSizes.md + 4,
+		color: rgba.black(1),
 	},
 	h4: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.normal,
 		lineHeight: fontSizes.normal + 4,
+		color: rgba.black(1),
 	},
 	h5: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 4,
+		color: rgba.black(1),
 	},
 	h6: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
+		color: rgba.black(1),
 	},
 
 	//@text
@@ -73,31 +81,37 @@ const textStyles: Record<string, TextStyle> = {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.normal,
 		lineHeight: fontSizes.normal + 4,
+		color: rgba.black(1),
 	},
 	body_reg: {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 8,
+		color: rgba.black(1),
 	},
 	body_sm: {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
+		color: rgba.black(1),
 	},
 	body_sm_alt: {
 		fontFamily: fonts.lato.semibold,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
+		color: rgba.black(1),
 	},
 	label: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
+		color: rgba.black(1),
 	},
 	hint: {
 		fontFamily: fonts.lato.medium,
 		fontSize: fontSizes.xxs,
 		lineHeight: fontSizes.xxs + 6,
+		color: rgba.black(1),
 	},
 
 	//@interactions
@@ -106,30 +120,42 @@ const textStyles: Record<string, TextStyle> = {
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 4,
 		textDecorationLine: "underline",
+		color: rgba.black(1),
 	},
 	link_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
 		textDecorationLine: "underline",
+		color: rgba.black(1),
 	},
 	strikethrough_reg: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.sm,
 		textDecorationLine: "line-through",
+		color: rgba.black(1),
 	},
 	strikethrough_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		textDecorationLine: "line-through",
+		color: rgba.black(1),
 	},
 	pill_reg: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.sm,
+		color: rgba.black(1),
 	},
 	pill_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
+		color: rgba.black(1),
+	},
+	button: {
+		fontFamily: fonts.lato.bold,
+		fontSize: fontSizes.sm,
+		lineHeight: fontSizes.sm + 4,
+		color: rgba.black(1),
 	},
 	center: {
 		textAlign: "center",
@@ -139,6 +165,10 @@ const textStyles: Record<string, TextStyle> = {
 const containerStyle: ViewStyle = {
 	flex: 1,
 	backgroundColor: rgba.white(1),
+};
+
+const rowStyle: ViewStyle = {
+	flexDirection: "row",
 };
 
 const theme = {
@@ -178,6 +208,9 @@ const theme = {
 	fontSizes,
 	textStyles,
 	containerStyle,
+	rowStyle,
 };
+
+//border-radius -> 15
 
 export default theme;

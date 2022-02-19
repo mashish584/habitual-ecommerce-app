@@ -1,8 +1,12 @@
-import React from "react";
-import { Animated, Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useRef, useState } from "react";
+import { Animated, Dimensions, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button } from "../../components/Button";
+import Container from "../../components/Container";
+
+import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
+import Dot from "./Dot";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -13,6 +17,7 @@ const slides = [
 		color: theme.colors.primary.yellow,
 		illustration: require("../../assets/images/illustration.png"),
 		textStyle: theme.textStyles.h1,
+		ovalColor: rgba.yellow(0.2),
 	},
 	{
 		title: "Irrelevant\nresults again?",
@@ -21,6 +26,7 @@ const slides = [
 		color: theme.colors.accents.teal,
 		illustration: require("../../assets/images/slide-illustration-2.png"),
 		textStyle: theme.textStyles.h3,
+		ovalColor: rgba.teal(0.1),
 	},
 	{
 		title: "Your interests\nworking with you.",
@@ -28,6 +34,7 @@ const slides = [
 		color: theme.colors.accents.red,
 		illustration: require("../../assets/images/slide-illustration-3.png"),
 		textStyle: theme.textStyles.h3,
+		ovalColor: rgba.orange(0.1),
 	},
 	{
 		title: "And that’s the \ncherry on top!",
@@ -35,46 +42,160 @@ const slides = [
 		color: theme.colors.secondary.blue,
 		illustration: require("../../assets/images/slide-illustration-4.png"),
 		textStyle: theme.textStyles.h3,
+		ovalColor: rgba.blue(0.1),
 	},
 ];
 
-const Onboarding = () => {
-	const insets = useSafeAreaInsets();
-	return (
-		<View style={{ ...theme.containerStyle }}>
-			<Animated.View style={styles.slider}>
-				<View style={[styles.circle, { backgroundColor: rgba.yellow(0.2) }]} />
-				{slides.map(({ illustration }, index) => {
-					return (
-						<Animated.View
-							key={index}
-							style={{ ...StyleSheet.absoluteFillObject, justifyContent: "flex-end", alignItems: "center", opacity: index === 0 ? 1 : 0 }}>
-							<Image source={illustration} />
-						</Animated.View>
-					);
-				})}
-			</Animated.View>
+const ScrollViewHeight = height * 0.7;
 
-			<Animated.ScrollView
-				snapToInterval={width}
-				decelerationRate="fast"
-				bounces={false}
-				showsHorizontalScrollIndicator={false}
-				horizontal
-				contentContainerStyle={styles.scrollView}>
-				{slides.map(({ title, description, textStyle }, index) => {
-					return (
-						<View key={index} style={{ width, paddingHorizontal: theme.spacing.medium }}>
-							<Text style={[textStyle, theme.textStyles.center]}>{title}</Text>
-							<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { marginTop: theme.spacing.medium }]}>{description}</Text>
+const Onboarding = () => {
+	const x = useRef(new Animated.Value(0)).current;
+	const activeSlideIndex = useRef(0);
+	const scrollRef = useRef<ScrollView>(null);
+
+	const [isLastSlide, setIsLastSlide] = useState(false);
+
+	const dotOpacity = x.interpolate({
+		inputRange: [0, width, width * 2, width * 3],
+		outputRange: [1, 1, 1, 0],
+		extrapolate: "clamp",
+	});
+
+	const transparentButtonOpacity = x.interpolate({
+		inputRange: [0, width, width * 2, width * 3],
+		outputRange: [0, 0, 0, 1],
+		extrapolate: "clamp",
+	});
+
+	const primaryButtonPosition = x.interpolate({
+		inputRange: [0, width, width * 2, width * 3],
+		outputRange: [48, 48, 48, 0],
+		extrapolate: "clamp",
+	});
+
+	const moveToSlide = (index?: number) => {
+		const nextIndex = index ? index : activeSlideIndex.current + 1;
+		const x = nextIndex * width;
+
+		scrollRef.current?.scrollTo({ x });
+	};
+
+	return (
+		<Container>
+			{(top) => {
+				return (
+					<>
+						<View style={[styles.slider]}>
+							{/* Slide Illustrations */}
+							{slides.map(({ illustration, ovalColor }, index) => {
+								const translateXPosition = (index + 1) % 2 === 0 ? width * 0.3 * -1 : width * 0.3;
+
+								const opacity = x.interpolate({
+									inputRange: [(index - 0.5) * width, index * width, (index + 0.5) * width],
+									outputRange: [0, 1, 0],
+								});
+
+								return (
+									<Animated.View
+										key={index}
+										style={{
+											...StyleSheet.absoluteFillObject,
+											justifyContent: "flex-end",
+											alignItems: "center",
+											height: height * 0.5,
+											paddingBottom: index === 2 ? 50 : 0,
+											opacity,
+										}}
+									>
+										<View
+											style={[styles.circle, { backgroundColor: ovalColor, transform: [{ translateX: translateXPosition }], position: "absolute" }]}
+										/>
+										<Image source={illustration} />
+									</Animated.View>
+								);
+							})}
+
+							{/* Onboarding footer dots */}
+							<Animated.View
+								style={{
+									width,
+									alignItems: "center",
+									justifyContent: "center",
+									flexDirection: "row",
+									position: "absolute",
+									top: height * (isIOS ? 0.83 : 0.78),
+									height: 20,
+									opacity: dotOpacity,
+								}}
+							>
+								{new Array(3).fill(1).map((_, index) => {
+									return <Dot key={index} currentIndex={index} scrollX={Animated.divide(x, width)} mh={index === 1 ? 6 : 0} />;
+								})}
+							</Animated.View>
 						</View>
-					);
-				})}
-			</Animated.ScrollView>
-			<TouchableOpacity style={{ marginTop: Math.max(insets.top, 15), ...styles.skipBtn }}>
-				<Text style={[theme.textStyles.strikethrough_reg, { textDecorationLine: "none" }]}>Skip</Text>
-			</TouchableOpacity>
-		</View>
+
+						{/* Slide Text Content  */}
+						<Animated.ScrollView
+							ref={scrollRef}
+							snapToInterval={width}
+							decelerationRate="fast"
+							onScroll={Animated.event([{ nativeEvent: { contentOffset: { x } } }], { useNativeDriver: false })}
+							onMomentumScrollEnd={(e) => {
+								const step = e.nativeEvent.contentOffset.x / width;
+								activeSlideIndex.current = step;
+								setIsLastSlide(step === 3);
+							}}
+							bounces={false}
+							showsHorizontalScrollIndicator={false}
+							horizontal
+							contentContainerStyle={styles.scrollView}
+						>
+							{slides.map(({ title, description, textStyle }, index) => {
+								return (
+									<View key={index} style={{ width, paddingHorizontal: theme.spacing.medium }}>
+										<Text style={[textStyle, theme.textStyles.center]}>{title}</Text>
+										<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { marginTop: theme.spacing.medium }]}>{description}</Text>
+									</View>
+								);
+							})}
+						</Animated.ScrollView>
+
+						{/* Next Button */}
+						<Animated.View style={{ top: primaryButtonPosition, zIndex: 1 }}>
+							<Button
+								variant="primary"
+								text={isLastSlide ? "Sign me up!" : "Next"}
+								onPress={() => moveToSlide()}
+								style={{ marginHorizontal: theme.spacing.medium, borderRadius: 15 }}
+							/>
+						</Animated.View>
+
+						{/* Ask me agin 4th slide */}
+						<Animated.View style={{ opacity: transparentButtonOpacity }}>
+							<Button
+								variant="transparent"
+								text="Ask me again later"
+								onPress={() => {}}
+								style={{ marginHorizontal: theme.spacing.medium, borderRadius: 15 }}
+							/>
+						</Animated.View>
+
+						{/* Header Components */}
+						<Animated.View style={[{ opacity: dotOpacity, alignSelf: "flex-end", top }, styles.headerContent]}>
+							<TouchableOpacity onPress={() => moveToSlide(3)} style={{ padding: theme.spacing.small }}>
+								<Text style={[theme.textStyles.strikethrough_reg, { textDecorationLine: "none" }]}>Skip</Text>
+							</TouchableOpacity>
+						</Animated.View>
+
+						<Animated.View
+							style={[{ opacity: transparentButtonOpacity, alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo]}
+						>
+							<Image source={require("../../assets/images/full-logo.png")} style={{ width: "100%", height: "100%" }} />
+						</Animated.View>
+					</>
+				);
+			}}
+		</Container>
 	);
 };
 
@@ -89,19 +210,20 @@ const styles = StyleSheet.create({
 		width: 503,
 		height: 503,
 		borderRadius: 503 / 2,
-		left: 55,
-		top: -70,
-	},
-	skipBtn: {
-		alignSelf: "flex-end",
-		padding: theme.spacing.medium,
-		position: "absolute",
+		top: -100,
 	},
 	scrollView: {
 		position: "absolute",
-		alignItems: "flex-end",
-		flex: 1,
-		height: height * 0.8,
+		height: ScrollViewHeight,
+		paddingTop: height * 0.5,
+	},
+	headerContent: {
+		position: "absolute",
+	},
+	logo: {
+		width: 139,
+		height: 32,
+		marginTop: theme.spacing.small,
 	},
 });
 
