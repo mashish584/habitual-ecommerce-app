@@ -43,37 +43,37 @@ const textStyles: Record<string, TextStyle> = {
 	h1: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.xxl,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	h2: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.lg,
 		lineHeight: fontSizes.lg + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	h3: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.md,
 		lineHeight: fontSizes.md + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	h4: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.normal,
 		lineHeight: fontSizes.normal + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	h5: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	h6: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 
 	//@text
@@ -81,37 +81,37 @@ const textStyles: Record<string, TextStyle> = {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.normal,
 		lineHeight: fontSizes.normal + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	body_reg: {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 8,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	body_sm: {
 		fontFamily: fonts.lato.regular,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	body_sm_alt: {
 		fontFamily: fonts.lato.semibold,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	label: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	hint: {
 		fontFamily: fonts.lato.medium,
 		fontSize: fontSizes.xxs,
 		lineHeight: fontSizes.xxs + 6,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 
 	//@interactions
@@ -120,42 +120,42 @@ const textStyles: Record<string, TextStyle> = {
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 4,
 		textDecorationLine: "underline",
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	link_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		lineHeight: fontSizes.xs + 4,
 		textDecorationLine: "underline",
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	strikethrough_reg: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.sm,
 		textDecorationLine: "line-through",
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	strikethrough_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
 		textDecorationLine: "line-through",
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	pill_reg: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.sm,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	pill_sm: {
 		fontFamily: fonts.lato.heavy,
 		fontSize: fontSizes.xs,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	button: {
 		fontFamily: fonts.lato.bold,
 		fontSize: fontSizes.sm,
 		lineHeight: fontSizes.sm + 4,
-		color: rgba.black(1),
+		color: rgba.black(0.8),
 	},
 	center: {
 		textAlign: "center",
@@ -169,6 +169,13 @@ const containerStyle: ViewStyle = {
 
 const rowStyle: ViewStyle = {
 	flexDirection: "row",
+};
+
+const iconButtonStyle: ViewStyle = {
+	width: 25,
+	height: 25,
+	justifyContent: "center",
+	alignItems: "center",
 };
 
 const theme = {
@@ -190,7 +197,7 @@ const theme = {
 			indigo: "#4269F2",
 		},
 		shades: {
-			gray: rgba.black(1),
+			gray: rgba.black(0.8),
 			gray_80: rgba.black(0.8),
 			gray_60: rgba.black(0.6),
 			gray_40: rgba.black(0.4),
@@ -203,12 +210,14 @@ const theme = {
 		medium: 25,
 		normal: 20,
 		small: 15,
+		xSmall: 10,
 	},
 	fonts,
 	fontSizes,
 	textStyles,
 	containerStyle,
 	rowStyle,
+	iconButtonStyle,
 };
 
 //border-radius -> 15

@@ -1,13 +1,12 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-
-import { Onboarding } from "./src/screens/Onboarding";
+import { SignIn } from "./src/screens/Auth";
 
 const App = () => {
 	return (
 		<SafeAreaProvider>
-			<Onboarding />
+			<SignIn />
 			<Toast />
 		</SafeAreaProvider>
 	);
