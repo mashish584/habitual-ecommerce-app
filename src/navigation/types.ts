@@ -8,6 +8,8 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 
 export type RootStackScreens = {
 	Onboarding: undefined;
+	SignIn: undefined;
+	SignUp: undefined;
 };
 
 export type BottomStackScreens = {

@@ -3,6 +3,7 @@ import { Animated, Dimensions, Image, StyleSheet, Text, View, TouchableOpacity, 
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -48,7 +49,7 @@ const slides = [
 
 const ScrollViewHeight = height * 0.7;
 
-const Onboarding = () => {
+const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">> = ({ navigation }) => {
 	const x = useRef(new Animated.Value(0)).current;
 	const activeSlideIndex = useRef(0);
 	const scrollRef = useRef<ScrollView>(null);
@@ -162,14 +163,27 @@ const Onboarding = () => {
 							<Button
 								variant="primary"
 								text={isLastSlide ? "Sign me up!" : "Next"}
-								onPress={() => moveToSlide()}
+								onPress={() => {
+									if (isLastSlide) {
+										navigation.replace("SignUp");
+									} else {
+										moveToSlide();
+									}
+								}}
 								style={{ marginHorizontal: theme.spacing.medium }}
 							/>
 						</Animated.View>
 
 						{/* Ask me agin 4th slide */}
 						<Animated.View style={{ opacity: transparentButtonOpacity }}>
-							<Button variant="transparent" text="Ask me again later" onPress={() => {}} style={{ marginHorizontal: theme.spacing.medium }} />
+							<Button
+								variant="transparent"
+								text="Ask me again later"
+								onPress={() => {
+									//will take user to home screen
+								}}
+								style={{ marginHorizontal: theme.spacing.medium }}
+							/>
 						</Animated.View>
 
 						{/* Header Components */}
