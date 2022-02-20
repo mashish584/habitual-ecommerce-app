@@ -10,6 +10,9 @@ export type RootStackScreens = {
 	Onboarding: undefined;
 	SignIn: undefined;
 	SignUp: undefined;
+	ProfileImage: undefined;
+	PickInterest: undefined;
+	NarrowInterest: undefined;
 };
 
 export type BottomStackScreens = {

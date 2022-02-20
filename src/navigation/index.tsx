@@ -4,6 +4,8 @@ import { createStackNavigator, StackNavigationOptions } from "@react-navigation/
 
 import { SignIn, SignUp } from "../screens/Auth";
 import { Onboarding } from "../screens/Onboarding";
+import { ProfileImage } from "../screens/ProfileSetup";
+
 import { navigationRef } from "./service";
 import { RootStackScreens } from "./types";
 
@@ -15,10 +17,11 @@ const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
 	return (
-		<RootStack.Navigator initialRouteName="Onboarding">
+		<RootStack.Navigator initialRouteName="ProfileImage">
 			<RootStack.Screen name="Onboarding" component={Onboarding} options={defaultOptions} />
 			<RootStack.Screen name="SignIn" component={SignIn} options={defaultOptions} />
 			<RootStack.Screen name="SignUp" component={SignUp} options={defaultOptions} />
+			<RootStack.Screen name="ProfileImage" component={ProfileImage} options={defaultOptions} />
 		</RootStack.Navigator>
 	);
 };
