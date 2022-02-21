@@ -13,6 +13,7 @@ export type RootStackScreens = {
 	ProfileImage: undefined;
 	PickInterest: undefined;
 	NarrowInterest: undefined;
+	JoiningReason: undefined;
 };
 
 export type BottomStackScreens = {

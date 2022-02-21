@@ -1,17 +1,8 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, View } from "react-native";
+
 import theme from "../../utils/theme";
-
-type variant = "primary" | "secondary" | "transparent" | "disabled" | "bordered";
-
-interface Button {
-	variant: variant;
-	text: string;
-	style?: ViewStyle | ViewStyle[];
-	buttonTextStyle?: TextStyle | TextStyle[];
-	iconComponent?: ReactNode;
-	onPress: () => void;
-}
+import { ButtonI, variant } from "./types";
 
 const getButtonStyles = (variant: variant) => {
 	const buttonStyle: ViewStyle = {};
@@ -45,7 +36,7 @@ const getButtonStyles = (variant: variant) => {
 	return { buttonStyle, textStyle };
 };
 
-const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: Button) => {
+const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: ButtonI) => {
 	const { buttonStyle, textStyle } = getButtonStyles(variant);
 	return (
 		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, style, buttonStyle]}>
