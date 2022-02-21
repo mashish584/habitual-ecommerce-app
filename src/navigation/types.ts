@@ -11,9 +11,9 @@ export type RootStackScreens = {
 	SignIn: undefined;
 	SignUp: undefined;
 	ProfileImage: undefined;
+	JoiningReason: undefined;
 	PickInterest: undefined;
 	NarrowInterest: undefined;
-	JoiningReason: undefined;
 };
 
 export type BottomStackScreens = {

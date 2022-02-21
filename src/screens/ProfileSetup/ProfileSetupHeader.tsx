@@ -5,7 +5,7 @@ import theme from "../../utils/theme";
 
 interface ProfileSetupHeader {
 	title: string;
-	description: string;
+	description?: string;
 	descriptionStyle?: TextStyle;
 }
 
@@ -13,7 +13,9 @@ const ProfileSetupHeader: React.FC<ProfileSetupHeader> = ({ title, description, 
 	return (
 		<View style={{ alignItems: "center", paddingTop: theme.spacing.large }}>
 			<Text style={[theme.textStyles.h3, theme.textStyles.center]}>{title}</Text>
-			<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { marginTop: theme.spacing.medium }, descriptionStyle]}>{description}</Text>
+			{description ? (
+				<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { marginTop: theme.spacing.medium }, descriptionStyle]}>{description}</Text>
+			) : null}
 			{children}
 		</View>
 	);
