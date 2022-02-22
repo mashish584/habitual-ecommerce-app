@@ -220,6 +220,6 @@ const theme = {
 	iconButtonStyle,
 };
 
-//border-radius -> 15
+//border-radius -> 15,10
 
 export default theme;
