@@ -1,11 +1,11 @@
 import React, { ForwardedRef, useState } from "react";
-import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle } from "react-native";
+import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, Image } from "react-native";
 
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 
 import Label from "./Label";
-import Error from "./Error";
+import Message from "./Message";
 
 import { MessageType, TextInput as ITextInput } from "./types";
 
@@ -31,13 +31,13 @@ const getTextInputStyle = (type: MessageType) => {
 	return { textInputStyle, shadowStyle };
 };
 
-const TextInput = ({ ref, label, isOptional, type, message, ...props }: Input) => {
+const TextInput = ({ ref, label, isOptional, messageType, message, ...props }: Input) => {
 	const [isFocused, setIsFocused] = useState(false);
 
-	const { textInputStyle, shadowStyle } = getTextInputStyle(type);
+	const { textInputStyle, shadowStyle } = getTextInputStyle(messageType || "null");
 
 	return (
-		<View style={{ marginBottom: 16 }}>
+		<View style={{ marginBottom: 16, ...props.containerStyle }}>
 			<Label {...{ label, isOptional }} />
 			<RNTextInput
 				ref={ref}
@@ -53,12 +53,14 @@ const TextInput = ({ ref, label, isOptional, type, message, ...props }: Input) =
 						...textInputStyle,
 					},
 					isFocused && shadowStyle,
+					props.type === "search" && { paddingLeft: theme.spacing.normal * 2 },
 				]}
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
 				{...props}
 			/>
-			{message && <Error message="Invalid email address." type={type} />}
+			{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+			{message && <Message message="Invalid email address." messageType={messageType} />}
 		</View>
 	);
 };
@@ -69,6 +71,11 @@ const styles = StyleSheet.create({
 	},
 	errorShadow: {
 		...generateBoxShadowStyle(0, 3, rgba.orange(0.25), 1, 5, 5, rgba.orange(0.25)),
+	},
+	searchIcon: {
+		position: "absolute",
+		top: "58%",
+		left: theme.spacing.small,
 	},
 });
 

@@ -1,4 +1,7 @@
+import { ViewStyle } from "react-native";
+
 export type MessageType = "success" | "error" | "null";
+export type InputType = "text" | "search";
 
 export interface Label {
 	label: string;
@@ -7,6 +10,8 @@ export interface Label {
 }
 
 export interface TextInput extends Label {
-	type: MessageType;
+	type: InputType;
+	messageType?: MessageType;
 	message?: string;
+	containerStyle?: ViewStyle;
 }
