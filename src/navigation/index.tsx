@@ -4,9 +4,8 @@ import { createStackNavigator, StackNavigationOptions } from "@react-navigation/
 
 import { SignIn, SignUp } from "../screens/Auth";
 import { Onboarding } from "../screens/Onboarding";
-import { PickInterest, ProfileImage } from "../screens/ProfileSetup";
-import JoiningReason from "../screens/ProfileSetup/JoiningReason";
-import NarrowInterest from "../screens/ProfileSetup/NarrowInterest";
+
+import { PickInterest, ProfileImage, JoiningReason, NarrowInterest, ProfileSetupComplete } from "../screens/ProfileSetup/";
 
 import { navigationRef } from "./service";
 import { RootStackScreens } from "./types";
@@ -19,7 +18,7 @@ const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
 	return (
-		<RootStack.Navigator initialRouteName="NarrowInterest">
+		<RootStack.Navigator initialRouteName="ProfileSetupComplete">
 			<RootStack.Screen name="Onboarding" component={Onboarding} options={defaultOptions} />
 			<RootStack.Screen name="SignIn" component={SignIn} options={defaultOptions} />
 			<RootStack.Screen name="SignUp" component={SignUp} options={defaultOptions} />
@@ -27,6 +26,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="JoiningReason" component={JoiningReason} options={defaultOptions} />
 			<RootStack.Screen name="PickInterest" component={PickInterest} options={defaultOptions} />
 			<RootStack.Screen name="NarrowInterest" component={NarrowInterest} options={defaultOptions} />
+			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} options={defaultOptions} />
 		</RootStack.Navigator>
 	);
 };

@@ -9,7 +9,7 @@ import theme from "../../utils/theme";
 interface ProfileSetupFooter {
 	button1: ButtonI;
 	button2: ButtonI;
-	containerStyle: ViewStyle;
+	containerStyle?: ViewStyle;
 }
 
 const ProfileSetupFooter = ({ button1, button2, containerStyle }: ProfileSetupFooter) => {

@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Button } from "../../components/Button";
 
 import theme from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -10,7 +11,7 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 
 const reasons = ["Discover new products", "Make monthly shopping easier", "Relevant recommendations", "Get notified of deals"];
 
-const JoiningReason = () => {
+const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningReason">> = () => {
 	return (
 		<ProfileContainer title="Step 2 of 4">
 			<View style={containerStyle}>

@@ -14,6 +14,7 @@ export type RootStackScreens = {
 	JoiningReason: undefined;
 	PickInterest: undefined;
 	NarrowInterest: undefined;
+	ProfileSetupComplete: undefined;
 };
 
 export type BottomStackScreens = {

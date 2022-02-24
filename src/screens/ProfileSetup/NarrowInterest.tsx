@@ -6,6 +6,7 @@ import Pill from "../../components/Pill/Pill";
 import { TextInput } from "../../components/TextInput";
 
 import theme from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -32,7 +33,7 @@ const categories = [
 	},
 ];
 
-const NarrowInterest = () => {
+const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInterest">> = () => {
 	const [interests, setInterests] = useState(categories);
 
 	return (
