@@ -4,8 +4,9 @@ import { createStackNavigator, StackNavigationOptions } from "@react-navigation/
 
 import { SignIn, SignUp } from "../screens/Auth";
 import { Onboarding } from "../screens/Onboarding";
+import { Home } from "../screens/Home";
 
-import { PickInterest, ProfileImage, JoiningReason, NarrowInterest, ProfileSetupComplete } from "../screens/ProfileSetup/";
+import { PickInterest, ProfileImage, JoiningReason, NarrowInterest } from "../screens/ProfileSetup/";
 
 import { navigationRef } from "./service";
 import { RootStackScreens } from "./types";
@@ -26,7 +27,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="JoiningReason" component={JoiningReason} options={defaultOptions} />
 			<RootStack.Screen name="PickInterest" component={PickInterest} options={defaultOptions} />
 			<RootStack.Screen name="NarrowInterest" component={NarrowInterest} options={defaultOptions} />
-			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} options={defaultOptions} />
+			<RootStack.Screen name="ProfileSetupComplete" component={Home} options={defaultOptions} />
 		</RootStack.Navigator>
 	);
 };
