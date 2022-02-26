@@ -10,7 +10,7 @@ import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get("screen").width;
 
 const data: Record<string, Category> = {
 	"1": {

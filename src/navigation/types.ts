@@ -15,6 +15,7 @@ export type RootStackScreens = {
 	PickInterest: undefined;
 	NarrowInterest: undefined;
 	ProfileSetupComplete: undefined;
+	Product: undefined;
 	BottomStack: BottomStackScreens;
 };
 
