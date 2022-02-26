@@ -2,9 +2,10 @@ import React from "react";
 import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 
 import ProductCard from "../../components/Cards/ProductCard";
+import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
-
 import SectionHeading from "../../components/SectionHeading";
+
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
@@ -37,10 +38,7 @@ const Home = () => {
 							</ScrollView>
 							{/* Your Interests */}
 							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
-							<ScrollView
-								horizontal
-								showsHorizontalScrollIndicator={false}
-								contentContainerStyle={{ padding: theme.spacing.medium, marginBottom: 100 }}>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
 								{Array(5)
 									.fill(1)
 									.map((_, index) => {
@@ -48,6 +46,8 @@ const Home = () => {
 									})}
 							</ScrollView>
 							{/* Hot Deals */}
+							<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
+							<CategorySlider margin={theme.spacing.medium} />
 						</ScrollView>
 					</>
 				);
