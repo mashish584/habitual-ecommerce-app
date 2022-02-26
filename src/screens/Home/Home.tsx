@@ -1,6 +1,7 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
 
+import ColorCard from "../../components/Cards/ColorCard";
 import ProductCard from "../../components/Cards/ProductCard";
 import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
@@ -9,6 +10,8 @@ import SectionHeading from "../../components/SectionHeading";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
+
+const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
 
 const Home = () => {
 	return (
@@ -48,6 +51,44 @@ const Home = () => {
 							{/* Hot Deals */}
 							<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
 							<CategorySlider margin={theme.spacing.medium} />
+							{/* Sections */}
+							<View
+								style={{
+									flexDirection: "row",
+									paddingHorizontal: theme.spacing.medium,
+									justifyContent: "space-between",
+									marginBottom: 50,
+									flexWrap: "wrap",
+								}}>
+								<ColorCard
+									variant="fixed"
+									text="Shopping habits and interests"
+									width={COLOR_CARD_WIDTH}
+									cardColor={theme.colors.accents.red}
+									cardStyle={{ marginBottom: theme.spacing.small }}
+								/>
+								<ColorCard
+									variant="fixed"
+									text="Today's trending items"
+									width={COLOR_CARD_WIDTH}
+									cardColor={theme.colors.accents.teal}
+									cardStyle={{ marginBottom: theme.spacing.small }}
+								/>
+								<ColorCard
+									variant="fixed"
+									text="Incoming! Flash deals"
+									width={COLOR_CARD_WIDTH}
+									cardColor={theme.colors.accents.indigo}
+									cardStyle={{ marginBottom: theme.spacing.small }}
+								/>
+								<ColorCard
+									variant="fixed"
+									text="Browse our categories"
+									width={COLOR_CARD_WIDTH}
+									cardColor={theme.colors.accents.orange}
+									cardStyle={{ marginBottom: theme.spacing.small }}
+								/>
+							</View>
 						</ScrollView>
 					</>
 				);
