@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SignIn, SignUp } from "../screens/Auth";
 import { Onboarding } from "../screens/Onboarding";
 import { Home } from "../screens/Home";
-import { Product } from "../screens/Product";
+import Product from "../screens/Product/Product";
 
 import { PickInterest, ProfileImage, JoiningReason, NarrowInterest, ProfileSetupComplete } from "../screens/ProfileSetup/";
 
@@ -27,7 +27,8 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={SignIn} />
 			<BottomTabStack.Screen name="Search" component={SignUp} />

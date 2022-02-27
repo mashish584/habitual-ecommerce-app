@@ -1,36 +1,48 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Dimensions, Image, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import LottieView from "lottie-react-native";
+import Animated from "react-native-reanimated";
+import { interpolateColor, useScrollHandler } from "react-native-redash";
 
 import Container from "../../components/Container";
 import theme from "../../utils/theme";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
+const slides = [{ color: theme.colors.shades.gray_20 }, { color: theme.colors.shades.gray }];
+
 const Product = () => {
+	const sliderRef = useRef<Animated.ScrollView>(null);
+
+	const { scrollHandler, x } = useScrollHandler();
+
+	const backgroundColor = interpolateColor(x, {
+		inputRange: slides.map((_, i) => i * SLIDER_WIDTH),
+		outputRange: slides.map((_) => _.color),
+	});
+
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={false}>
 			{() => {
 				return (
 					<>
 						{/* Slider  */}
-						<View style={{ flex: 0.9 }}>
-							<ScrollView
+						<Animated.View style={{ flex: 0.9, backgroundColor } as any}>
+							<Animated.ScrollView
 								horizontal
+								ref={sliderRef}
 								bounces={false}
 								showsHorizontalScrollIndicator={false}
 								decelerationRate="fast"
 								snapToInterval={SLIDER_WIDTH}
-								style={{ backgroundColor: theme.colors.shades.gray_20 }}>
+								{...scrollHandler}>
 								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
 									<Image source={require("../../assets/images/example/product-sample.png")} />
 								</View>
-								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center", backgroundColor: theme.colors.shades.gray }}>
-									<LottieView source={require("../../assets/lottie/xbox-controller.json")} />
+								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
+									<Image source={require("../../assets/images/example/product-sample.png")} />
 								</View>
-							</ScrollView>
-						</View>
+							</Animated.ScrollView>
+						</Animated.View>
 					</>
 				);
 			}}
