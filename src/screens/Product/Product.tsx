@@ -5,6 +5,7 @@ import { interpolateColor, useScrollHandler } from "react-native-redash";
 
 import Container from "../../components/Container";
 import theme from "../../utils/theme";
+import Dot from "../Onboarding/Dot";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -42,6 +43,11 @@ const Product = () => {
 									<Image source={require("../../assets/images/example/product-sample.png")} />
 								</View>
 							</Animated.ScrollView>
+							<View style={[theme.rowStyle, { justifyContent: "center", position: "absolute", bottom: 100, width: "100%" }]}>
+								{slides.map((_, index) => {
+									return <Dot key={index} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} length={slides.length} />;
+								})}
+							</View>
 						</Animated.View>
 					</>
 				);
