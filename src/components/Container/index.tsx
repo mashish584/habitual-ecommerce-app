@@ -1,13 +1,15 @@
 import React, { ReactNode } from "react";
-import { ImageBackground, ImageStyle, View, ViewStyle, ImageSourcePropType, StyleSheet } from "react-native";
-
+import { ImageBackground, ImageStyle, ViewStyle, ImageSourcePropType, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Animated from "react-native-reanimated";
+
 import theme from "../../utils/theme";
 
 interface ThemeProps {
 	children: (top: number) => ReactNode;
 	avoidTopNotch?: boolean;
 	avoidHomBar?: boolean;
+	backgroundColor?: Animated.Node<Number>;
 }
 
 type NoImageSourceProps = ThemeProps & { isImageContainer?: false; viewContainerStyle?: ViewStyle | ViewStyle[] };
@@ -27,14 +29,21 @@ function Container(
 
 	const source = props.source as ImageSourcePropType;
 
-	const safeAreaStyle = { paddingTop: props.avoidTopNotch ? 0 : Math.max(top, 16), paddingBottom: props.avoidHomBar ? 0 : Math.max(bottom, 16) };
+	const safeAreaStyle: ViewStyle = {
+		paddingTop: props.avoidTopNotch ? 0 : Math.max(top, 16),
+		paddingBottom: props.avoidHomBar ? 0 : Math.max(bottom, 16),
+	};
+
+	if (props.backgroundColor) {
+		safeAreaStyle.backgroundColor = props.backgroundColor as any;
+	}
 
 	return props.isImageContainer ? (
 		<ImageBackground source={source} style={[styles.container, props.imageContainerStyle, safeAreaStyle]}>
 			{props.children(top)}
 		</ImageBackground>
 	) : (
-		<View style={[styles.container, props.viewContainerStyle, safeAreaStyle]}>{props.children(top)}</View>
+		<Animated.View style={[styles.container, props.viewContainerStyle, safeAreaStyle] as ViewStyle}>{props.children(top)}</Animated.View>
 	);
 }
 

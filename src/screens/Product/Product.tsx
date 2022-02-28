@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-import { Dimensions, Image, TextStyle, View } from "react-native";
+import { Dimensions, Image, Text, TextStyle, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { interpolateColor, useScrollHandler } from "react-native-redash";
 
 import Container from "../../components/Container";
+import Pill from "../../components/Pill/Pill";
 import { Review } from "../../components/Product";
 
 import theme from "../../utils/theme";
@@ -30,12 +31,12 @@ const Product = () => {
 	});
 
 	return (
-		<Container avoidTopNotch={true} avoidHomBar={false}>
+		<Container avoidTopNotch={true} avoidHomBar={true} backgroundColor={backgroundColor}>
 			{() => {
 				return (
 					<>
 						{/* Slider  */}
-						<Animated.View style={{ flex: 0.9, backgroundColor } as any}>
+						<Animated.View style={{ flex: 0.85, backgroundColor } as any}>
 							<Animated.ScrollView
 								horizontal
 								ref={sliderRef}
@@ -77,6 +78,47 @@ const Product = () => {
 								</View>
 							</View>
 						</Animated.View>
+						{/* Product Price Container  */}
+						<View
+							style={{
+								flex: 0.15,
+								backgroundColor: theme.colors.shades.white,
+								borderTopLeftRadius: 15,
+								borderTopRightRadius: 15,
+								justifyContent: "center",
+								paddingHorizontal: theme.spacing.medium,
+							}}>
+							<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
+								<View>
+									<Text
+										style={[
+											theme.textStyles.hint,
+											{ textTransform: "uppercase", color: theme.colors.shades.gray_60, marginBottom: theme.spacing.xxSmall },
+										]}>
+										Starting At
+									</Text>
+									<View style={[theme.rowStyle, { alignItems: "center" }]}>
+										<Text style={[theme.textStyles.h4, { fontFamily: theme.fonts.lato.heavy }]}>$59.99</Text>
+										<Text
+											style={[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_40, marginHorizontal: theme.spacing.xxSmall }]}>
+											$79.99
+										</Text>
+										<Pill variant="saved" text="20% OFF" />
+									</View>
+								</View>
+								<TouchableOpacity
+									style={{
+										width: 48,
+										height: 48,
+										backgroundColor: theme.colors.shades.gray_80,
+										borderRadius: 50,
+										justifyContent: "center",
+										alignItems: "center",
+									}}>
+									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
+								</TouchableOpacity>
+							</View>
+						</View>
 					</>
 				);
 			}}
