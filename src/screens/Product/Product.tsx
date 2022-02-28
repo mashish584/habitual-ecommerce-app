@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Dimensions, Image, Text, TextStyle, TouchableOpacity, View } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, { Easing, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler } from "react-native-redash";
 
 import Container from "../../components/Container";
@@ -17,6 +17,8 @@ const textColors = [{ color: theme.colors.shades.gray_80 }, { color: theme.color
 
 const Product = () => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
+	const productInfoPosition = new Animated.Value(0);
+	const isSlideOff = useRef(false);
 
 	const { scrollHandler, x } = useScrollHandler();
 
@@ -29,6 +31,21 @@ const Product = () => {
 		inputRange: textColors.map((_, i) => i * SLIDER_WIDTH),
 		outputRange: textColors.map((_) => _.color),
 	});
+
+	const transitionProductInfo = (isSlideOn: boolean) => {
+		const config: Animated.TimingConfig = {
+			duration: 500,
+			toValue: null,
+			easing: Easing.inOut(Easing.ease),
+		};
+
+		const transition1 = timing(productInfoPosition, { ...config, toValue: !isSlideOn ? 0 : 200 });
+		const transition2 = timing(productInfoPosition, { ...config, toValue: !isSlideOn ? 200 : 0 });
+
+		isSlideOff.current = !isSlideOn;
+
+		transition1.start(() => transition2.start());
+	};
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true} backgroundColor={backgroundColor}>
@@ -79,7 +96,7 @@ const Product = () => {
 							</View>
 						</Animated.View>
 						{/* Product Price Container  */}
-						<View
+						<Animated.View
 							style={{
 								flex: 0.15,
 								backgroundColor: theme.colors.shades.white,
@@ -87,6 +104,7 @@ const Product = () => {
 								borderTopRightRadius: 15,
 								justifyContent: "center",
 								paddingHorizontal: theme.spacing.medium,
+								transform: [{ translateY: productInfoPosition }],
 							}}>
 							<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
 								<View>
@@ -107,6 +125,7 @@ const Product = () => {
 									</View>
 								</View>
 								<TouchableOpacity
+									onPress={() => transitionProductInfo(!isSlideOff.current)}
 									style={{
 										width: 48,
 										height: 48,
@@ -118,7 +137,7 @@ const Product = () => {
 									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
 								</TouchableOpacity>
 							</View>
-						</View>
+						</Animated.View>
 					</>
 				);
 			}}
