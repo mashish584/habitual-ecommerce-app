@@ -182,7 +182,7 @@ const theme = {
 	colors: {
 		primary: {
 			yellow: "#FFE202",
-			yellow_20: rgba.yellow(0.2),
+			yellow_20: "#FFF9CC",
 		},
 		secondary: {
 			blue: "#5FA1D5",

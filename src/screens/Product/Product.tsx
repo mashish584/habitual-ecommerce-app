@@ -1,14 +1,15 @@
 import React, { useRef } from "react";
-import { Dimensions, Image, Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, TextStyle, View } from "react-native";
 import Animated, { Easing, timing } from "react-native-reanimated";
-import { interpolateColor, useScrollHandler } from "react-native-redash";
+import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 
 import Container from "../../components/Container";
-import Pill from "../../components/Pill/Pill";
 import { Review } from "../../components/Product";
 
 import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
+
+import ProductPriceInfo from "./ProductPriceInfo";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -17,43 +18,51 @@ const textColors = [{ color: theme.colors.shades.gray_80 }, { color: theme.color
 
 const Product = () => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
-	const productInfoPosition = new Animated.Value(0);
-	const isSlideOff = useRef(false);
+	const productInfoPosition = useValue(0);
+	const productInfoSlideTiming = useValue(0);
+	const isSlideOn = useRef(true);
 
 	const { scrollHandler, x } = useScrollHandler();
 
-	const backgroundColor = interpolateColor(x, {
+	// → Slide Transitions
+	const slideBackgroundColor = interpolateColor(x, {
 		inputRange: slides.map((_, i) => i * SLIDER_WIDTH),
 		outputRange: slides.map((_) => _.color),
 	});
 
-	const textColor = interpolateColor(x, {
+	const slideTextColor = interpolateColor(x, {
 		inputRange: textColors.map((_, i) => i * SLIDER_WIDTH),
 		outputRange: textColors.map((_) => _.color),
 	});
 
-	const transitionProductInfo = (isSlideOn: boolean) => {
+	// → Product Info Transitions
+
+	const transitionProductInfo = (isSlide: boolean) => {
 		const config: Animated.TimingConfig = {
 			duration: 500,
 			toValue: null,
 			easing: Easing.inOut(Easing.ease),
 		};
 
-		const transition1 = timing(productInfoPosition, { ...config, toValue: !isSlideOn ? 0 : 200 });
-		const transition2 = timing(productInfoPosition, { ...config, toValue: !isSlideOn ? 200 : 0 });
+		const timingTransition = timing(productInfoSlideTiming, { ...config, duration: 100, toValue: isSlide ? 1 : 0 });
+		const transition1 = timing(productInfoPosition, { ...config, toValue: 200 });
+		const transition2 = timing(productInfoPosition, { ...config, toValue: 0 });
 
-		isSlideOff.current = !isSlideOn;
+		isSlideOn.current = !isSlide;
 
-		transition1.start(() => transition2.start());
+		transition1.start(() => {
+			timingTransition.start();
+			transition2.start();
+		});
 	};
 
 	return (
-		<Container avoidTopNotch={true} avoidHomBar={true} backgroundColor={backgroundColor}>
+		<Container avoidTopNotch={true} avoidHomBar={true} backgroundColor={slideBackgroundColor}>
 			{() => {
 				return (
 					<>
 						{/* Slider  */}
-						<Animated.View style={{ flex: 0.85, backgroundColor } as any}>
+						<Animated.View style={{ flex: 0.85, slideBackgroundColor } as any}>
 							<Animated.ScrollView
 								horizontal
 								ref={sliderRef}
@@ -88,56 +97,26 @@ const Product = () => {
 								</View>
 								{/* Product Info */}
 								<View>
-									<Animated.Text style={[theme.textStyles.h4, { color: textColor, marginBottom: theme.spacing.xxSmall }] as TextStyle[]}>
+									<Animated.Text style={[theme.textStyles.h4, { color: slideTextColor, marginBottom: theme.spacing.xxSmall }] as TextStyle[]}>
 										Xbox One Elite Series 2 Controller
 									</Animated.Text>
-									<Review stars={2} color={textColor} />
+									<Review stars={2} color={slideTextColor} />
 								</View>
 							</View>
 						</Animated.View>
 						{/* Product Price Container  */}
-						<Animated.View
-							style={{
-								flex: 0.15,
-								backgroundColor: theme.colors.shades.white,
-								borderTopLeftRadius: 15,
-								borderTopRightRadius: 15,
-								justifyContent: "center",
-								paddingHorizontal: theme.spacing.medium,
-								transform: [{ translateY: productInfoPosition }],
-							}}>
-							<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
-								<View>
-									<Text
-										style={[
-											theme.textStyles.hint,
-											{ textTransform: "uppercase", color: theme.colors.shades.gray_60, marginBottom: theme.spacing.xxSmall },
-										]}>
-										Starting At
-									</Text>
-									<View style={[theme.rowStyle, { alignItems: "center" }]}>
-										<Text style={[theme.textStyles.h4, { fontFamily: theme.fonts.lato.heavy }]}>$59.99</Text>
-										<Text
-											style={[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_40, marginHorizontal: theme.spacing.xxSmall }]}>
-											$79.99
-										</Text>
-										<Pill variant="saved" text="20% OFF" />
-									</View>
-								</View>
-								<TouchableOpacity
-									onPress={() => transitionProductInfo(!isSlideOff.current)}
-									style={{
-										width: 48,
-										height: 48,
-										backgroundColor: theme.colors.shades.gray_80,
-										borderRadius: 50,
-										justifyContent: "center",
-										alignItems: "center",
-									}}>
-									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
-								</TouchableOpacity>
-							</View>
-						</Animated.View>
+
+						<ProductPriceInfo
+							priceInfo={{
+								price: "59.99",
+								originalPrice: "79.99",
+								discount: "20% OFF",
+								image: require("../../assets/images/tabs/bag.png"),
+							}}
+							slideAnimate={productInfoSlideTiming}
+							translateY={productInfoPosition}
+							onPress={() => transitionProductInfo(isSlideOn.current)}
+						/>
 					</>
 				);
 			}}

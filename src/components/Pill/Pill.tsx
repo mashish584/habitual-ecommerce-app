@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+import { TextStyle, TouchableOpacity, ViewStyle } from "react-native";
+import Animated from "react-native-reanimated";
 import theme from "../../utils/theme";
 
 type PillVariant = "saved" | "default";
-type PillColors = { textColor?: string; pillColor?: string };
+type PillColors = { textColor?: string | Animated.Node<Number>; pillColor?: string | Animated.Node<Number> };
 type PillValue = {
 	containerStyle: ViewStyle;
 	textStyle: TextStyle;
@@ -62,9 +63,9 @@ const Pill = ({ text, selected, variant, colors }: Pill) => {
 
 	return (
 		<TouchableOpacity>
-			<View style={[pillStyle.containerStyle, { justifyContent: "center", alignItems: "center" }]}>
-				<Text style={pillStyle.textStyle}>{text}</Text>
-			</View>
+			<Animated.View style={[pillStyle.containerStyle, { justifyContent: "center", alignItems: "center" }]}>
+				<Animated.Text style={pillStyle.textStyle}>{text}</Animated.Text>
+			</Animated.View>
 		</TouchableOpacity>
 	);
 };
