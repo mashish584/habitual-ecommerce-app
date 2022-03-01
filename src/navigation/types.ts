@@ -14,13 +14,17 @@ export type RootStackScreens = {
 	JoiningReason: undefined;
 	PickInterest: undefined;
 	NarrowInterest: undefined;
+	ProfileSetupComplete: undefined;
+	Product: undefined;
+	BottomStack: BottomStackScreens;
 };
 
 export type BottomStackScreens = {
 	Home: undefined;
+	Wishlist: undefined;
 	Search: undefined;
-	Notifications: undefined;
-	Settings: undefined;
+	Orders: undefined;
+	Cart: undefined;
 };
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens>;

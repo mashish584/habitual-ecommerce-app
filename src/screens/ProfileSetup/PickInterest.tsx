@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { ScrollView, View, Dimensions } from "react-native";
 
 import CategoryCard, { Category } from "../../components/Cards/CategoryCard";
+
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import theme from "../../utils/theme";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get("screen").width;
 
 const data: Record<string, Category> = {
 	"1": {
@@ -52,7 +54,7 @@ const data: Record<string, Category> = {
 const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
-const PickInterest = () => {
+const PickInterest: React.FC<StackNavigationProps<RootStackScreens, "PickInterest">> = () => {
 	const [interests, setInterests] = useState(data);
 
 	return (

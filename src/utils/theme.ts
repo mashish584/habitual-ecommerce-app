@@ -211,6 +211,7 @@ const theme = {
 		normal: 20,
 		small: 15,
 		xSmall: 10,
+		xxSmall: 8,
 	},
 	fonts,
 	fontSizes,

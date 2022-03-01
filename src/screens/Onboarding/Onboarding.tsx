@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
-import { Animated, Dimensions, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import Animated, { interpolate, Extrapolate } from "react-native-reanimated";
+import { useScrollHandler } from "react-native-redash";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
@@ -50,35 +52,35 @@ const slides = [
 const ScrollViewHeight = height * 0.7;
 
 const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">> = ({ navigation }) => {
-	const x = useRef(new Animated.Value(0)).current;
+	const { scrollHandler, x } = useScrollHandler();
 	const activeSlideIndex = useRef(0);
-	const scrollRef = useRef<ScrollView>(null);
+	const scrollRef = useRef<Animated.ScrollView>(null);
 
 	const [isLastSlide, setIsLastSlide] = useState(false);
 
-	const dotOpacity = x.interpolate({
+	const dotOpacity = interpolate(x, {
 		inputRange: [0, width, width * 2, width * 3],
 		outputRange: [1, 1, 1, 0],
-		extrapolate: "clamp",
+		extrapolate: Extrapolate.CLAMP,
 	});
 
-	const transparentButtonOpacity = x.interpolate({
+	const transparentButtonOpacity = interpolate(x, {
 		inputRange: [0, width, width * 2, width * 3],
 		outputRange: [0, 0, 0, 1],
-		extrapolate: "clamp",
+		extrapolate: Extrapolate.CLAMP,
 	});
 
-	const primaryButtonPosition = x.interpolate({
+	const primaryButtonPosition = interpolate(x, {
 		inputRange: [0, width, width * 2, width * 3],
 		outputRange: [48, 48, 48, 0],
-		extrapolate: "clamp",
+		extrapolate: Extrapolate.CLAMP,
 	});
 
 	const moveToSlide = (index?: number) => {
 		const nextIndex = index ? index : activeSlideIndex.current + 1;
 		const x = nextIndex * width;
 
-		scrollRef.current?.scrollTo({ x });
+		scrollRef.current?.getNode().scrollTo({ x, animated: true });
 	};
 
 	return (
@@ -128,7 +130,7 @@ const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">>
 									opacity: dotOpacity,
 								}}>
 								{new Array(3).fill(1).map((_, index) => {
-									return <Dot key={index} currentIndex={index} scrollX={Animated.divide(x, width)} mh={index === 1 ? 6 : 0} />;
+									return <Dot key={index} currentIndex={index} width={width} scrollX={x} mh={index === 1 ? 6 : 0} />;
 								})}
 							</Animated.View>
 						</View>
@@ -138,7 +140,6 @@ const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">>
 							ref={scrollRef}
 							snapToInterval={width}
 							decelerationRate="fast"
-							onScroll={Animated.event([{ nativeEvent: { contentOffset: { x } } }], { useNativeDriver: false })}
 							onMomentumScrollEnd={(e) => {
 								const step = e.nativeEvent.contentOffset.x / width;
 								activeSlideIndex.current = step;
@@ -147,7 +148,8 @@ const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">>
 							bounces={false}
 							showsHorizontalScrollIndicator={false}
 							horizontal
-							contentContainerStyle={styles.scrollView}>
+							contentContainerStyle={styles.scrollView}
+							{...scrollHandler}>
 							{slides.map(({ title, description, textStyle }, index) => {
 								return (
 									<View key={index} style={{ width, paddingHorizontal: theme.spacing.medium }}>

@@ -1,35 +1,39 @@
 import React from "react";
-import { Animated } from "react-native";
-import { rgba } from "../../utils/theme";
+import Animated, { interpolate, Extrapolate } from "react-native-reanimated";
+import { interpolateColor } from "react-native-redash";
+
+import theme from "../../utils/theme";
 
 interface Dot {
 	currentIndex: number;
-	scrollX: Animated.AnimatedDivision;
+	scrollX: Animated.Value<number>;
+	width: number;
 	mh: number;
 }
 
-const Dot = ({ currentIndex, scrollX, mh }: Dot) => {
-	const width = scrollX.interpolate({
-		inputRange: [currentIndex - 1, currentIndex, currentIndex + 1],
+const Dot = ({ currentIndex, scrollX, mh, width }: Dot) => {
+	const interpolateWidth = interpolate(scrollX, {
+		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
 		outputRange: [6, 16, 6],
-		extrapolate: "clamp",
+		extrapolate: Extrapolate.CLAMP,
 	});
 
-	const color = scrollX.interpolate({
-		inputRange: [currentIndex - 1, currentIndex, currentIndex + 1],
-		outputRange: [rgba.black(0.4), rgba.yellow(1), rgba.black(0.4)],
-		extrapolate: "clamp",
+	const color = interpolateColor(scrollX, {
+		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
+		outputRange: [theme.colors.shades.gray_40, theme.colors.shades.gray_60, theme.colors.shades.gray_40],
 	});
 
 	return (
 		<Animated.View
-			style={{
-				width,
-				height: 6,
-				borderRadius: 6 / 2,
-				backgroundColor: color,
-				marginHorizontal: mh,
-			}}
+			style={
+				{
+					width: interpolateWidth,
+					height: 6,
+					borderRadius: 6 / 2,
+					backgroundColor: color,
+					marginHorizontal: mh,
+				} as any
+			}
 		/>
 	);
 };

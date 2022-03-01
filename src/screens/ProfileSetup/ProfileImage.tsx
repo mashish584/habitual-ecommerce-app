@@ -2,12 +2,13 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 import theme from "../../utils/theme";
-import ProfileContainer, { containerStyle } from "./ProfileContainer";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
+import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const ProfileImage = () => {
+const ProfileImage: React.FC<StackNavigationProps<RootStackScreens, "ProfileImage">> = () => {
 	return (
 		<ProfileContainer title="Step 1 of 4">
 			<View style={containerStyle}>
