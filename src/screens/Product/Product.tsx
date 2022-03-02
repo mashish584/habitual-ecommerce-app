@@ -4,6 +4,7 @@ import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
@@ -77,7 +78,7 @@ const Product = () => {
 		const priceInfoTransition2 = timing(productInfoPosition, { ...config, duration: 100, toValue: 0 });
 
 		// slide image up if isSlide false vice versa
-		const imageTransition = timing(slideImagePosition, { ...config, duration: 200, toValue: isSlide ? -50 : 0, easing: Easing.elastic(1) });
+		const imageTransition = timing(slideImagePosition, { ...config, duration: 100, toValue: isSlide ? -50 : 0 });
 
 		// section height transition from min to max
 		const productContentTransition = timing(productContentHeight, {
@@ -148,6 +149,10 @@ const Product = () => {
 								/>
 								<View>
 									<Animated.Text
+										onPress={() => {
+											alert("as");
+											crashlytics().crash();
+										}}
 										style={
 											[
 												theme.textStyles.h4,
