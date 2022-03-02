@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Text, View, TouchableOpacity, ImageSourcePropType, ViewStyle } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, { interpolate } from "react-native-reanimated";
 import { interpolateColor } from "react-native-redash";
 
 import Pill from "../../components/Pill/Pill";
@@ -17,10 +17,11 @@ interface ProductPriceInfo {
 	priceInfo: PriceInfo;
 	slideAnimate: Animated.Value<any>;
 	translateY: Animated.Value<any>;
+	borderRadius: Animated.Node<Number>;
 	onPress: () => void;
 }
 
-const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, onPress }: ProductPriceInfo) => {
+const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, onPress }: ProductPriceInfo) => {
 	const productInfoBackground = interpolateColor(slideAnimate, {
 		inputRange: [0, 1],
 		outputRange: [theme.colors.shades.white, theme.colors.primary.yellow],
@@ -41,6 +42,11 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, onPress }: Prod
 		outputRange: [theme.colors.secondary.green, theme.colors.shades.gray_80],
 	});
 
+	const opacity = interpolate(translateY, {
+		inputRange: [0, 1],
+		outputRange: [1, 0],
+	});
+
 	return (
 		<Animated.View
 			style={
@@ -48,11 +54,13 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, onPress }: Prod
 					{
 						flex: 0.15,
 						backgroundColor: productInfoBackground,
-						borderTopLeftRadius: 15,
-						borderTopRightRadius: 15,
+						borderTopLeftRadius: borderRadius,
+						borderTopRightRadius: borderRadius,
 						justifyContent: "center",
 						paddingHorizontal: theme.spacing.medium,
 						transform: [{ translateY: translateY }],
+						marginTop: -15,
+						opacity,
 					},
 				] as any
 			}>

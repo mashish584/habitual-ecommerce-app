@@ -203,6 +203,8 @@ const theme = {
 			gray_40: "#CBCBD4",
 			gray_20: "#F8F7FA",
 			white: "#FFFFFF",
+			w_transparent: "#FFFFFF00",
+			b_transparent: "#00000000",
 		},
 	},
 	spacing: {
