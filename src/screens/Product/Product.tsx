@@ -31,6 +31,7 @@ const Product = () => {
 	const productInfoPosition = useValue(0);
 	const productInfoSlideTiming = useValue(0);
 	const productContentHeight = useValue(95);
+	const slideImagePosition = useValue(0);
 
 	const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [isSlideOn, setIsSlideOn] = useState(true);
@@ -75,6 +76,9 @@ const Product = () => {
 		//bottom -> top
 		const priceInfoTransition2 = timing(productInfoPosition, { ...config, duration: 100, toValue: 0 });
 
+		// slide image up if isSlide false vice versa
+		const imageTransition = timing(slideImagePosition, { ...config, duration: 200, toValue: isSlide ? -50 : 0, easing: Easing.elastic(1) });
+
 		// section height transition from min to max
 		const productContentTransition = timing(productContentHeight, {
 			...config,
@@ -86,6 +90,7 @@ const Product = () => {
 		setIsSlideOn(!isSlide);
 
 		productContentTransition.start();
+		imageTransition.start();
 		priceInfoTransition1.start(() => {
 			timingTransition.start();
 			priceInfoTransition2.start();
@@ -109,10 +114,16 @@ const Product = () => {
 								snapToInterval={SLIDER_WIDTH}
 								{...scrollHandler}>
 								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Image source={require("../../assets/images/example/product-sample.png")} />
+									<Animated.Image
+										source={require("../../assets/images/example/product-sample.png")}
+										style={{ transform: [{ translateY: slideImagePosition }] }}
+									/>
 								</View>
 								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Image source={require("../../assets/images/example/product-sample.png")} />
+									<Animated.Image
+										source={require("../../assets/images/example/product-sample.png")}
+										style={{ transform: [{ translateY: slideImagePosition }] }}
+									/>
 								</View>
 							</Animated.ScrollView>
 							{/* Product Content */}
