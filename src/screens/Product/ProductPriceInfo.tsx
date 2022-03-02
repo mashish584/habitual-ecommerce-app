@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View, TouchableOpacity, ImageSourcePropType, ViewStyle } from "react-native";
+import { Text, View, TouchableOpacity, ViewStyle } from "react-native";
 import Animated, { interpolate } from "react-native-reanimated";
 import { interpolateColor } from "react-native-redash";
 
@@ -10,7 +10,7 @@ type PriceInfo = {
 	price: string;
 	originalPrice: string;
 	discount: string;
-	image: ImageSourcePropType;
+	buttonChild: JSX.Element;
 };
 
 interface ProductPriceInfo {
@@ -35,6 +35,11 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, o
 	const pillContainerColor = interpolateColor(slideAnimate, {
 		inputRange: [0, 1],
 		outputRange: [theme.colors.secondary.green_20, theme.colors.primary.yellow_20],
+	});
+
+	const buttonBackground = interpolateColor(slideAnimate, {
+		inputRange: [0, 1],
+		outputRange: [theme.colors.shades.gray_80, theme.colors.shades.white],
 	});
 
 	const pillTextColor = interpolateColor(slideAnimate, {
@@ -88,17 +93,18 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, o
 						/>
 					</View>
 				</View>
-				<TouchableOpacity
-					onPress={onPress}
-					style={{
-						width: 48,
-						height: 48,
-						backgroundColor: theme.colors.shades.gray_80,
-						borderRadius: 50,
-						justifyContent: "center",
-						alignItems: "center",
-					}}>
-					<Image source={priceInfo?.image} style={{ tintColor: theme.colors.shades.white }} />
+				<TouchableOpacity onPress={onPress}>
+					<Animated.View
+						style={{
+							width: 48,
+							height: 48,
+							backgroundColor: buttonBackground,
+							borderRadius: 50,
+							justifyContent: "center",
+							alignItems: "center",
+						}}>
+						{priceInfo.buttonChild}
+					</Animated.View>
 				</TouchableOpacity>
 			</View>
 		</Animated.View>

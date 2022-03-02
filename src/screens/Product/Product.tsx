@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Dimensions, Image, TextStyle, View, Text } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
@@ -10,6 +12,8 @@ import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
 import ProductPriceInfo from "./ProductPriceInfo";
+import styles from "./styles";
+import ColorCircle from "./ColorCircle";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -114,32 +118,24 @@ const Product = () => {
 							{/* Product Content */}
 
 							{/* Slide Indicator */}
-							<View style={[theme.rowStyle, { justifyContent: "center", width: "100%", transform: [{ translateY: -130 }] }]}>
+							<View style={[theme.rowStyle, styles.slideIndicators]}>
 								{slides.map((_, index) => {
 									return <Dot key={index} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
 								})}
 							</View>
 							<Animated.View
 								style={{
-									paddingHorizontal: theme.spacing.medium,
-									paddingVertical: theme.spacing.small,
-									position: "absolute",
-									width: "100%",
-									bottom: 0,
+									...styles.productContent,
 									height: productContentHeight,
-									justifyContent: "flex-start",
 								}}>
 								{/* Product Info */}
 								<Animated.View
 									style={{
-										...StyleSheet.absoluteFillObject,
-										backgroundColor: theme.colors.shades.white,
-										borderTopLeftRadius: 15,
-										borderTopRightRadius: 15,
+										...styles.contentLayer,
 										opacity: productContentLayerOpacity,
 									}}
 								/>
-								<View style={{}}>
+								<View>
 									<Animated.Text
 										style={
 											[
@@ -157,43 +153,21 @@ const Product = () => {
 												{productColors[0].label}
 											</Text>
 											<View style={[theme.rowStyle, { marginTop: theme.spacing.xxSmall }]}>
-												{productColorVariants.map(({ label, color, selected }, index) => {
+												{productColorVariants.map(({ color, selected }, index) => {
 													return (
-														<TouchableOpacity
+														<ColorCircle
 															key={index}
 															onPress={() => {
 																const variants = [...productColorVariants];
 																variants.map((variant) => {
 																	variant.selected = variant.color === color;
-
 																	return variant;
 																});
 
 																setProductColors(variants);
 															}}
-															style={{
-																width: 32,
-																height: 32,
-																backgroundColor: theme.colors.shades.white,
-																borderRadius: 50,
-																overflow: "hidden",
-																justifyContent: "center",
-																alignItems: "center",
-																marginRight: theme.spacing.small,
-																borderWidth: selected ? 2 : 0,
-																borderColor: theme.colors.primary.yellow,
-															}}>
-															<View
-																style={{
-																	width: 28,
-																	height: 28,
-																	backgroundColor: color,
-																	borderRadius: 50,
-																	borderWidth: selected ? 0 : 1,
-																	borderColor: theme.colors.shades.gray_40,
-																}}
-															/>
-														</TouchableOpacity>
+															{...{ color, selected }}
+														/>
 													);
 												})}
 											</View>
@@ -209,7 +183,11 @@ const Product = () => {
 								price: "59.99",
 								originalPrice: "79.99",
 								discount: "20% OFF",
-								image: require("../../assets/images/tabs/bag.png"),
+								buttonChild: !isSlideOn ? (
+									<FontAwesomeIcon icon={faArrowRight} />
+								) : (
+									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
+								),
 							}}
 							slideAnimate={productInfoSlideTiming}
 							translateY={productInfoPosition}
