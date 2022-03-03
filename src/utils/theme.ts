@@ -182,7 +182,7 @@ const theme = {
 	colors: {
 		primary: {
 			yellow: "#FFE202",
-			yellow_20: rgba.yellow(0.2),
+			yellow_20: "#FFF9CC",
 		},
 		secondary: {
 			blue: "#5FA1D5",
@@ -203,6 +203,8 @@ const theme = {
 			gray_40: "#CBCBD4",
 			gray_20: "#F8F7FA",
 			white: "#FFFFFF",
+			w_transparent: "#FFFFFF00",
+			b_transparent: "#00000000",
 		},
 	},
 	spacing: {

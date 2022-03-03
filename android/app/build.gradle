@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 import com.android.build.OutputFile
 
@@ -131,7 +133,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.habitual_ecommerce_app"
+        applicationId "com.habitual.ecommerce.project.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -192,6 +194,9 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    // implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    // implementation 'com.google.firebase:firebase-analytics'
+    
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

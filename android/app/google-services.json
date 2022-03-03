@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "991408913014",
+    "project_id": "habitual-ecommerce",
+    "storage_bucket": "habitual-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991408913014:android:678b4ec3031e6fa7fc3d57",
+        "android_client_info": {
+          "package_name": "com.habitual.ecommerce.project.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991408913014-t378puacp3aad1vsvnb9rt48todvs08q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASMcZJyMHMXc_IF7KZPvIpQOnEDn5JMIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991408913014-t378puacp3aad1vsvnb9rt48todvs08q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

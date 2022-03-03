@@ -1,4 +1,4 @@
-package com.habitual_ecommerce_app;
+package com.habitual.ecommerce.project.app;
 
 import com.facebook.react.ReactActivity;
 

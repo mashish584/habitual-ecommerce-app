@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.habitual_ecommerce_app">
+  package="com.habitual.ecommerce.project.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
