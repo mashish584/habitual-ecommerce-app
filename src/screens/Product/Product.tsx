@@ -35,6 +35,7 @@ const Product = () => {
 	const slideImagePosition = useValue(0);
 
 	const [productColors, setProductColors] = useState([...productColorVariants]);
+	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
 
 	const { scrollHandler, x } = useScrollHandler();
@@ -193,7 +194,6 @@ const Product = () => {
 							</Animated.View>
 						</Animated.View>
 						{/* Product Price Container  */}
-
 						<ProductPriceInfo
 							priceInfo={{
 								price: "59.99",
@@ -208,7 +208,16 @@ const Product = () => {
 							slideAnimate={productInfoSlideTiming}
 							translateY={productInfoPosition}
 							borderRadius={productInfoBorderRadius}
-							onPress={() => transitionProductInfo(isSlideOn)}
+							showCartAction={showCartActions}
+							onPress={(removeCart) => {
+								if (!isSlideOn) {
+									setShowCartActions(true);
+								}
+
+								if (removeCart) setShowCartActions(false);
+
+								transitionProductInfo(isSlideOn);
+							}}
 						/>
 					</>
 				);
