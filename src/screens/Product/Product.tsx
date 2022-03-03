@@ -210,11 +210,14 @@ const Product = () => {
 							borderRadius={productInfoBorderRadius}
 							showCartAction={showCartActions}
 							onPress={(removeCart) => {
+								//→ show cart action f slide is on
 								if (!isSlideOn) {
 									setShowCartActions(true);
 								}
 
-								if (removeCart) setShowCartActions(false);
+								//→ remove cart action when user tap on remove from cart actions
+								//→ & when show cart actions is true
+								if (removeCart || showCartActions) setShowCartActions(false);
 
 								transitionProductInfo(isSlideOn);
 							}}
