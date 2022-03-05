@@ -13,7 +13,7 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 	const currentSnapIndex = useRef(0);
 
 	const [contentHeight, setContentHeight] = useState(0);
-	const snapPoints = useMemo(() => ["-10%", contentHeight], [contentHeight]);
+	const snapPoints = useMemo(() => [0, contentHeight], [contentHeight]);
 
 	const handleOnLayout = useCallback(
 		({
@@ -29,6 +29,7 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 
 	useEffect(() => {
 		const snapIndex = currentSnapIndex.current;
+
 		if (visible && snapIndex === 0) {
 			currentSnapIndex.current = 1;
 			bottomSheetRef.current?.expand();

@@ -3,7 +3,6 @@ import { View, Image, Text, Animated, TouchableOpacity, ScrollView } from "react
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BottomSheet, BottomSheetI } from "../../components/BottomSheet";
 import { Button } from "../../components/Button";
@@ -76,7 +75,7 @@ const CartItem = () => {
 				style={[
 					theme.rowStyle,
 					{
-						minHeight: 100,
+						height: 100,
 						borderBottomWidth: 1,
 						borderBottomColor: theme.colors.shades.gray_20,
 						alignItems: "center",
@@ -97,13 +96,9 @@ const CartItem = () => {
 };
 
 const Cart = ({ items, ...props }: Cart) => {
-	const { bottom } = useSafeAreaInsets();
-
-	const footerHeight = bottom + 60;
-
 	return (
 		<BottomSheet {...{ ...props }}>
-			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: footerHeight }}>
+			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 100 }}>
 				{new Array(2).fill(1).map((_, index) => (
 					<CartItem key={index} />
 				))}
@@ -117,7 +112,7 @@ const Cart = ({ items, ...props }: Cart) => {
 						width: "100%",
 						justifyContent: "space-between",
 						backgroundColor: theme.colors.shades.white,
-						height: footerHeight,
+						height: 100,
 						alignItems: "center",
 						paddingHorizontal: theme.spacing.medium,
 					},
