@@ -10,6 +10,7 @@ const SCREEN_HEIGHT = Dimensions.get("screen").height;
 
 const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, children }) => {
 	const bottomSheetRef = useRef<GBottomSheet>(null);
+	const currentSnapIndex = useRef(0);
 
 	const [contentHeight, setContentHeight] = useState(0);
 	const snapPoints = useMemo(() => ["-10%", contentHeight], [contentHeight]);
@@ -27,9 +28,14 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 	);
 
 	useEffect(() => {
-		if (visible) {
+		const snapIndex = currentSnapIndex.current;
+		if (visible && snapIndex === 0) {
+			currentSnapIndex.current = 1;
 			bottomSheetRef.current?.expand();
-		} else {
+		}
+
+		if (!visible && snapIndex === 1) {
+			currentSnapIndex.current = 0;
 			bottomSheetRef.current?.close();
 		}
 	}, [visible]);
