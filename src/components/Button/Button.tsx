@@ -49,7 +49,7 @@ const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: Bu
 const styles = StyleSheet.create({
 	button: {
 		maxWidth: "100%",
-		minHeight: 48,
+		height: 48,
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 15,

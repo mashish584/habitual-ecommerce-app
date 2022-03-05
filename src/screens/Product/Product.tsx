@@ -228,7 +228,7 @@ const Product = () => {
 							}}
 						/>
 						{/* Cart */}
-						<Cart visible={showCart} headerTitle="My Cart" items={[]} onClose={() => setShowCart(false)} />
+						<Cart visible={showCart} maxHeight={0.5} headerTitle="My Cart" items={[]} onClose={() => setShowCart(false)} />
 					</>
 				);
 			}}

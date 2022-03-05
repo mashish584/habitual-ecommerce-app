@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions } from "react-native";
 import { Easing } from "react-native-reanimated";
-import GBottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import GBottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
 
 import { Header } from "../Header";
 import BottomSheetI from "./types";
@@ -10,10 +9,9 @@ import BottomSheetI from "./types";
 const SCREEN_HEIGHT = Dimensions.get("screen").height;
 
 const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, children }) => {
-	const insets = useSafeAreaInsets();
 	const bottomSheetRef = useRef<GBottomSheet>(null);
 
-	const [contentHeight, setContentHeight] = useState(300);
+	const [contentHeight, setContentHeight] = useState(0);
 	const snapPoints = useMemo(() => ["-10%", contentHeight], [contentHeight]);
 
 	const handleOnLayout = useCallback(
@@ -64,12 +62,7 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 					onClose();
 				}
 			}}>
-			<BottomSheetScrollView
-				contentContainerStyle={{ flexGrow: 1, paddingBottom: Math.max(insets.bottom, 90), backgroundColor: "transparent" }}
-				showsVerticalScrollIndicator={false}
-				onLayout={handleOnLayout}>
-				{children}
-			</BottomSheetScrollView>
+			<BottomSheetView onLayout={handleOnLayout}>{children}</BottomSheetView>
 		</GBottomSheet>
 	);
 };

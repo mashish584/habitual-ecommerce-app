@@ -1,10 +1,12 @@
 import React from "react";
-import { View, Image, Text, Animated, TouchableOpacity } from "react-native";
+import { View, Image, Text, Animated, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BottomSheet, BottomSheetI } from "../../components/BottomSheet";
+import { Button } from "../../components/Button";
 import theme from "../../utils/theme";
 
 interface Cart extends BottomSheetI {
@@ -81,7 +83,7 @@ const CartItem = () => {
 						paddingHorizontal: theme.spacing.medium,
 					},
 				]}>
-				<View style={{ width: 70, height: 68, backgroundColor: theme.colors.shades.gray_40, borderRadius: 5 }}>
+				<View style={{ width: 70, height: 68, backgroundColor: theme.colors.shades.gray_20, borderRadius: 5 }}>
 					<Image source={require("../../assets/images/example/product-sample.png")} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
 				</View>
 				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center", paddingLeft: theme.spacing.small }]}>
@@ -95,11 +97,37 @@ const CartItem = () => {
 };
 
 const Cart = ({ items, ...props }: Cart) => {
+	const { bottom } = useSafeAreaInsets();
+
+	const footerHeight = bottom + 60;
+
 	return (
 		<BottomSheet {...{ ...props }}>
-			{new Array(5).fill(1).map((_, index) => (
-				<CartItem key={index} />
-			))}
+			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: footerHeight }}>
+				{new Array(2).fill(1).map((_, index) => (
+					<CartItem key={index} />
+				))}
+			</ScrollView>
+			<View
+				style={[
+					theme.rowStyle,
+					{
+						position: "absolute",
+						bottom: 0,
+						width: "100%",
+						justifyContent: "space-between",
+						backgroundColor: theme.colors.shades.white,
+						height: footerHeight,
+						alignItems: "center",
+						paddingHorizontal: theme.spacing.medium,
+					},
+				]}>
+				<View>
+					<Text style={[theme.textStyles.pill_sm, { color: theme.colors.shades.gray_60, textTransform: "uppercase" }]}>Total</Text>
+					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>$165.97</Text>
+				</View>
+				<Button variant="primary" text="Checkout →" onPress={() => {}} style={{ flex: 0.7 }} />
+			</View>
 		</BottomSheet>
 	);
 };
