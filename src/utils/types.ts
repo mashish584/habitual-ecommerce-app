@@ -1,6 +1,8 @@
 //@Date types
 export type DateFormats = "dddd" | "dddd DD MMM" | "HH:mm A" | "DD MMM, YYYY" | "YYYY-MM-DD" | "HH:mm" | "YYYY-MM-DD HH:mm";
 
+export type ProductFooterActions = "slideUp" | "removeCart" | "showCartModal";
+
 export type ScrollToIndexParams = {
 	animated?: boolean | null | undefined;
 	index: number;

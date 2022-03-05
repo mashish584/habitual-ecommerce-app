@@ -12,6 +12,8 @@ import { Review } from "../../components/Product";
 import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
+import { ProductFooterActions } from "../../utils/types";
+
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 import ColorCircle from "./ColorCircle";
@@ -65,9 +67,6 @@ const Product = () => {
 	});
 
 	const transitionProductInfo = (isSlide: boolean) => {
-		setShowCart(true);
-		return;
-
 		const config: Animated.TimingConfig = {
 			duration: 500,
 			toValue: null,
@@ -214,17 +213,36 @@ const Product = () => {
 							translateY={productInfoPosition}
 							borderRadius={productInfoBorderRadius}
 							showCartAction={showCartActions}
-							onPress={(removeCart) => {
-								//→ show cart action f slide is on
-								if (!isSlideOn) {
-									setShowCartActions(true);
+							onPress={(actionType: ProductFooterActions) => {
+								// 🔥 Action 1
+								//→ when user click on shopping bag we will slide screen up
+								//→ and action image will replaced with arrow
+								if (isSlideOn && actionType === "slideUp") {
+									transitionProductInfo(isSlideOn);
+									return;
 								}
 
-								//→ remove cart action when user tap on remove from cart actions
-								//→ & when show cart actions is true
-								if (removeCart || showCartActions) setShowCartActions(false);
+								// 🔥 Action 2
+								//→ when screen is slide up & action image is arrow
+								//→ display cart actions with GotoCart and Remove action
+								if (!isSlideOn) {
+									transitionProductInfo(isSlideOn);
+									setShowCartActions(true);
+									return;
+								}
 
-								transitionProductInfo(isSlideOn);
+								// 🔥 Action 3
+								//→ when user click on Remove will back to Action 1
+								//→ if click on GoToCart open Cart Modal
+								if (actionType === "removeCart") {
+									setShowCartActions(false);
+									return;
+								}
+
+								if (actionType === "showCartModal") {
+									setShowCart(true);
+									return;
+								}
 							}}
 						/>
 						{/* Cart */}

@@ -6,6 +6,7 @@ import Button from "../../components/Button/Button";
 
 import Pill from "../../components/Pill/Pill";
 import theme from "../../utils/theme";
+import { ProductFooterActions } from "../../utils/types";
 
 type PriceInfo = {
 	price: string;
@@ -20,7 +21,7 @@ interface ProductPriceInfo {
 	translateY: Animated.Value<any>;
 	borderRadius: Animated.Node<Number>;
 	showCartAction: boolean;
-	onPress: (removeCart?: boolean) => void;
+	onPress: (actions: ProductFooterActions) => any;
 }
 
 const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, ...props }: ProductPriceInfo) => {
@@ -73,8 +74,8 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 			}>
 			{props.showCartAction ? (
 				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
-					<Button variant="transparent" text="Remove" style={{ flex: 0.2 }} onPress={() => props.onPress(true)} />
-					<Button variant="primary" text="Go to cart - 59.99 →" style={{ flex: 0.7 }} onPress={() => props.onPress()} />
+					<Button variant="transparent" text="Remove" style={{ flex: 0.2 }} onPress={() => props.onPress("removeCart")} />
+					<Button variant="primary" text="Go to cart - 59.99 →" style={{ flex: 0.7 }} onPress={() => props.onPress("showCartModal")} />
 				</View>
 			) : (
 				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
@@ -101,7 +102,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 							/>
 						</View>
 					</View>
-					<TouchableOpacity onPress={() => props.onPress()}>
+					<TouchableOpacity onPress={() => props.onPress("slideUp")}>
 						<Animated.View
 							style={
 								{
