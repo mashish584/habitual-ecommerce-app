@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View, Image, TextStyle } from "react-native";
+import { Text, TouchableOpacity, View, Image, TextStyle, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,11 +14,13 @@ interface Header {
 	variant: "primary" | "secondary";
 	title: string;
 	titleStyle?: TextStyle | TextStyle[];
+	headerStyle: ViewStyle;
+	onAction: () => void;
 }
 
 const { shades } = theme.colors;
 
-const Header = ({ title, variant, titleStyle }: Header) => {
+const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) => {
 	const isPrimary = variant === "primary";
 
 	return (
@@ -34,9 +36,10 @@ const Header = ({ title, variant, titleStyle }: Header) => {
 					borderBottomColor: theme.colors.shades.gray_20,
 					borderBottomWidth: isPrimary ? 1 : 0,
 				},
+				headerStyle,
 			]}>
 			{variant === "primary" ? (
-				<TouchableOpacity style={[theme.iconButtonStyle, { position: "absolute", left: 12.5 }]}>
+				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", left: 12.5 }]}>
 					<FontAwesomeIcon icon={faClose} />
 				</TouchableOpacity>
 			) : (

@@ -15,6 +15,7 @@ import Dot from "../Onboarding/Dot";
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 import ColorCircle from "./ColorCircle";
+import Cart from "./Cart";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -37,6 +38,7 @@ const Product = () => {
 	const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
+	const [showCart, setShowCart] = useState(false);
 
 	const { scrollHandler, x } = useScrollHandler();
 
@@ -63,6 +65,9 @@ const Product = () => {
 	});
 
 	const transitionProductInfo = (isSlide: boolean) => {
+		setShowCart(true);
+		return;
+
 		const config: Animated.TimingConfig = {
 			duration: 500,
 			toValue: null,
@@ -222,6 +227,8 @@ const Product = () => {
 								transitionProductInfo(isSlideOn);
 							}}
 						/>
+						{/* Cart */}
+						<Cart visible={showCart} headerTitle="My Cart" items={[]} onClose={() => setShowCart(false)} />
 					</>
 				);
 			}}
