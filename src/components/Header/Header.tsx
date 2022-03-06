@@ -1,7 +1,5 @@
-import React from "react";
-import { Text, TouchableOpacity, View, Image, TextStyle, ViewStyle } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import React, { ReactNode } from "react";
+import { Text, TouchableOpacity, View, TextStyle, ViewStyle } from "react-native";
 
 import theme from "../../utils/theme";
 
@@ -12,10 +10,12 @@ import theme from "../../utils/theme";
  */
 interface Header {
 	variant: "primary" | "secondary";
-	title: string;
+	leftIcon?: ReactNode;
+	rightIcon?: ReactNode;
+	title?: string;
 	titleStyle?: TextStyle | TextStyle[];
 	headerStyle: ViewStyle;
-	onAction: () => void;
+	onAction?: () => void;
 }
 
 const { shades } = theme.colors;
@@ -38,16 +38,23 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 				},
 				headerStyle,
 			]}>
-			{variant === "primary" ? (
-				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", left: 12.5 }]}>
-					<FontAwesomeIcon icon={faClose} />
+			{props.leftIcon && (
+				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
+					{props.leftIcon}
 				</TouchableOpacity>
-			) : (
-				<Image source={require("../../assets/images/bag.png")} style={{ width: 30, height: 32 }} resizeMode={"contain"} />
 			)}
-			<Text style={[isPrimary ? theme.textStyles.h5 : theme.textStyles.h6, { color: isPrimary ? shades.gray_80 : shades.gray_60 }, titleStyle]}>
-				{title}
-			</Text>
+
+			{title && (
+				<Text style={[isPrimary ? theme.textStyles.h5 : theme.textStyles.h6, { color: isPrimary ? shades.gray_80 : shades.gray_60 }, titleStyle]}>
+					{title}
+				</Text>
+			)}
+
+			{props.rightIcon && (
+				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
+					{props.rightIcon}
+				</TouchableOpacity>
+			)}
 		</View>
 	);
 };

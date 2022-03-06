@@ -8,6 +8,8 @@ import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
+import { Header } from "../../components/Header";
+import { Bag, Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
@@ -105,11 +107,17 @@ const Product = () => {
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
-			{() => {
+			{(top) => {
 				return (
 					<>
 						{/* Slider  */}
 						<Animated.View style={{ flex: 0.85, backgroundColor: slideBackgroundColor } as any}>
+							<Header
+								variant="secondary"
+								leftIcon={<Back fill={slideTextColor} />}
+								rightIcon={<Bag fill={slideTextColor} />}
+								headerStyle={{ position: "absolute", top, width: "100%" }}
+							/>
 							<Animated.ScrollView
 								horizontal
 								ref={sliderRef}
