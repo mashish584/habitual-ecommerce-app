@@ -1,0 +1,17 @@
+import React from "react";
+import Success from "../../components/Success";
+import { generateBoxShadowStyle } from "../../utils";
+import theme, { rgba } from "../../utils/theme";
+
+export default () => {
+	return (
+		<Success
+			title="Woohoo!"
+			description="Your order has been placed and you will get a shipping confirmation soon."
+			buttonVariant="primary"
+			buttonText="Continue"
+			buttonStyle={{ backgroundColor: theme.colors.shades.white, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(1)) }}
+			onAction={() => {}}
+		/>
+	);
+};

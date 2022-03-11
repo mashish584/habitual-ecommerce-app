@@ -42,7 +42,9 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 				headerStyle,
 			]}>
 			{props.leftIcon && (
-				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
+				<TouchableOpacity
+					onPress={() => props.onAction("left")}
+					style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
 					{props.leftIcon}
 				</TouchableOpacity>
 			)}
@@ -54,7 +56,9 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 			)}
 
 			{props.rightIcon && (
-				<TouchableOpacity onPress={props.onAction} style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
+				<TouchableOpacity
+					onPress={() => props.onAction("right")}
+					style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
 					{props.rightIcon}
 				</TouchableOpacity>
 			)}

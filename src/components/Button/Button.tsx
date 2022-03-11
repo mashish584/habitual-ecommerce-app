@@ -39,7 +39,7 @@ const getButtonStyles = (variant: variant) => {
 const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: ButtonI) => {
 	const { buttonStyle, textStyle } = getButtonStyles(variant);
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, style, buttonStyle]}>
+		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, buttonStyle, style]}>
 			{props.iconComponent ? <View style={{ position: "absolute", left: theme.spacing.medium }}>{props.iconComponent}</View> : null}
 			<Text style={[theme.textStyles.button, textStyle, buttonTextStyle]}>{text}</Text>
 		</TouchableOpacity>
