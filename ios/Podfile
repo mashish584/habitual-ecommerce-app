@@ -18,6 +18,8 @@ target 'habitual_ecommerce_app' do
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'habitual_ecommerce_appTests' do
     inherit! :complete
     # Pods for testing

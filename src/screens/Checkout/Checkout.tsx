@@ -70,13 +70,13 @@ const Checkout = () => {
 						<View
 							style={{
 								paddingTop: footerTopPadding,
-								paddingBottom: bottom,
+								paddingBottom: Math.max(bottom, footerTopPadding),
 								borderTopWidth: 1,
 								borderTopColor: theme.colors.shades.gray_20,
 								position: "absolute",
 								width: "100%",
-								bottom: 0,
 								backgroundColor: theme.colors.shades.white,
+								bottom: 0,
 							}}>
 							<Button variant="primary" text="Pay Now" style={{ marginHorizontal: theme.spacing.medium }} onPress={() => {}} />
 						</View>
