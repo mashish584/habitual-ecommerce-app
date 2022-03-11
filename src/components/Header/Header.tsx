@@ -8,14 +8,17 @@ import theme from "../../utils/theme";
  * 		primary - Header with cross and center title
  * 		secondary - Header with bag icon and text on right
  */
+
+export type ActionType = "left" | "right";
+
 interface Header {
 	variant: "primary" | "secondary";
 	leftIcon?: ReactNode;
 	rightIcon?: ReactNode;
 	title?: string;
 	titleStyle?: TextStyle | TextStyle[];
-	headerStyle: ViewStyle;
-	onAction?: () => void;
+	headerStyle?: ViewStyle;
+	onAction?: (type: ActionType) => void;
 }
 
 const { shades } = theme.colors;

@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default React.forwardRef<Ref, ITextInput>((props, ref) => <TextInput {...props} ref={ref} />);
+export default React.forwardRef<Ref, Input>((props, ref) => <TextInput {...props} ref={ref} />);

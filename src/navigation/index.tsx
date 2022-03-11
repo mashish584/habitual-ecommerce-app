@@ -7,6 +7,7 @@ import { SignIn, SignUp } from "../screens/Auth";
 import { Onboarding } from "../screens/Onboarding";
 import { Home } from "../screens/Home";
 import Product from "../screens/Product/Product";
+import { Checkout } from "../screens/Checkout";
 
 import { PickInterest, ProfileImage, JoiningReason, NarrowInterest, ProfileSetupComplete } from "../screens/ProfileSetup/";
 
@@ -27,8 +28,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={SignIn} />
 			<BottomTabStack.Screen name="Search" component={SignUp} />
@@ -42,7 +42,7 @@ const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
 	return (
-		<RootStack.Navigator initialRouteName="Product">
+		<RootStack.Navigator initialRouteName="Checkout">
 			<RootStack.Screen name="Onboarding" component={Onboarding} options={defaultOptions} />
 			<RootStack.Screen name="SignIn" component={SignIn} options={defaultOptions} />
 			<RootStack.Screen name="SignUp" component={SignUp} options={defaultOptions} />
@@ -52,6 +52,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="NarrowInterest" component={NarrowInterest} options={defaultOptions} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} options={defaultOptions} />
 			<RootStack.Screen name="Product" component={Product} options={defaultOptions} />
+			<RootStack.Screen name="Checkout" component={Checkout} options={defaultOptions} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} options={defaultOptions} />
 		</RootStack.Navigator>
 	);
