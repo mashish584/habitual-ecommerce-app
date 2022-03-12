@@ -130,7 +130,16 @@ const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">>
 									opacity: dotOpacity,
 								}}>
 								{new Array(3).fill(1).map((_, index) => {
-									return <Dot key={index} currentIndex={index} width={width} scrollX={x} mh={index === 1 ? 6 : 0} />;
+									return (
+										<Dot
+											key={index}
+											currentIndex={index}
+											width={width}
+											scrollX={x}
+											mh={index === 1 ? 6 : 0}
+											activeColor={theme.colors.primary.yellow}
+										/>
+									);
 								})}
 							</Animated.View>
 						</View>
