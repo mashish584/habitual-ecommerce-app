@@ -11,7 +11,7 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 
 const reasons = ["Discover new products", "Make monthly shopping easier", "Relevant recommendations", "Get notified of deals"];
 
-const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningReason">> = () => {
+const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningReason">> = ({ navigation }) => {
 	return (
 		<ProfileContainer title="Step 2 of 4">
 			<View style={containerStyle}>
@@ -33,10 +33,10 @@ const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningRea
 						onPress: () => {},
 					}}
 					button2={{
-						variant: "disabled",
+						variant: "primary",
 						text: "Continue",
 						style: { width: 115 },
-						onPress: () => {},
+						onPress: () => navigation.navigate("NarrowInterest"),
 					}}
 				/>
 			</View>

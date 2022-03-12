@@ -14,6 +14,7 @@ import { generateBoxShadowStyle } from "../../utils";
 import SectionHeading from "../../components/SectionHeading";
 import EmptyInfoCard from "../../components/Cards/EmptyInfoCard";
 import Card from "../../components/Cards/Card";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 const AccountSettingOptions = [
 	{
@@ -30,7 +31,7 @@ const AccountSettingOptions = [
 	},
 ];
 
-const Profile = () => {
+const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ navigation }) => {
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: theme.colors.primary.yellow }}>
 			{(top) => (
@@ -40,6 +41,11 @@ const Profile = () => {
 						title="Profile"
 						leftIcon={<Back fill={theme.colors.shades.gray_80} />}
 						headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
+						onAction={(type) => {
+							if (type === "left") {
+								navigation.goBack();
+							}
+						}}
 					/>
 					<Curve isCurve={false}>
 						{/* User Info */}

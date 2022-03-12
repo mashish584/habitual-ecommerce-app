@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { TouchableOpacity, View, ViewStyle, Text } from "react-native";
+import { TouchableOpacity, View, ViewStyle, Text, Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -7,22 +7,26 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import Pill from "../Pill/Pill";
+import { Product } from "../../data";
 
 type CardVariant = "large" | "small" | "wide";
 interface ProductCard {
+	item: Product;
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
 	contentStyle?: ViewStyle;
 	extraContent?: ReactNode;
+	onPress?: () => void;
 }
 
-const ProductCard = ({ variant, containerStyle, contentStyle, extraContent }: ProductCard) => {
+const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent, ...props }: ProductCard) => {
 	const width = variant === "large" ? 284 : 156;
 	const height = variant === "large" ? 312 : 253;
 	const imageSectionHeight = variant === "large" ? 160 : 136;
 
 	return (
 		<TouchableOpacity
+			{...props}
 			activeOpacity={0.9}
 			style={[
 				{
@@ -48,6 +52,11 @@ const ProductCard = ({ variant, containerStyle, contentStyle, extraContent }: Pr
 						},
 						variant === "wide" && { ...generateBoxShadowStyle(0, 10, rgba.black(0.04), 1, 20, 10, rgba.black(1)), borderRadius: 10 },
 					]}>
+					<Image
+						source={{ uri: item?.image }}
+						style={{ width: "80%", height: "80%", alignSelf: "center", position: "absolute", top: "10%" }}
+						resizeMode="contain"
+					/>
 					{variant !== "wide" && (
 						<TouchableOpacity
 							activeOpacity={0.9}
@@ -75,21 +84,23 @@ const ProductCard = ({ variant, containerStyle, contentStyle, extraContent }: Pr
 						contentStyle,
 					]}>
 					<View style={{ width: "100%" }}>
-						<Text style={variant === "large" ? theme.textStyles.body_lg : theme.textStyles.body_reg}>Bose Headphones</Text>
+						<Text style={variant === "large" ? theme.textStyles.body_lg : theme.textStyles.body_reg}>{item?.title}</Text>
 						<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between", marginTop: theme.spacing.xxSmall / 2 }]}>
 							<View style={[theme.rowStyle, { alignItems: "center" }]}>
-								<Text style={[variant === "large" ? theme.textStyles.h5 : theme.textStyles.h6]}>$265.99</Text>
-								<Text style={[theme.textStyles.strikethrough_sm, { color: theme.colors.shades.gray_40, marginLeft: theme.spacing.xxSmall }]}>
-									$279.99
-								</Text>
+								<Text style={[variant === "large" ? theme.textStyles.h5 : theme.textStyles.h6]}>${item?.price}</Text>
+								{item?.fullPrice && (
+									<Text style={[theme.textStyles.strikethrough_sm, { color: theme.colors.shades.gray_40, marginLeft: theme.spacing.xxSmall }]}>
+										${item?.fullPrice}
+									</Text>
+								)}
 							</View>
 							{/* Discount pills for large and wide cards */}
-							{["large", "wide"].includes(variant) && <Pill variant="saved" text="10%off" />}
+							{["large", "wide"].includes(variant) && item?.discount && <Pill variant="saved" text={`${item?.discount}%off`} />}
 						</View>
 						{/* Show description for large variant */}
 						{variant === "large" && (
 							<Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit...
+								{item?.description}
 							</Text>
 						)}
 						{extraContent}
@@ -106,7 +117,7 @@ const ProductCard = ({ variant, containerStyle, contentStyle, extraContent }: Pr
 											style={{ width: 10, height: 10, marginRight: theme.spacing.xxSmall / 2 }}
 											color={theme.colors.primary.yellow}
 										/>
-										<Text style={theme.textStyles.body_sm_alt}>5.0</Text>
+										<Text style={theme.textStyles.body_sm_alt}>{item?.rating}</Text>
 									</>
 								)}
 								{variant === "large" && (

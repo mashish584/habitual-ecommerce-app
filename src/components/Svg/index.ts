@@ -6,7 +6,7 @@ export const AnimatedPath = Animated.createAnimatedComponent(Path);
 export const AnimatedG = Animated.createAnimatedComponent(G);
 
 export { default as Back } from "./Back";
-export { default as Bag } from "./Bag";
+export { default as Bag, SmallBag } from "./Bag";
 export { default as Payment } from "./Payment";
 export { default as MapPin } from "./MapPin";
 export { default as Chip } from "./Chip";

@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView } from "rea
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
@@ -42,12 +43,33 @@ const Auth = ({ type }: Auth) => {
 			{() => {
 				return (
 					<>
-						<Header title={isSignIn ? "Log in" : "Sign Up"} />
+						<Header
+							variant="primary"
+							leftIcon={<FontAwesomeIcon icon={faClose} />}
+							title={isSignIn ? "Log in" : "Sign Up"}
+							onAction={(type) => {
+								if (type === "left") {
+									if (isSignIn) {
+										navigation.goBack();
+									}
+								}
+							}}
+						/>
 						<ScrollView style={{ paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
 							<Image source={require("../../assets/images/full-logo.png")} style={styles.logo} resizeMode="contain" />
-							<TextInput label="Email" type="null" />
-							<TextInput label="Password" type="null" />
-							<Button variant="primary" text={isSignIn ? "Log in" : "Get started"} onPress={() => {}} />
+							<TextInput label="Email" type="text" />
+							<TextInput label="Password" type="text" />
+							<Button
+								variant="primary"
+								text={isSignIn ? "Log in" : "Get started"}
+								onPress={() => {
+									if (isSignIn) {
+										navigation.replace("BottomStack");
+									} else {
+										navigation.replace("ProfileImage");
+									}
+								}}
+							/>
 							{type === "signin" && (
 								<TouchableOpacity style={{ maxWidth: 100, marginTop: theme.spacing.small }}>
 									<Text style={theme.textStyles.link_sm}>Forgot Password</Text>

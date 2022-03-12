@@ -5,10 +5,11 @@ import theme from "../../utils/theme";
 
 interface Curve {
 	isCurve: boolean;
+	isScrollView?: boolean;
 	style?: ViewStyle;
 }
 
-const Curve: React.FC<Curve> = ({ isCurve, style, children }) => {
+const Curve: React.FC<Curve> = ({ isCurve, isScrollView, style, children }) => {
 	return (
 		<View
 			style={{
@@ -20,7 +21,8 @@ const Curve: React.FC<Curve> = ({ isCurve, style, children }) => {
 				paddingTop: theme.spacing.medium,
 				...style,
 			}}>
-			<ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
+			{isScrollView && <ScrollView>{children}</ScrollView>}
+			{!isScrollView && children}
 		</View>
 	);
 };

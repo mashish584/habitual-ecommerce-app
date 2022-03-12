@@ -9,12 +9,13 @@ import crashlytics from "@react-native-firebase/crashlytics";
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
 import { Header } from "../../components/Header";
-import { Bag, Back } from "../../components/Svg";
+import { SmallBag, Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
 import { ProductFooterActions } from "../../utils/types";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
@@ -31,7 +32,7 @@ const productColorVariants = [
 	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
 ];
 
-const Product = () => {
+const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
 
 	const productInfoPosition = useValue(0);
@@ -115,7 +116,7 @@ const Product = () => {
 							<Header
 								variant="secondary"
 								leftIcon={<Back fill={slideTextColor} />}
-								rightIcon={<Bag fill={slideTextColor} />}
+								rightIcon={<SmallBag fill={slideTextColor} />}
 								headerStyle={{ position: "absolute", top, width: "100%" }}
 							/>
 							<Animated.ScrollView
@@ -254,7 +255,17 @@ const Product = () => {
 							}}
 						/>
 						{/* Cart */}
-						<Cart visible={showCart} maxHeight={0.5} headerTitle="My Cart" items={[]} onClose={() => setShowCart(false)} />
+						<Cart
+							visible={showCart}
+							maxHeight={0.5}
+							headerTitle="My Cart"
+							items={[]}
+							onCheckout={() => {
+								setShowCart(false);
+								navigation.navigate("Checkout");
+							}}
+							onClose={() => setShowCart(false)}
+						/>
 					</>
 				);
 			}}

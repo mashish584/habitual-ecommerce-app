@@ -33,7 +33,7 @@ const categories = [
 	},
 ];
 
-const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInterest">> = () => {
+const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInterest">> = ({ navigation }) => {
 	const [interests, setInterests] = useState(categories);
 
 	return (
@@ -81,7 +81,7 @@ const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInt
 						<TextInput type="search" label="Interests" containerStyle={{ marginTop: 8 }} />
 						<View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: theme.spacing.medium }}>
 							{["Console Gaming", "PC Gaming", "Racing Gaming", "MMORPG", "PS4", "XBOX"].map((pill, index) => (
-								<Pill key={index} text={pill} selected={[3, 4].includes(index)} />
+								<Pill variant="default" key={index} text={pill} selected={[3, 4].includes(index)} />
 							))}
 						</View>
 						<View>
@@ -101,7 +101,7 @@ const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInt
 					button2={{
 						variant: "primary",
 						text: "Get Started →",
-						onPress: () => {},
+						onPress: () => navigation.navigate("ProfileSetupComplete"),
 					}}
 				/>
 			</View>

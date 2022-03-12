@@ -8,7 +8,7 @@ import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const ProfileImage: React.FC<StackNavigationProps<RootStackScreens, "ProfileImage">> = () => {
+const ProfileImage: React.FC<StackNavigationProps<RootStackScreens, "ProfileImage">> = ({ navigation }) => {
 	return (
 		<ProfileContainer title="Step 1 of 4">
 			<View style={containerStyle}>
@@ -20,7 +20,7 @@ const ProfileImage: React.FC<StackNavigationProps<RootStackScreens, "ProfileImag
 					button1={{
 						variant: "transparent",
 						text: "Skip for now",
-						onPress: () => {},
+						onPress: () => navigation.navigate("JoiningReason"),
 					}}
 					button2={{
 						variant: "primary",

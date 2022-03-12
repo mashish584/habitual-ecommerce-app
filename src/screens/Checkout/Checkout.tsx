@@ -10,18 +10,28 @@ import { TextInput } from "../../components/TextInput";
 import { Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 // spacing of bot
 const footerTopPadding = theme.spacing.medium;
 const scrollViewBottomSpace = footerTopPadding * 2 + (footerTopPadding + 48);
 
-const Checkout = () => {
+const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = ({ navigation }) => {
 	return (
 		<Container avoidHomBar={true}>
 			{(_, bottom) => {
 				return (
 					<>
-						<Header variant="primary" leftIcon={<Back fill={theme.colors.shades.gray_80} />} title="Checkout" onAction={(type: ActionType) => {}} />
+						<Header
+							variant="primary"
+							leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+							title="Checkout"
+							onAction={(type: ActionType) => {
+								if (type === "left") {
+									navigation.goBack();
+								}
+							}}
+						/>
 						<ScrollView
 							contentContainerStyle={{ flexGrow: 1, paddingTop: theme.spacing.large, position: "relative", paddingBottom: scrollViewBottomSpace }}
 							showsVerticalScrollIndicator={false}>
@@ -78,7 +88,12 @@ const Checkout = () => {
 								backgroundColor: theme.colors.shades.white,
 								bottom: 0,
 							}}>
-							<Button variant="primary" text="Pay Now" style={{ marginHorizontal: theme.spacing.medium }} onPress={() => {}} />
+							<Button
+								variant="primary"
+								text="Pay Now"
+								style={{ marginHorizontal: theme.spacing.medium }}
+								onPress={() => navigation.navigate("CheckoutSuccess")}
+							/>
 						</View>
 					</>
 				);

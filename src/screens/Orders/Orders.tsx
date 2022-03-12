@@ -5,13 +5,16 @@ import ProductCard from "../../components/Cards/ProductCard";
 import Container from "../../components/Container";
 import Header from "../../components/Header/Header";
 import TextInput from "../../components/TextInput/TextInput";
+import Curve from "../../components/Container/Curve";
 import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "../../components/Cards/EmptyInfoCard";
 
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
-import Curve from "../../components/Container/Curve";
 
-const Orders = () => {
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Products } from "../../data";
+
+const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = () => {
 	const isEmptyCard = true;
 
 	return (
@@ -49,9 +52,14 @@ const Orders = () => {
 											style={{ backgroundColor: theme.colors.shades.gray_20, borderWidth: 0 }}
 										/>
 										<ScrollView contentContainerStyle={{ paddingBottom: bottom * 2 }} showsVerticalScrollIndicator={false}>
-											{new Array(5).fill(1).map((_, index) => {
+											{Products.map((item, index) => {
+												const product = { ...item };
+												delete product?.fullPrice;
+												delete product?.discount;
 												return (
 													<ProductCard
+														key={product?.id}
+														item={product}
 														variant="wide"
 														containerStyle={{
 															width: Dimensions.get("screen").width - theme.spacing.medium * 2,

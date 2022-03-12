@@ -31,12 +31,13 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
-			<BottomTabStack.Screen name="Wishlist" component={SignIn} />
-			<BottomTabStack.Screen name="Search" component={SignUp} />
-			<BottomTabStack.Screen name="Orders" component={ProfileImage} />
-			<BottomTabStack.Screen name="Cart" component={ProfileSetupComplete} />
+			<BottomTabStack.Screen name="Wishlist" component={Home} />
+			<BottomTabStack.Screen name="Search" component={Home} />
+			<BottomTabStack.Screen name="Orders" component={Orders} />
+			<BottomTabStack.Screen name="Cart" component={Home} />
 		</BottomTabStack.Navigator>
 	);
 };
@@ -45,7 +46,7 @@ const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
 	return (
-		<RootStack.Navigator initialRouteName="Profile">
+		<RootStack.Navigator initialRouteName="Onboarding">
 			<RootStack.Screen name="Onboarding" component={Onboarding} options={defaultOptions} />
 			<RootStack.Screen name="SignIn" component={SignIn} options={defaultOptions} />
 			<RootStack.Screen name="SignUp" component={SignUp} options={defaultOptions} />
@@ -57,7 +58,6 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Product" component={Product} options={defaultOptions} />
 			<RootStack.Screen name="Checkout" component={Checkout} options={defaultOptions} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} options={defaultOptions} />
-			<RootStack.Screen name="Orders" component={Orders} options={defaultOptions} />
 			<RootStack.Screen name="Profile" component={Profile} options={defaultOptions} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} options={defaultOptions} />
 		</RootStack.Navigator>

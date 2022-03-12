@@ -190,7 +190,7 @@ const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">>
 
 						{/* Header Components */}
 						<Animated.View style={[{ opacity: dotOpacity, alignSelf: "flex-end", top }, styles.headerContent]}>
-							<TouchableOpacity onPress={() => moveToSlide(3)} style={{ padding: theme.spacing.small }}>
+							<TouchableOpacity onPress={() => navigation.replace("SignIn")} style={{ padding: theme.spacing.small }}>
 								<Text style={[theme.textStyles.strikethrough_reg, { textDecorationLine: "none" }]}>Skip</Text>
 							</TouchableOpacity>
 						</Animated.View>

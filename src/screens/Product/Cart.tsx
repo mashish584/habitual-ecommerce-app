@@ -10,6 +10,7 @@ import theme from "../../utils/theme";
 
 interface Cart extends BottomSheetI {
 	items: any;
+	onCheckout: () => void;
 }
 
 const AddCartActions = ({ dragX }) => {
@@ -121,7 +122,7 @@ const Cart = ({ items, ...props }: Cart) => {
 					<Text style={[theme.textStyles.pill_sm, { color: theme.colors.shades.gray_60, textTransform: "uppercase" }]}>Total</Text>
 					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>$165.97</Text>
 				</View>
-				<Button variant="primary" text="Checkout →" onPress={() => {}} style={{ flex: 0.7 }} />
+				<Button variant="primary" text="Checkout →" onPress={props.onCheckout} style={{ flex: 0.7 }} />
 			</View>
 		</BottomSheet>
 	);
