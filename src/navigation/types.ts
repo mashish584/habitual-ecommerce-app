@@ -18,6 +18,7 @@ export type RootStackScreens = {
 	Product: undefined;
 	Checkout: undefined;
 	CheckoutSuccess: undefined;
+	Orders: undefined;
 	BottomStack: BottomStackScreens;
 };
 

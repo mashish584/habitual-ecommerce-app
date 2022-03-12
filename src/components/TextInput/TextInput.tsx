@@ -11,7 +11,7 @@ import { MessageType, TextInput as ITextInput } from "./types";
 
 export type Ref = RNTextInput | null;
 
-type Input = ITextInput & Omit<TextInputProps, "style"> & { ref: ForwardedRef<Ref> };
+type Input = ITextInput & TextInputProps & { ref: ForwardedRef<Ref> };
 
 const getTextInputStyle = (type: MessageType) => {
 	const textInputStyle: TextStyle = {};
@@ -31,35 +31,39 @@ const getTextInputStyle = (type: MessageType) => {
 	return { textInputStyle, shadowStyle };
 };
 
-const TextInput = ({ ref, label, isOptional, messageType, message, ...props }: Input) => {
+const TextInput = ({ ref, label, isOptional, messageType, message, style, ...props }: Input) => {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const { textInputStyle, shadowStyle } = getTextInputStyle(messageType || "null");
 
 	return (
 		<View style={{ marginBottom: 16, ...props.containerStyle }}>
-			<Label {...{ label, isOptional }} />
-			<RNTextInput
-				ref={ref}
-				style={[
-					{
-						minHeight: 48,
-						maxWidth: "100%",
-						borderRadius: 15,
-						backgroundColor: theme.colors.shades.white,
-						borderWidth: 1,
-						borderColor: theme.colors.shades.gray_40,
-						paddingHorizontal: theme.spacing.small,
-						...textInputStyle,
-					},
-					isFocused && shadowStyle,
-					props.type === "search" && { paddingLeft: theme.spacing.normal * 2 },
-				]}
-				onFocus={() => setIsFocused(true)}
-				onBlur={() => setIsFocused(false)}
-				{...props}
-			/>
-			{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+			{label ? <Label {...{ label, isOptional }} /> : null}
+			<View style={{ position: "relative", justifyContent: "center" }}>
+				<RNTextInput
+					ref={ref}
+					style={[
+						{
+							minHeight: 48,
+							maxWidth: "100%",
+							borderRadius: 15,
+							backgroundColor: theme.colors.shades.white,
+							borderWidth: 1,
+							borderColor: theme.colors.shades.gray_40,
+							paddingHorizontal: theme.spacing.small,
+							...textInputStyle,
+						},
+						isFocused && shadowStyle,
+						props.type === "search" && { paddingLeft: theme.spacing.normal * 2 },
+						style,
+					]}
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
+					{...props}
+				/>
+				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+			</View>
+
 			{message && <Message message="Invalid email address." messageType={messageType} />}
 		</View>
 	);
@@ -74,7 +78,6 @@ const styles = StyleSheet.create({
 	},
 	searchIcon: {
 		position: "absolute",
-		top: "58%",
 		left: theme.spacing.small,
 	},
 });

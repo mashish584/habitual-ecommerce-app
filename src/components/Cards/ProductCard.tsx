@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { TouchableOpacity, View, ViewStyle, Text } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -12,9 +12,11 @@ type CardVariant = "large" | "small" | "wide";
 interface ProductCard {
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
+	contentStyle?: ViewStyle;
+	extraContent?: ReactNode;
 }
 
-const ProductCard = ({ variant, containerStyle }: ProductCard) => {
+const ProductCard = ({ variant, containerStyle, contentStyle, extraContent }: ProductCard) => {
 	const width = variant === "large" ? 284 : 156;
 	const height = variant === "large" ? 312 : 253;
 	const imageSectionHeight = variant === "large" ? 160 : 136;
@@ -70,6 +72,7 @@ const ProductCard = ({ variant, containerStyle }: ProductCard) => {
 					style={[
 						{ flex: 1, padding: theme.spacing.small, justifyContent: "space-between" },
 						variant === "wide" && { alignItems: "center", padding: 0, paddingLeft: theme.spacing.small, justifyContent: "center" },
+						contentStyle,
 					]}>
 					<View style={{ width: "100%" }}>
 						<Text style={variant === "large" ? theme.textStyles.body_lg : theme.textStyles.body_reg}>Bose Headphones</Text>
@@ -80,14 +83,19 @@ const ProductCard = ({ variant, containerStyle }: ProductCard) => {
 									$279.99
 								</Text>
 							</View>
+							{/* Discount pills for large and wide cards */}
 							{["large", "wide"].includes(variant) && <Pill variant="saved" text="10%off" />}
 						</View>
+						{/* Show description for large variant */}
 						{variant === "large" && (
 							<Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
 								Lorem ipsum dolor sit amet consectetur adipisicing elit...
 							</Text>
 						)}
+						{extraContent}
 					</View>
+
+					{/* Product Meta for large and small card variant */}
 					{variant !== "wide" && (
 						<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 							<View style={[theme.rowStyle, { marginTop: variant === "large" ? 0 : theme.spacing.xxSmall }]}>
