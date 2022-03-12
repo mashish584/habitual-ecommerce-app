@@ -54,7 +54,7 @@ const data: Record<string, Category> = {
 const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
-const PickInterest: React.FC<StackNavigationProps<RootStackScreens, "PickInterest">> = () => {
+const PickInterest: React.FC<StackNavigationProps<RootStackScreens, "PickInterest">> = ({ navigation }) => {
 	const [interests, setInterests] = useState(data);
 
 	return (
@@ -121,7 +121,9 @@ const PickInterest: React.FC<StackNavigationProps<RootStackScreens, "PickInteres
 						variant: "primary",
 						text: "Continue",
 						style: { width: 120 },
-						onPress: () => {},
+						onPress: () => {
+							navigation.navigate("NarrowInterest");
+						},
 					}}
 				/>
 			</View>

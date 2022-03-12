@@ -32,7 +32,7 @@ export const Products = [
 	},
 	{
 		id: "3",
-		title: "Xbox One Elite Series 2 Controller",
+		title: "Xbox One Elite Series 2",
 		image: "https://ik.imagekit.io/imashish/habitual-ecommerce/xbox-controller.png?ik-sdk-version=javascript-1.4.3&updatedAt=1647093562528",
 		description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
 		price: "59.99",
@@ -55,7 +55,7 @@ export const HotDeals = [
 	},
 	{
 		id: "3",
-		title: "Xbox One Elite Controller",
+		title: "Xbox One Elite Series 2",
 		image: "https://ik.imagekit.io/imashish/habitual-ecommerce/xbox-controller.png?ik-sdk-version=javascript-1.4.3&updatedAt=1647093562528",
 		description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
 		price: "59.99",

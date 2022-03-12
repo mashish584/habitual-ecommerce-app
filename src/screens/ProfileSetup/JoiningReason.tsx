@@ -36,7 +36,7 @@ const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningRea
 						variant: "primary",
 						text: "Continue",
 						style: { width: 115 },
-						onPress: () => navigation.navigate("NarrowInterest"),
+						onPress: () => navigation.navigate("PickInterest"),
 					}}
 				/>
 			</View>

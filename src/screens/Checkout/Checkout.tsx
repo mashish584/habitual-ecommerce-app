@@ -61,12 +61,12 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 									</View>
 								</View>
 								{/* Promo Code */}
-								<View style={[theme.rowStyle, { alignItems: "center" }]}>
-									<TextInput label="" type="text" placeholder="Promo Code" containerStyle={{ flex: 1, marginRight: theme.spacing.xxSmall }} />
+								<View style={[theme.rowStyle, { alignItems: "center", marginTop: theme.spacing.medium }]}>
+									<TextInput type="text" placeholder="Promo Code" containerStyle={{ flex: 1, marginRight: theme.spacing.xxSmall, marginBottom: 0 }} />
 									<Button variant="primary" text="Apply" style={{ width: 100 }} onPress={() => {}} />
 								</View>
 								{/* Checkout Meta Info */}
-								<View style={[theme.rowStyle, { justifyContent: "space-between", marginTop: theme.spacing.small, alignItems: "center" }]}>
+								<View style={[theme.rowStyle, { justifyContent: "space-between", marginTop: theme.spacing.normal, alignItems: "center" }]}>
 									<Text style={[theme.textStyles.pill_sm, { textTransform: "uppercase", color: theme.colors.shades.gray_60 }]}>Delivery</Text>
 									<Text style={[theme.textStyles.body_reg, { color: theme.colors.shades.gray_80 }]}>Free</Text>
 								</View>
