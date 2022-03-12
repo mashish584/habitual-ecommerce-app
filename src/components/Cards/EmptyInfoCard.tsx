@@ -1,5 +1,6 @@
 import React from "react";
 import { Dimensions, Image, Text, View, ViewStyle } from "react-native";
+
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { Button } from "../Button";
@@ -9,10 +10,14 @@ const SCREEN_WIDTH = Dimensions.get("screen").width - theme.spacing.medium * 2;
 export const EMPTY_ORDER_CARD_HEIGHT = SCREEN_WIDTH * aspectRatio;
 
 interface EmptyOrderCard {
+	title: string;
+	description: string;
+	buttonText: string;
+	onAction: () => void;
 	style?: ViewStyle;
 }
 
-const EmptyOrdersCard = ({ style }: EmptyOrderCard) => {
+const EmptyInfoCard = ({ title, description, buttonText, style, ...props }: EmptyOrderCard) => {
 	return (
 		<View
 			style={{
@@ -24,21 +29,19 @@ const EmptyOrdersCard = ({ style }: EmptyOrderCard) => {
 				alignItems: "center",
 				padding: theme.spacing.small,
 				borderRadius: 10,
-				...generateBoxShadowStyle(0, 2, rgba.black(1), 0.04, 6, 10, rgba.black(1)),
+				...generateBoxShadowStyle(0, 4, rgba.black(0.1), 1, 10, 10, rgba.black(1)),
 				...style,
 			}}>
 			<View style={{ justifyContent: "center", alignItems: "center", marginTop: theme.spacing.small }}>
 				<Image source={require("../../assets/images/empty-illustration.png")} />
 				<Text style={[theme.textStyles.h4, theme.textStyles.center, { marginTop: theme.spacing.small, marginBottom: theme.spacing.xxSmall }]}>
-					Uh oh! You have no orders.
+					{title}
 				</Text>
-				<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.shades.gray_60 }]}>
-					You have no orders at the moment. Go take a look at what we have an we’ll get your delivery to you asap!
-				</Text>
+				<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.shades.gray_60 }]}>{description}</Text>
 			</View>
-			<Button variant="primary" text="View recommended products" style={{ width: "100%" }} onPress={() => {}} />
+			<Button variant="primary" text={buttonText} style={{ width: "100%" }} onPress={props.onAction} />
 		</View>
 	);
 };
 
-export default EmptyOrdersCard;
+export default EmptyInfoCard;

@@ -12,6 +12,7 @@ import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 
 import { PickInterest, ProfileImage, JoiningReason, NarrowInterest, ProfileSetupComplete } from "../screens/ProfileSetup/";
+import { Profile } from "../screens/Profile";
 
 import { navigationRef } from "./service";
 import { BottomStackScreens, RootStackScreens } from "./types";
@@ -44,7 +45,7 @@ const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
 	return (
-		<RootStack.Navigator initialRouteName="Orders">
+		<RootStack.Navigator initialRouteName="Profile">
 			<RootStack.Screen name="Onboarding" component={Onboarding} options={defaultOptions} />
 			<RootStack.Screen name="SignIn" component={SignIn} options={defaultOptions} />
 			<RootStack.Screen name="SignUp" component={SignUp} options={defaultOptions} />
@@ -57,6 +58,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Checkout" component={Checkout} options={defaultOptions} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} options={defaultOptions} />
 			<RootStack.Screen name="Orders" component={Orders} options={defaultOptions} />
+			<RootStack.Screen name="Profile" component={Profile} options={defaultOptions} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} options={defaultOptions} />
 		</RootStack.Navigator>
 	);

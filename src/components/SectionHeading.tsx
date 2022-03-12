@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+
 import { containerStyle } from "../screens/ProfileSetup/ProfileContainer";
 import theme from "../utils/theme";
 

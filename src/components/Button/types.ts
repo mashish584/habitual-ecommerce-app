@@ -9,5 +9,6 @@ export interface ButtonI {
 	style?: ViewStyle | ViewStyle[];
 	buttonTextStyle?: TextStyle | TextStyle[];
 	iconComponent?: ReactNode;
+	iconStyle?: ViewStyle;
 	onPress: () => void;
 }
