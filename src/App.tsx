@@ -1,15 +1,20 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { QueryClientProvider, QueryClient } from "react-query";
 import Toast from "react-native-toast-message";
 import "react-native-gesture-handler";
 
-import Navigation from "./src/navigation";
+import Navigation from "./navigation";
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
 		<SafeAreaProvider>
-			<Navigation />
-			<Toast />
+			<QueryClientProvider client={queryClient}>
+				<Navigation />
+				<Toast />
+			</QueryClientProvider>
 		</SafeAreaProvider>
 	);
 };

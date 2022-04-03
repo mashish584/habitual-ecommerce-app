@@ -14,6 +14,7 @@ import { TextInput } from "../../components/TextInput";
 import theme from "../../utils/theme";
 
 import { ScreenNavigationProp } from "../../navigation/types";
+import useAuth from "../../hooks/logic/useAuth";
 
 const socialLogins = [
 	{
@@ -38,6 +39,11 @@ const Auth = ({ type }: Auth) => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const isSignIn = type === "signin";
 
+	const { formik } = useAuth(isSignIn);
+	const { values, handleChange, handleSubmit, submitCount, errors } = formik;
+
+	const isFormSubmit = submitCount > 0;
+
 	return (
 		<Container>
 			{() => {
@@ -57,19 +63,23 @@ const Auth = ({ type }: Auth) => {
 						/>
 						<ScrollView style={{ paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
 							<Image source={require("../../assets/images/full-logo.png")} style={styles.logo} resizeMode="contain" />
-							<TextInput label="Email" type="text" />
-							<TextInput label="Password" type="text" />
-							<Button
-								variant="primary"
-								text={isSignIn ? "Log in" : "Get started"}
-								onPress={() => {
-									if (isSignIn) {
-										navigation.replace("BottomStack");
-									} else {
-										navigation.replace("ProfileImage");
-									}
-								}}
+							<TextInput
+								label="Email"
+								type="text"
+								onChangeText={handleChange("email")}
+								value={values.email}
+								messageType={isFormSubmit && errors.email ? "error" : "null"}
+								message={isFormSubmit ? errors.email : ""}
 							/>
+							<TextInput
+								label="Password"
+								type="text"
+								onChangeText={handleChange("password")}
+								value={values.password}
+								messageType={isFormSubmit && errors.password ? "error" : "null"}
+								message={isFormSubmit ? errors.password : ""}
+							/>
+							<Button variant="primary" text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
 							{type === "signin" && (
 								<TouchableOpacity style={{ maxWidth: 100, marginTop: theme.spacing.small }}>
 									<Text style={theme.textStyles.link_sm}>Forgot Password</Text>

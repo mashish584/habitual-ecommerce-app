@@ -64,7 +64,7 @@ const TextInput = ({ ref, label, isOptional, messageType, message, style, ...pro
 				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
 			</View>
 
-			{message && <Message message="Invalid email address." messageType={messageType} />}
+			{message ? <Message message={message} messageType={messageType} /> : null}
 		</View>
 	);
 };
