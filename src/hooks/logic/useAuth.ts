@@ -5,6 +5,7 @@ import { AuthSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
 
 import { useAuthAPI } from "../api";
+import { useUser } from "../../utils/store";
 
 const values: Auth = {
 	email: "",
@@ -13,6 +14,7 @@ const values: Auth = {
 
 function useAuth(isSignIn = false) {
 	const authenticate = useAuthAPI<keyof Auth, User>();
+	const onLoginSuccess = useUser((state) => state.onLoginSuccess);
 
 	const formik = useFormik({
 		initialValues: values,
@@ -20,7 +22,9 @@ function useAuth(isSignIn = false) {
 		validateOnChange: true,
 		onSubmit: async (data: Auth) =>
 			authenticate.mutate(data, {
-				onSuccess: (success) => {},
+				onSuccess: (response) => {
+					onLoginSuccess({ token: response.token, user: response.data });
+				},
 				onError: (errors) => {
 					if (errors.errors?.length) {
 						const fieldErrors = errors.errors.reduce((previousErrros, error) => ({ ...previousErrros, [error.key]: error.message }), {});

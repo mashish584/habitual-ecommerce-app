@@ -22,6 +22,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.0.0",
 		"@fortawesome/react-native-fontawesome": "^0.2.7",
 		"@gorhom/bottom-sheet": "2.2.0",
+		"@react-native-async-storage/async-storage": "^1.17.3",
 		"@react-native-firebase/app": "^14.5.0",
 		"@react-native-firebase/crashlytics": "^14.5.0",
 		"@react-navigation/bottom-tabs": "^6.2.0",
@@ -48,7 +49,8 @@
 		"react-native-svg": "^12.1.1",
 		"react-native-toast-message": "^2.1.1",
 		"react-query": "^3.34.19",
-		"yup": "^0.32.11"
+		"yup": "^0.32.11",
+		"zustand": "^3.7.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",
