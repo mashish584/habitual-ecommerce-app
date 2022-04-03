@@ -18,8 +18,8 @@ const appFetch = async (path: Paths, options: FetchConfig) => {
 console.log({ API_URL });
 
 //@API Query
-export const useAuthAPI = <T extends string>() => {
-	return useMutation<SuccessResponse, ErrorResponse<T>, Record<T, string>>((data) => {
+export const useAuthAPI = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, string>>((data) => {
 		return appFetch("register/", {
 			method: "POST",
 			headers: {

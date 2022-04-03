@@ -12,4 +12,8 @@ export interface ErrorResponse<T> {
 	message: string;
 }
 
-export interface SuccessResponse {}
+export interface SuccessResponse<T> {
+	message: string;
+	token: string;
+	data: T;
+}
