@@ -3,7 +3,7 @@ import { ErrorMessage, FetchHeader } from "./types";
 export interface FetchConfig {
 	method: "POST" | "GET" | "PATCH" | "DELETE" | "PUT";
 	headers: FetchHeader;
-	body: any;
+	body?: any;
 	path?: string;
 }
 

@@ -21,7 +21,7 @@ export type ErrorMessage<T> = {
 	key: T;
 	message: string;
 };
-export type Urls = "register/" | "user/";
+export type Urls = "register/" | "user/" | "category/";
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;

@@ -3,7 +3,7 @@ import { Image, ImageURISource, Text, TouchableOpacity, View } from "react-nativ
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 
-export type Category = {
+export type CategoryInfo = {
 	label: string;
 	image: ImageURISource;
 	aspectRatio: number;
@@ -11,7 +11,7 @@ export type Category = {
 };
 
 interface CategoryCard {
-	category: Category;
+	category: CategoryInfo;
 	width: number;
 	spacing: number;
 	onPress: () => void;
@@ -36,7 +36,7 @@ const CategoryCard = ({ category, width, spacing, onPress }: CategoryCard) => {
 					{category.label}
 				</Text>
 				<View style={{ width: "100%", overflow: "hidden" }}>
-					<Image source={category.image} style={{ alignSelf: "center" }} />
+					<Image source={category.image} style={{ alignSelf: "center", width: "80%", height: "80%", resizeMode: "contain" }} />
 				</View>
 			</View>
 		</TouchableOpacity>

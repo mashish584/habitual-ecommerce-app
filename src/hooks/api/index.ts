@@ -32,6 +32,19 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 };
 
 //@API Query
+export const useCategories = <T extends string, M>(query) => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>>(() => {
+		return appFetch("category/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			path: query,
+		});
+	});
+};
+
+//@API Mutations
 export const useAuthAPI = <T extends string, M>() => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, string>>((data) => {
 		return appFetch("register/", {
@@ -44,7 +57,6 @@ export const useAuthAPI = <T extends string, M>() => {
 	});
 };
 
-//@API Mutations
 export const useUpdateUser = <T extends string, M>(path: string) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, any>>((data) => {
 		return appFetch("user/", {
