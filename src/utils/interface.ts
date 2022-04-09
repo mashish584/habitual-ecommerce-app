@@ -4,6 +4,7 @@ export interface FetchConfig {
 	method: "POST" | "GET" | "PATCH" | "DELETE" | "PUT";
 	headers: FetchHeader;
 	body: any;
+	path?: string;
 }
 
 export interface ErrorResponse<T> {
