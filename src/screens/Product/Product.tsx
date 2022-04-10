@@ -8,13 +8,19 @@ import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
+import { Header } from "../../components/Header";
+import { SmallBag, Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
+import { ProductFooterActions } from "../../utils/types";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 import ColorCircle from "./ColorCircle";
+import Cart from "./Cart";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -26,7 +32,7 @@ const productColorVariants = [
 	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
 ];
 
-const Product = () => {
+const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
 
 	const productInfoPosition = useValue(0);
@@ -37,6 +43,7 @@ const Product = () => {
 	const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
+	const [showCart, setShowCart] = useState(false);
 
 	const { scrollHandler, x } = useScrollHandler();
 
@@ -101,11 +108,17 @@ const Product = () => {
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
-			{() => {
+			{(top) => {
 				return (
 					<>
 						{/* Slider  */}
 						<Animated.View style={{ flex: 0.85, backgroundColor: slideBackgroundColor } as any}>
+							<Header
+								variant="secondary"
+								leftIcon={<Back fill={slideTextColor} />}
+								rightIcon={<SmallBag fill={slideTextColor} />}
+								headerStyle={{ position: "absolute", top, width: "100%" }}
+							/>
 							<Animated.ScrollView
 								horizontal
 								ref={sliderRef}
@@ -209,15 +222,49 @@ const Product = () => {
 							translateY={productInfoPosition}
 							borderRadius={productInfoBorderRadius}
 							showCartAction={showCartActions}
-							onPress={(removeCart) => {
-								if (!isSlideOn) {
-									setShowCartActions(true);
+							onPress={(actionType: ProductFooterActions) => {
+								// 🔥 Action 1
+								//→ when user click on shopping bag we will slide screen up
+								//→ and action image will replaced with arrow
+								if (isSlideOn && actionType === "slideUp") {
+									transitionProductInfo(isSlideOn);
+									return;
 								}
 
-								if (removeCart) setShowCartActions(false);
+								// 🔥 Action 2
+								//→ when screen is slide up & action image is arrow
+								//→ display cart actions with GotoCart and Remove action
+								if (!isSlideOn) {
+									transitionProductInfo(isSlideOn);
+									setShowCartActions(true);
+									return;
+								}
 
-								transitionProductInfo(isSlideOn);
+								// 🔥 Action 3
+								//→ when user click on Remove will back to Action 1
+								//→ if click on GoToCart open Cart Modal
+								if (actionType === "removeCart") {
+									setShowCartActions(false);
+									return;
+								}
+
+								if (actionType === "showCartModal") {
+									setShowCart(true);
+									return;
+								}
 							}}
+						/>
+						{/* Cart */}
+						<Cart
+							visible={showCart}
+							maxHeight={0.5}
+							headerTitle="My Cart"
+							items={[]}
+							onCheckout={() => {
+								setShowCart(false);
+								navigation.navigate("Checkout");
+							}}
+							onClose={() => setShowCart(false)}
 						/>
 					</>
 				);

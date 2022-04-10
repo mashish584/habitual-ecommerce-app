@@ -9,9 +9,10 @@ export interface Label {
 	mb?: number;
 }
 
-export interface TextInput extends Label {
+export interface TextInput extends Omit<Label, "label"> {
 	type: InputType;
 	messageType?: MessageType;
 	message?: string;
 	containerStyle?: ViewStyle;
+	label?: string;
 }

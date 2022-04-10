@@ -8,13 +8,13 @@ import theme, { rgba } from "../../utils/theme";
 import { ScrollToIndexParams } from "../../utils/types";
 
 interface CategorySlider {
+	data: any;
 	margin: number;
 }
 
 const WIDTH = Dimensions.get("screen").width;
 
-const CategorySlider = ({ margin }: CategorySlider) => {
-	const data = new Array(10).fill(1);
+const CategorySlider = ({ margin, data }: CategorySlider) => {
 	const categoryListRef = useRef<FlatList>(null);
 	const categoryContentRef = useRef<FlatList>(null);
 	const [index, setIndex] = useState(0);
@@ -26,6 +26,10 @@ const CategorySlider = ({ margin }: CategorySlider) => {
 
 		ref.current?.scrollToIndex(config);
 	};
+
+	const productsData = Object.keys(data)?.map((category) => {
+		return data[category];
+	});
 
 	return (
 		<View
@@ -47,8 +51,8 @@ const CategorySlider = ({ margin }: CategorySlider) => {
 					snapToInterval={WIDTH - margin * 2}
 					decelerationRate="fast"
 					contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
-					data={data}
-					renderItem={({ index: fIndex }) => {
+					data={Object.keys(data)}
+					renderItem={({ item, index: fIndex }) => {
 						const selected = fIndex === index;
 						return (
 							<TouchableOpacity
@@ -58,10 +62,7 @@ const CategorySlider = ({ margin }: CategorySlider) => {
 									setIndex(fIndex);
 								}}
 								style={{ paddingHorizontal: 20 }}>
-								<Text
-									style={
-										selected ? theme.textStyles.h5 : { ...theme.textStyles.body_reg, color: theme.colors.shades.gray_40 }
-									}>{`Category ${fIndex}`}</Text>
+								<Text style={selected ? theme.textStyles.h5 : { ...theme.textStyles.body_reg, color: theme.colors.shades.gray_40 }}>{item}</Text>
 
 								<View
 									style={{
@@ -85,18 +86,25 @@ const CategorySlider = ({ margin }: CategorySlider) => {
 				snapToInterval={WIDTH - margin * 2}
 				decelerationRate="fast"
 				contentContainerStyle={{ marginTop: theme.spacing.medium, justifyContent: "center", alignItems: "center" }}
-				data={data}
+				data={productsData}
 				onMomentumScrollEnd={(e) => {
 					const step = e.nativeEvent.contentOffset.x / (WIDTH - margin * 2);
 					scrollTo(categoryListRef, step, 0.5);
 					setIndex(step);
 				}}
-				renderItem={({ index }) => {
+				renderItem={({ item }) => {
 					return (
 						<View style={{ width: WIDTH - margin * 2, paddingHorizontal: theme.spacing.small }}>
-							<ProductCard variant="wide" containerStyle={{ marginBottom: 10, marginHorizontal: 0 }} />
-							<ProductCard variant="wide" containerStyle={{ marginBottom: 10, marginHorizontal: 0 }} />
-							<ProductCard variant="wide" containerStyle={{ marginHorizontal: 0 }} />
+							{item.map((product, index) => {
+								return (
+									<ProductCard
+										variant="wide"
+										key={product?.id}
+										item={product}
+										containerStyle={{ marginBottom: index === productsData.length - 1 ? 0 : 10, marginHorizontal: 0 }}
+									/>
+								);
+							})}
 						</View>
 					);
 				}}

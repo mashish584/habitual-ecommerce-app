@@ -7,13 +7,15 @@ import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
 import SectionHeading from "../../components/SectionHeading";
 
+import { categorySlider, HotDeals, Products } from "../../data";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
 
 const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
 
-const Home = () => {
+const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
@@ -25,32 +27,40 @@ const Home = () => {
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
 									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
-									<TouchableOpacity style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden" }}>
+									<TouchableOpacity
+										style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden" }}
+										onPress={() => navigation.push("Profile")}>
 										<Image source={{ uri: "https://unsplash.it/50/50" }} style={{ width: "100%", height: "100%" }} />
 									</TouchableOpacity>
 								</View>
 								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
 							</View>
 							{/* Horizontal Products Listing */}
-							<ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ padding: theme.spacing.medium }}>
-								{Array(5)
-									.fill(1)
-									.map((_, index) => {
-										return <ProductCard variant="large" key={index} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
-									})}
+							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
+								{Products.map((product, index) => {
+									return (
+										<ProductCard
+											variant="large"
+											key={product.id}
+											onPress={() => {
+												navigation.navigate("Product");
+											}}
+											item={product}
+											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
+										/>
+									);
+								})}
 							</ScrollView>
 							{/* Your Interests */}
 							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{Array(5)
-									.fill(1)
-									.map((_, index) => {
-										return <ProductCard variant="small" key={index} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
-									})}
+								{HotDeals.map((product, index) => {
+									return <ProductCard variant="small" key={product?.id} item={product} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
+								})}
 							</ScrollView>
 							{/* Hot Deals */}
 							<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
-							<CategorySlider margin={theme.spacing.medium} />
+							<CategorySlider margin={theme.spacing.medium} data={categorySlider} />
 							{/* Sections */}
 							<View
 								style={{

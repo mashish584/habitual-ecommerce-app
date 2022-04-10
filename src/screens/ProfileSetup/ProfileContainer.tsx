@@ -1,5 +1,5 @@
 import React from "react";
-import { ViewStyle } from "react-native";
+import { Image, ViewStyle } from "react-native";
 
 import Container from "../../components/Container";
 import { Header } from "../../components/Header";
@@ -17,7 +17,12 @@ const ProfileContainer: React.FC<ProfileContainer> = ({ title, children }) => {
 			{() => {
 				return (
 					<>
-						<Header variant="secondary" title={title} />
+						<Header
+							variant="secondary"
+							leftIcon={<Image source={require("../../assets/images/bag.png")} />}
+							title={title}
+							headerStyle={{ justifyContent: "flex-end" }}
+						/>
 						{children}
 					</>
 				);

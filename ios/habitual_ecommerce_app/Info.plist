@@ -22,6 +22,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSCameraUsageDescription</key>
+  	<string>Habitual Ecommerce need to access camera to upload profile and product image</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+  	<string>Habitual Ecommerce to access gallery to upload profile and product image</string>
+	<key>NSMicrophoneUsageDescription</key>
+  	<string>Habitual Ecommerce to acccess microphone</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

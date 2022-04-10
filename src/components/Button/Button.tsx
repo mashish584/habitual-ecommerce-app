@@ -39,8 +39,10 @@ const getButtonStyles = (variant: variant) => {
 const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: ButtonI) => {
 	const { buttonStyle, textStyle } = getButtonStyles(variant);
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, style, buttonStyle]}>
-			{props.iconComponent ? <View style={{ position: "absolute", left: theme.spacing.medium }}>{props.iconComponent}</View> : null}
+		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, buttonStyle, style]}>
+			{props.iconComponent ? (
+				<View style={[{ position: "absolute", left: theme.spacing.medium }, props.iconStyle]}>{props.iconComponent}</View>
+			) : null}
 			<Text style={[theme.textStyles.button, textStyle, buttonTextStyle]}>{text}</Text>
 		</TouchableOpacity>
 	);
@@ -49,10 +51,11 @@ const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: Bu
 const styles = StyleSheet.create({
 	button: {
 		maxWidth: "100%",
-		minHeight: 48,
+		height: 48,
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 15,
+		flexDirection: "row",
 	},
 });
 

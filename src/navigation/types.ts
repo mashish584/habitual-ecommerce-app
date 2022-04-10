@@ -7,15 +7,14 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 }
 
 export type RootStackScreens = {
-	Onboarding: undefined;
-	SignIn: undefined;
-	SignUp: undefined;
-	ProfileImage: undefined;
-	JoiningReason: undefined;
-	PickInterest: undefined;
-	NarrowInterest: undefined;
-	ProfileSetupComplete: undefined;
+	Start: undefined;
+	UnauthStack: undefined;
+	ProfileSetup: undefined;
 	Product: undefined;
+	Checkout: undefined;
+	CheckoutSuccess: undefined;
+	Profile: undefined;
+	ProfileSetupComplete: undefined;
 	BottomStack: BottomStackScreens;
 };
 
@@ -25,6 +24,21 @@ export type BottomStackScreens = {
 	Search: undefined;
 	Orders: undefined;
 	Cart: undefined;
+};
+
+export type UnauthStackScreens = {
+	Onboarding: undefined;
+	SignIn: undefined;
+	SignUp: undefined;
+};
+
+export type ProfileSetupStackScreens = {
+	ProfileImage: undefined;
+	JoiningReason: undefined;
+	PickInterest: undefined;
+	NarrowInterest: {
+		query: string;
+	};
 };
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens>;

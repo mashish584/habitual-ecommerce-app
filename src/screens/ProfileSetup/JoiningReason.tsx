@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+
 import { Button } from "../../components/Button";
 
 import theme from "../../utils/theme";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { User } from "../../utils/schema.types";
+import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -11,7 +14,25 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 
 const reasons = ["Discover new products", "Make monthly shopping easier", "Relevant recommendations", "Get notified of deals"];
 
-const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningReason">> = () => {
+const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "JoiningReason">> = ({ navigation }) => {
+	const { updateUserInfo, joining_reasons } = useProfileUpdate<keyof Pick<User, "joining_reasons">>();
+	const [selectedReasons, setSelectedReasons] = useState([]);
+
+	const addJoiningReasons = async () => {
+		if (selectedReasons.length) {
+			await updateUserInfo({ joining_reasons: JSON.stringify(selectedReasons) });
+			navigation.navigate("PickInterest");
+		}
+	};
+
+	useEffect(() => {
+		if (joining_reasons.length) {
+			setSelectedReasons(joining_reasons);
+		}
+	}, [joining_reasons]);
+
+	console.log("Joining Reasons [Render]");
+
 	return (
 		<ProfileContainer title="Step 2 of 4">
 			<View style={containerStyle}>
@@ -22,9 +43,33 @@ const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningRea
 						fontSize: theme.fontSizes.sm - 1,
 						marginBottom: theme.spacing.normal,
 					}}>
-					{reasons.map((reason, index) => (
-						<Button key={index} variant="bordered" text={reason} onPress={() => {}} style={{ width: "100%", marginBottom: theme.spacing.small }} />
-					))}
+					{reasons.map((reason) => {
+						const reasons = [...selectedReasons];
+						const index = reasons.indexOf(reason);
+						return (
+							<Button
+								key={reason}
+								variant="bordered"
+								text={reason}
+								onPress={() => {
+									if (index !== -1) {
+										reasons.splice(index, 1);
+									} else {
+										reasons.push(reason);
+									}
+									setSelectedReasons(reasons);
+								}}
+								style={[
+									{
+										width: "100%",
+										marginBottom: theme.spacing.small,
+									},
+									index !== -1 && { backgroundColor: theme.colors.shades.gray_80 },
+								]}
+								buttonTextStyle={index !== -1 && { color: theme.colors.shades.white }}
+							/>
+						);
+					})}
 				</ProfileSetupHeader>
 				<ProfileSetupFooter
 					button1={{
@@ -33,10 +78,10 @@ const JoiningReason: React.FC<StackNavigationProps<RootStackScreens, "JoiningRea
 						onPress: () => {},
 					}}
 					button2={{
-						variant: "disabled",
+						variant: selectedReasons.length === 0 ? "disabled" : "primary",
 						text: "Continue",
 						style: { width: 115 },
-						onPress: () => {},
+						onPress: addJoiningReasons,
 					}}
 				/>
 			</View>

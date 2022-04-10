@@ -1,7 +1,5 @@
-import React from "react";
-import { Text, TouchableOpacity, View, Image, TextStyle } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import React, { ReactNode } from "react";
+import { Text, TouchableOpacity, View, TextStyle, ViewStyle } from "react-native";
 
 import theme from "../../utils/theme";
 
@@ -10,15 +8,22 @@ import theme from "../../utils/theme";
  * 		primary - Header with cross and center title
  * 		secondary - Header with bag icon and text on right
  */
+
+export type ActionType = "left" | "right";
+
 interface Header {
 	variant: "primary" | "secondary";
-	title: string;
+	leftIcon?: ReactNode;
+	rightIcon?: ReactNode;
+	title?: string;
 	titleStyle?: TextStyle | TextStyle[];
+	headerStyle?: ViewStyle;
+	onAction?: (type: ActionType) => void;
 }
 
 const { shades } = theme.colors;
 
-const Header = ({ title, variant, titleStyle }: Header) => {
+const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) => {
 	const isPrimary = variant === "primary";
 
 	return (
@@ -34,17 +39,29 @@ const Header = ({ title, variant, titleStyle }: Header) => {
 					borderBottomColor: theme.colors.shades.gray_20,
 					borderBottomWidth: isPrimary ? 1 : 0,
 				},
+				headerStyle,
 			]}>
-			{variant === "primary" ? (
-				<TouchableOpacity style={[theme.iconButtonStyle, { position: "absolute", left: 12.5 }]}>
-					<FontAwesomeIcon icon={faClose} />
+			{props.leftIcon && (
+				<TouchableOpacity
+					onPress={() => props.onAction("left")}
+					style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
+					{props.leftIcon}
 				</TouchableOpacity>
-			) : (
-				<Image source={require("../../assets/images/bag.png")} style={{ width: 30, height: 32 }} resizeMode={"contain"} />
 			)}
-			<Text style={[isPrimary ? theme.textStyles.h5 : theme.textStyles.h6, { color: isPrimary ? shades.gray_80 : shades.gray_60 }, titleStyle]}>
-				{title}
-			</Text>
+
+			{title && (
+				<Text style={[isPrimary ? theme.textStyles.h5 : theme.textStyles.h6, { color: isPrimary ? shades.gray_80 : shades.gray_60 }, titleStyle]}>
+					{title}
+				</Text>
+			)}
+
+			{props.rightIcon && (
+				<TouchableOpacity
+					onPress={() => props.onAction("right")}
+					style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
+					{props.rightIcon}
+				</TouchableOpacity>
+			)}
 		</View>
 	);
 };

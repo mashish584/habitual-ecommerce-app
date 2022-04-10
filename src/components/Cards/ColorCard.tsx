@@ -1,10 +1,11 @@
 import React from "react";
-import { ImageURISource, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import { ImageURISource, Text, TouchableOpacity, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 import theme, { rgba } from "../../utils/theme";
 import { generateBoxShadowStyle } from "../../utils";
+import Card from "./Card";
 
 interface ColorCard {
 	variant: "defaul" | "fixed";
@@ -18,8 +19,8 @@ interface ColorCard {
 
 const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 	return (
-		<View
-			style={{
+		<Card
+			cardStyle={{
 				width,
 				height: "100%",
 				aspectRatio: 1,
@@ -46,7 +47,7 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 					<FontAwesomeIcon icon={faAngleRight} />
 				</TouchableOpacity>
 			)}
-		</View>
+		</Card>
 	);
 };
 

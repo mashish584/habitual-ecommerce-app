@@ -58,3 +58,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/ios/GoogleService-Info.plist
+
+#Android
+/android/app/google-services.json

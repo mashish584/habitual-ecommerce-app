@@ -9,9 +9,10 @@ interface Dot {
 	scrollX: Animated.Value<number>;
 	width: number;
 	mh: number;
+	activeColor: string;
 }
 
-const Dot = ({ currentIndex, scrollX, mh, width }: Dot) => {
+const Dot = ({ currentIndex, scrollX, mh, width, activeColor = theme.colors.shades.gray_60 }: Dot) => {
 	const interpolateWidth = interpolate(scrollX, {
 		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
 		outputRange: [6, 16, 6],
@@ -20,7 +21,7 @@ const Dot = ({ currentIndex, scrollX, mh, width }: Dot) => {
 
 	const color = interpolateColor(scrollX, {
 		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
-		outputRange: [theme.colors.shades.gray_40, theme.colors.shades.gray_60, theme.colors.shades.gray_40],
+		outputRange: [theme.colors.shades.gray_40, activeColor, theme.colors.shades.gray_40],
 	});
 
 	return (

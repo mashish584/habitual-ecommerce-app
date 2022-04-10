@@ -6,7 +6,7 @@ import Animated from "react-native-reanimated";
 import theme from "../../utils/theme";
 
 interface ThemeProps {
-	children: (top: number) => ReactNode;
+	children: (top: number, bottom: number) => ReactNode;
 	avoidTopNotch?: boolean;
 	avoidHomBar?: boolean;
 	backgroundColor?: Animated.Node<Number>;
@@ -40,10 +40,10 @@ function Container(
 
 	return props.isImageContainer ? (
 		<ImageBackground source={source} style={[styles.container, props.imageContainerStyle, safeAreaStyle]}>
-			{props.children(top)}
+			{props.children(top, bottom)}
 		</ImageBackground>
 	) : (
-		<Animated.View style={[styles.container, props.viewContainerStyle, safeAreaStyle] as ViewStyle}>{props.children(top)}</Animated.View>
+		<Animated.View style={[styles.container, props.viewContainerStyle, safeAreaStyle] as ViewStyle}>{props.children(top, bottom)}</Animated.View>
 	);
 }
 
