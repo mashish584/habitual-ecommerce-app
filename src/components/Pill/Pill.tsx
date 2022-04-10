@@ -14,6 +14,7 @@ interface Pill {
 	text: string;
 	selected?: boolean;
 	colors?: PillColors;
+	onPress?: () => void;
 }
 
 const getPillStyle = (variant: PillVariant, colors?: PillColors, selected?: boolean): PillValue => {
@@ -58,11 +59,11 @@ const getPillStyle = (variant: PillVariant, colors?: PillColors, selected?: bool
 	return styles;
 };
 
-const Pill = ({ text, selected, variant, colors }: Pill) => {
+const Pill = ({ text, selected, variant, colors, onPress }: Pill) => {
 	const pillStyle = getPillStyle(variant, colors, selected);
 
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity onPress={onPress}>
 			<Animated.View style={[pillStyle.containerStyle, { justifyContent: "center", alignItems: "center" }]}>
 				<Animated.Text style={pillStyle.textStyle}>{text}</Animated.Text>
 			</Animated.View>

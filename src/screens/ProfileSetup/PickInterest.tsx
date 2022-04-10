@@ -20,16 +20,39 @@ const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
 const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "PickInterest">> = ({ navigation }) => {
-	const [interests, setInterests] = useState({});
+	const [interests, setInterests] = useState<Record<"string", CategoryInfo>>({} as Record<"string", CategoryInfo>);
 
 	const categoriesQuery = useCategories<"", Category[]>("?parent=true");
+
+	const selectedInterestIds = Object.keys(interests).filter((id) => {
+		if (interests[id].selected) {
+			return id;
+		}
+	});
+
+	const onInterestSelect = () => {
+		if (selectedInterestIds.length) {
+			let query = "?";
+
+			selectedInterestIds.map((id, index) => {
+				query += `parentId=${id}`;
+				if (index !== selectedInterestIds.length) {
+					query += "&";
+				}
+			});
+
+			navigation.navigate("NarrowInterest", {
+				query,
+			});
+		}
+	};
 
 	useEffect(() => {
 		(async () => {
 			const response = await categoriesQuery.mutateAsync();
 			const categories = response.data;
 			if (categories.length) {
-				const data: CategoryInfo[] = [];
+				const data = { ...interests };
 				categories.map((category, index) => {
 					data[category.id] = {
 						label: category.name,
@@ -106,12 +129,10 @@ const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pic
 						onPress: () => {},
 					}}
 					button2={{
-						variant: "primary",
+						variant: !selectedInterestIds.length ? "disabled" : "primary",
 						text: "Continue",
 						style: { width: 120 },
-						onPress: () => {
-							navigation.navigate("NarrowInterest");
-						},
+						onPress: onInterestSelect,
 					}}
 				/>
 			</View>

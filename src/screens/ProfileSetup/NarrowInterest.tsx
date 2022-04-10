@@ -1,40 +1,65 @@
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
 import CheckBoxItem from "../../components/Checkbox/CheckBoxItem";
 import Pill from "../../components/Pill/Pill";
 import { TextInput } from "../../components/TextInput";
 
+import { debounce } from "../../utils";
 import theme from "../../utils/theme";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { useCategories } from "../../hooks/api";
+import { Category } from "../../utils/schema.types";
+import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const categories = [
-	{
-		id: 1,
-		category: "Music",
-		subCategory: [
-			{ id: 1, name: "Vinyl", selected: false },
-			{ id: 2, name: "Live Music", selected: false },
-			{ id: 3, name: "Home Listing", selected: false },
-		],
-	},
-	{
-		id: 2,
-		category: "Fashion",
-		subCategory: [
-			{ id: 1, name: "Vinyl", selected: false },
-			{ id: 2, name: "Live Music", selected: true },
-			{ id: 3, name: "Home Listing", selected: false },
-		],
-	},
-];
+type SubCategory = {
+	id: string;
+	name: string;
+	selected: boolean;
+};
 
-const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInterest">> = ({ navigation }) => {
-	const [interests, setInterests] = useState(categories);
+const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "NarrowInterest">> = ({ navigation, route }) => {
+	const query = route.params.query;
+	const categoriesQuery = useCategories<"", Category[]>(`${query}&childLimit=3`);
+	const excludeCategories = React.useRef([]);
+
+	const [interests, setInterests] = React.useState([]);
+	const [searchResults, setSearchResults] = React.useState<SubCategory[]>([]);
+
+	const searchInterests = debounce(async (text) => {
+		const query = excludeCategories.current.reduce((prev, category, index) => {
+			prev += `exclude=${category}`;
+			return prev;
+		}, "?");
+		const response = await categoriesQuery.mutateAsync(`${query}&search=${text}`);
+		setSearchResults(response.data.map((category) => ({ ...category, selected: false })));
+	}, 1000);
+
+	React.useEffect(() => {
+		(async () => {
+			const response = await categoriesQuery.mutateAsync(null);
+			if (response.data.length) {
+				const categories = {};
+				response.data.map((category) => {
+					const { id, name } = category.parentCategory;
+					excludeCategories.current.push(category.id);
+					if (categories[id]) {
+						categories[id].subCategory.push({ id: category.id, name: category.name, selected: false });
+					} else {
+						categories[id] = {
+							id: id,
+							category: name,
+							subCategory: [{ id: category.id, name: category.name, selected: false }],
+						};
+					}
+				});
+				setInterests(Object.values(categories));
+			}
+		})();
+	}, []);
 
 	return (
 		<ProfileContainer title="Step 4 of 4">
@@ -78,15 +103,25 @@ const NarrowInterest: React.FC<StackNavigationProps<RootStackScreens, "NarrowInt
 					<View>
 						<Text style={[theme.textStyles.h4, { marginBottom: theme.spacing.xSmall }]}>Did we miss something?</Text>
 						<Text style={theme.textStyles.body_reg}>Add other interests and sub-interests below if we missed something. </Text>
-						<TextInput type="search" label="Interests" containerStyle={{ marginTop: 8 }} />
+						<TextInput type="search" label="Interests" containerStyle={{ marginTop: 8 }} onChangeText={searchInterests} />
 						<View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: theme.spacing.medium }}>
-							{["Console Gaming", "PC Gaming", "Racing Gaming", "MMORPG", "PS4", "XBOX"].map((pill, index) => (
-								<Pill variant="default" key={index} text={pill} selected={[3, 4].includes(index)} />
-							))}
-						</View>
-						<View>
-							<CheckBoxItem text="MMORPG" checked={true} checkBoxStyle={{ backgroundColor: theme.colors.shades.gray_80 }} />
-							<CheckBoxItem text="PS4" checked={true} checkBoxStyle={{ backgroundColor: theme.colors.shades.gray_80 }} />
+							{searchResults.map((result, index) => {
+								return (
+									<Pill
+										variant="default"
+										key={result.id}
+										text={result.name}
+										selected={result.selected}
+										onPress={() => {
+											const results = [...searchResults];
+											const item = { ...searchResults[index] };
+											item.selected = !item.selected;
+											results[index] = item;
+											setSearchResults(results);
+										}}
+									/>
+								);
+							})}
 						</View>
 					</View>
 				</ScrollView>

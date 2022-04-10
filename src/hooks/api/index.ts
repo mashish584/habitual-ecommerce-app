@@ -9,7 +9,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 	console.log({ path: `${API_URL}${url}`, options });
 
 	let endpoint = `${API_URL}${url}${options.path || ""}`;
-
+	console.log({ endpoint });
 	if (options.path) {
 		delete options.path;
 	}
@@ -33,13 +33,13 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 
 //@API Query
 export const useCategories = <T extends string, M>(query) => {
-	return useMutation<SuccessResponse<M>, ErrorResponse<T>>(() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((mutateQuery) => {
 		return appFetch("category/", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			path: query,
+			path: mutateQuery ? mutateQuery : query,
 		});
 	});
 };

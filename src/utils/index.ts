@@ -34,3 +34,17 @@ export const formatTimeStamp = (timestamp: string, format: DateFormats) => {
 };
 
 export const formatToIso = (timestamp: string, format: DateFormats) => dayjs(timestamp, format).toISOString();
+
+export const debounce = (fn: (...args: any) => void, duration: number) => {
+	let timer = null;
+
+	return (...args) => {
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
+		timer = setTimeout(() => {
+			fn(...args);
+		}, duration);
+	};
+};

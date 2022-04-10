@@ -35,7 +35,9 @@ export type ProfileSetupStackScreens = {
 	ProfileImage: undefined;
 	JoiningReason: undefined;
 	PickInterest: undefined;
-	NarrowInterest: undefined;
+	NarrowInterest: {
+		query: string;
+	};
 	ProfileSetupComplete: undefined;
 };
 
