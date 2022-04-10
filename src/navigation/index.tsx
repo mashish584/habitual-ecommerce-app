@@ -10,6 +10,7 @@ import { Checkout } from "../screens/Checkout";
 import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 import { Profile } from "../screens/Profile";
+import { ProfileSetupComplete } from "../screens/ProfileSetup";
 
 import { UserState } from "../utils/store";
 
@@ -28,7 +29,8 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 			try {
 				const user = await AsyncStorage.getItem("user");
 				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
-				if (data.token && data.user) {
+
+				if (data.token && data.user && data.user.joining_reasons?.length === 0) {
 					navigation.replace("ProfileSetup");
 				} else {
 					navigation.replace("BottomStack");
@@ -51,8 +53,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Home} />
 			<BottomTabStack.Screen name="Search" component={Home} />
@@ -70,6 +71,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Start" component={Start} />
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
+			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 			<RootStack.Screen name="Product" component={Product} />
 			<RootStack.Screen name="Checkout" component={Checkout} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />

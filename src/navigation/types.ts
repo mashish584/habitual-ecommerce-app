@@ -14,6 +14,7 @@ export type RootStackScreens = {
 	Checkout: undefined;
 	CheckoutSuccess: undefined;
 	Profile: undefined;
+	ProfileSetupComplete: undefined;
 	BottomStack: BottomStackScreens;
 };
 
@@ -38,7 +39,6 @@ export type ProfileSetupStackScreens = {
 	NarrowInterest: {
 		query: string;
 	};
-	ProfileSetupComplete: undefined;
 };
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens>;

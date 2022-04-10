@@ -15,6 +15,7 @@ const timeoutIds = [];
 
 const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "ProfileImage">> = ({ navigation }) => {
 	const { profile, updateUserInfo } = useProfileUpdate<keyof Pick<User, "profile">>();
+
 	console.log("Profile Image [Rerender]", { profile });
 
 	const pickImage = async () => {

@@ -1,15 +1,3 @@
-export type User = {
-	id: string;
-	email: string;
-	fullname: string | null;
-	profile: string | null;
-	joining_reasons: string[];
-	stripe_customer_id: string;
-	interestIds: string[];
-	createdAt: Date;
-	updatedAt: Date;
-};
-
 export type Category = {
 	id: string;
 	name: string;
@@ -21,6 +9,19 @@ export type Category = {
 	interestedUserIds: string[];
 	productIds: string[];
 	image: string | null;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type User = {
+	id: string;
+	email: string;
+	fullname: string | null;
+	profile: string | null;
+	joining_reasons: string[];
+	stripe_customer_id: string;
+	interests: Category[];
+	interestIds: string[];
 	createdAt: Date;
 	updatedAt: Date;
 };

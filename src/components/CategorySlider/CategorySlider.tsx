@@ -53,7 +53,6 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 					contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
 					data={Object.keys(data)}
 					renderItem={({ item, index: fIndex }) => {
-						console.log(item);
 						const selected = fIndex === index;
 						return (
 							<TouchableOpacity

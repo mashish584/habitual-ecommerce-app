@@ -49,7 +49,7 @@ const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pic
 
 	useEffect(() => {
 		(async () => {
-			const response = await categoriesQuery.mutateAsync();
+			const response = await categoriesQuery.mutateAsync(null);
 			const categories = response.data;
 			if (categories.length) {
 				const data = { ...interests };

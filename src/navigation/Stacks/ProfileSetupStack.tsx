@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ProfileSetupStackScreens } from "../types";
-import { JoiningReason, NarrowInterest, PickInterest, ProfileImage, ProfileSetupComplete } from "../../screens/ProfileSetup";
+import { JoiningReason, NarrowInterest, PickInterest, ProfileImage } from "../../screens/ProfileSetup";
 
 const ProfileSetupStack = createStackNavigator<ProfileSetupStackScreens>();
 
@@ -12,7 +12,6 @@ export default () => {
 			<ProfileSetupStack.Screen name="JoiningReason" component={JoiningReason} />
 			<ProfileSetupStack.Screen name="PickInterest" component={PickInterest} />
 			<ProfileSetupStack.Screen name="NarrowInterest" component={NarrowInterest} />
-			<ProfileSetupStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 		</ProfileSetupStack.Navigator>
 	);
 };

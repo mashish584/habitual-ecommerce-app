@@ -6,10 +6,8 @@ import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interfa
 
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
-	console.log({ path: `${API_URL}${url}`, options });
-
 	let endpoint = `${API_URL}${url}${options.path || ""}`;
-	console.log({ endpoint });
+
 	if (options.path) {
 		delete options.path;
 	}

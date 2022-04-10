@@ -8,8 +8,9 @@ import { TextInput } from "../../components/TextInput";
 import { debounce } from "../../utils";
 import theme from "../../utils/theme";
 import { useCategories } from "../../hooks/api";
-import { Category } from "../../utils/schema.types";
-import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Category, User } from "../../utils/schema.types";
+import { ProfileSetupStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -18,25 +19,74 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 type SubCategory = {
 	id: string;
 	name: string;
-	selected: boolean;
 };
 
-const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "NarrowInterest">> = ({ navigation, route }) => {
+const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & Pick<RootStackScreens, "ProfileSetupComplete">, "NarrowInterest">> = ({
+	navigation,
+	route,
+}) => {
 	const query = route.params.query;
 	const categoriesQuery = useCategories<"", Category[]>(`${query}&childLimit=3`);
+	const { updateUserInfo } = useProfileUpdate<keyof Pick<User, "interests">>();
 	const excludeCategories = React.useRef([]);
 
 	const [interests, setInterests] = React.useState([]);
+	const [additionalInterests, setAdditionalInterests] = React.useState<SubCategory[]>([]);
 	const [searchResults, setSearchResults] = React.useState<SubCategory[]>([]);
+	const [selectedInterestsIds, setSelectedInterests] = React.useState([]);
 
 	const searchInterests = debounce(async (text) => {
+		if (text?.trim() === "") {
+			setSearchResults([]);
+			return;
+		}
+
 		const query = excludeCategories.current.reduce((prev, category, index) => {
 			prev += `exclude=${category}`;
+			if (index !== excludeCategories.current.length) {
+				prev += "&";
+			}
 			return prev;
 		}, "?");
-		const response = await categoriesQuery.mutateAsync(`${query}&search=${text}`);
-		setSearchResults(response.data.map((category) => ({ ...category, selected: false })));
+
+		const response = await categoriesQuery.mutateAsync(`?${query}&search=${text}`);
+
+		//👀 for selected interests in searchResults
+		const selectedInterests = searchResults.reduce((prev, interest) => {
+			const data = { ...prev };
+			if (interest.selected) {
+				data[interest.id] = interest;
+			}
+			return data;
+		}, {});
+
+		//→ remove already selected item from search results
+		const filterResults = response.data.filter((category) => !Object.keys(selectedInterests).includes(category.id));
+
+		if (Object.keys(selectedInterests).length) {
+			setAdditionalInterests(Object.values(selectedInterests));
+		}
+
+		setSearchResults(filterResults.map((category) => ({ ...category, selected: false })));
 	}, 1000);
+
+	const updateInterestSelection = (value) => {
+		const selectedIds = [...selectedInterestsIds];
+		const index = selectedIds.indexOf(value);
+		if (index !== -1) {
+			selectedIds.splice(index, 1);
+		} else {
+			selectedIds.push(value);
+		}
+		setSelectedInterests(selectedIds);
+	};
+
+	const saveUserInterests = async () => {
+		if (selectedInterestsIds.length) {
+			await updateUserInfo({ interests: JSON.stringify(selectedInterestsIds) });
+			navigation.replace("ProfileSetupComplete");
+		}
+	};
 
 	React.useEffect(() => {
 		(async () => {
@@ -79,21 +129,13 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "N
 									marginBottom: theme.spacing.medium,
 								}}>
 								<Text style={[theme.textStyles.h4, { marginBottom: theme.spacing.small }]}>{category}</Text>
-								{subCategory.map((subCategory, sIndex) => {
+								{subCategory.map((subCategory) => {
 									return (
 										<CheckBoxItem
 											key={subCategory.id}
 											text={subCategory.name}
-											checked={subCategory.selected}
-											onPress={() => {
-												setInterests((prev) => {
-													const categories = [...prev];
-													const childCategory = { ...subCategory };
-													childCategory.selected = !childCategory.selected;
-													categories[cIndex].subCategory[sIndex] = childCategory;
-													return categories;
-												});
-											}}
+											checked={selectedInterestsIds.includes(subCategory.id)}
+											onPress={() => updateInterestSelection(subCategory.id)}
 										/>
 									);
 								})}
@@ -105,24 +147,28 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "N
 						<Text style={theme.textStyles.body_reg}>Add other interests and sub-interests below if we missed something. </Text>
 						<TextInput type="search" label="Interests" containerStyle={{ marginTop: 8 }} onChangeText={searchInterests} />
 						<View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: theme.spacing.medium }}>
-							{searchResults.map((result, index) => {
+							{searchResults.map((result) => {
 								return (
 									<Pill
 										variant="default"
 										key={result.id}
 										text={result.name}
-										selected={result.selected}
-										onPress={() => {
-											const results = [...searchResults];
-											const item = { ...searchResults[index] };
-											item.selected = !item.selected;
-											results[index] = item;
-											setSearchResults(results);
-										}}
+										selected={selectedInterestsIds.includes(result.id)}
+										onPress={() => updateInterestSelection(result.id)}
 									/>
 								);
 							})}
 						</View>
+						{additionalInterests.map((interest) => {
+							return (
+								<CheckBoxItem
+									key={interest.id}
+									text={interest.name}
+									checked={selectedInterestsIds.includes(interest.id)}
+									onPress={() => updateInterestSelection(interest.id)}
+								/>
+							);
+						})}
 					</View>
 				</ScrollView>
 				<ProfileSetupFooter
@@ -134,9 +180,9 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "N
 						onPress: () => {},
 					}}
 					button2={{
-						variant: "primary",
+						variant: selectedInterestsIds.length ? "primary" : "disabled",
 						text: "Get Started →",
-						onPress: () => navigation.navigate("ProfileSetupComplete"),
+						onPress: saveUserInterests,
 					}}
 				/>
 			</View>
