@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput as RNTextInput, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -39,8 +39,10 @@ const Auth = ({ type }: Auth) => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const isSignIn = type === "signin";
 
-	const { formik } = useAuth(isSignIn);
+	const { formik, isLoading } = useAuth(isSignIn);
 	const { values, handleChange, handleSubmit, submitCount, errors } = formik;
+
+	const passwordRef = React.useRef<RNTextInput>(null);
 
 	const isFormSubmit = submitCount > 0;
 
@@ -69,17 +71,21 @@ const Auth = ({ type }: Auth) => {
 								onChangeText={handleChange("email")}
 								value={values.email}
 								messageType={isFormSubmit && errors.email ? "error" : "null"}
+								returnKeyType="next"
+								onSubmitEditing={() => passwordRef?.current?.focus()}
 								message={isFormSubmit ? errors.email : ""}
 							/>
 							<TextInput
 								label="Password"
-								type="text"
+								type="password"
+								ref={passwordRef}
 								onChangeText={handleChange("password")}
 								value={values.password}
 								messageType={isFormSubmit && errors.password ? "error" : "null"}
 								message={isFormSubmit ? errors.password : ""}
+								onSubmitEditing={() => Keyboard.dismiss()}
 							/>
-							<Button variant="primary" text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
+							<Button variant="primary" isLoading={isLoading} text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
 							{type === "signin" && (
 								<TouchableOpacity style={{ maxWidth: 100, marginTop: theme.spacing.small }}>
 									<Text style={theme.textStyles.link_sm}>Forgot Password</Text>

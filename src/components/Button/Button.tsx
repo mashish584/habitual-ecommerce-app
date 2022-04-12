@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, View } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, View, ActivityIndicator } from "react-native";
 
 import theme from "../../utils/theme";
 import { ButtonI, variant } from "./types";
@@ -39,11 +39,18 @@ const getButtonStyles = (variant: variant) => {
 const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: ButtonI) => {
 	const { buttonStyle, textStyle } = getButtonStyles(variant);
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, buttonStyle, style]}>
+		<TouchableOpacity
+			activeOpacity={0.7}
+			onPress={() => {
+				if (props.isLoading) return;
+				onPress();
+			}}
+			style={[styles.button, buttonStyle, style]}>
 			{props.iconComponent ? (
 				<View style={[{ position: "absolute", left: theme.spacing.medium }, props.iconStyle]}>{props.iconComponent}</View>
 			) : null}
 			<Text style={[theme.textStyles.button, textStyle, buttonTextStyle]}>{text}</Text>
+			{props.isLoading && <ActivityIndicator size="small" color={theme.colors.shades.gray} style={{ marginLeft: 10 }} />}
 		</TouchableOpacity>
 	);
 };

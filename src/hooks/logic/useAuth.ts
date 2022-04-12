@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { useNavigation } from "@react-navigation/native";
 
 import { Auth } from "../../utils/types";
 import { AuthSchema } from "../../utils/validation";
@@ -6,6 +7,7 @@ import { User } from "../../utils/schema.types";
 
 import { useAuthAPI } from "../api";
 import { useUser } from "../../utils/store";
+import { ScreenNavigationProp } from "../../navigation/types";
 
 const values: Auth = {
 	email: "",
@@ -13,6 +15,7 @@ const values: Auth = {
 };
 
 function useAuth(isSignIn = false) {
+	const navigation = useNavigation<ScreenNavigationProp>();
 	const authenticate = useAuthAPI<keyof Auth, User>();
 	const onLoginSuccess = useUser((state) => state.onLoginSuccess);
 
@@ -24,6 +27,7 @@ function useAuth(isSignIn = false) {
 			authenticate.mutate(data, {
 				onSuccess: (response) => {
 					onLoginSuccess({ token: response.token, user: response.data });
+					navigation.replace("ProfileSetup");
 				},
 				onError: (errors) => {
 					if (errors.errors?.length) {

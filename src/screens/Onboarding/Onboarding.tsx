@@ -5,7 +5,7 @@ import { useScrollHandler } from "react-native-redash";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
 
 import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -51,7 +51,7 @@ const slides = [
 
 const ScrollViewHeight = height * 0.7;
 
-const Onboarding: React.FC<StackNavigationProps<RootStackScreens, "Onboarding">> = ({ navigation }) => {
+const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding">> = ({ navigation }) => {
 	const { scrollHandler, x } = useScrollHandler();
 	const activeSlideIndex = useRef(0);
 	const scrollRef = useRef<Animated.ScrollView>(null);

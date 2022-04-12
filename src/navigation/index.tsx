@@ -33,7 +33,7 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 				if (data.token && data.user && data.user.joining_reasons?.length === 0) {
 					navigation.replace("ProfileSetup");
 				} else {
-					navigation.replace("BottomStack");
+					navigation.replace("UnauthStack");
 				}
 			} catch (err) {
 				navigation.replace("UnauthStack");
@@ -53,7 +53,8 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Home} />
 			<BottomTabStack.Screen name="Search" component={Home} />

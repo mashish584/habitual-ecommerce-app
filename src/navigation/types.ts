@@ -41,4 +41,4 @@ export type ProfileSetupStackScreens = {
 	};
 };
 
-export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens>;
+export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens & UnauthStackScreens>;
