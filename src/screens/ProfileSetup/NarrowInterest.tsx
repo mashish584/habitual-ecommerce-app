@@ -27,7 +27,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 }) => {
 	const query = route.params.query;
 	const categoriesQuery = useCategories<"", Category[]>(`${query}&childLimit=3`);
-	const { updateUserInfo } = useProfileUpdate<keyof Pick<User, "interests">>();
+	const { updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "interests">>();
 	const excludeCategories = React.useRef([]);
 
 	const [interests, setInterests] = React.useState([]);
@@ -37,7 +37,6 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 
 	const searchInterests = debounce(async (text) => {
 		if (text?.trim() === "") {
-			setSearchResults([]);
 			return;
 		}
 
@@ -47,14 +46,15 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 				prev += "&";
 			}
 			return prev;
-		}, "?");
+		}, "");
 
 		const response = await categoriesQuery.mutateAsync(`?${query}&search=${text}`);
 
 		//👀 for selected interests in searchResults
-		const selectedInterests = searchResults.reduce((prev, interest) => {
+		const selectedInterests: Record<string, SubCategory> = searchResults.reduce((prev, interest) => {
 			const data = { ...prev };
-			if (interest.selected) {
+			if (selectedInterestsIds.includes(interest.id)) {
+				excludeCategories.current.push(interest.id);
 				data[interest.id] = interest;
 			}
 			return data;
@@ -64,7 +64,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		const filterResults = response.data.filter((category) => !Object.keys(selectedInterests).includes(category.id));
 
 		if (Object.keys(selectedInterests).length) {
-			setAdditionalInterests(Object.values(selectedInterests));
+			setAdditionalInterests((prev) => [...prev, ...Object.values(selectedInterests)]);
 		}
 
 		setSearchResults(filterResults.map((category) => ({ ...category, selected: false })));
@@ -111,6 +111,8 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		})();
 	}, []);
 
+	console.log({ selectedInterestsIds });
+
 	return (
 		<ProfileContainer title="Step 4 of 4">
 			<View style={[containerStyle, { paddingHorizontal: 0 }]}>
@@ -145,7 +147,13 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 					<View>
 						<Text style={[theme.textStyles.h4, { marginBottom: theme.spacing.xSmall }]}>Did we miss something?</Text>
 						<Text style={theme.textStyles.body_reg}>Add other interests and sub-interests below if we missed something. </Text>
-						<TextInput type="search" label="Interests" containerStyle={{ marginTop: 8 }} onChangeText={searchInterests} />
+						<TextInput
+							type="search"
+							label="Interests"
+							containerStyle={{ marginTop: 8 }}
+							onChangeText={searchInterests}
+							isLoading={categoriesQuery.isLoading}
+						/>
 						<View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: theme.spacing.medium }}>
 							{searchResults.map((result) => {
 								return (
@@ -183,6 +191,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 						variant: selectedInterestsIds.length ? "primary" : "disabled",
 						text: "Get Started →",
 						onPress: saveUserInterests,
+						isLoading,
 					}}
 				/>
 			</View>

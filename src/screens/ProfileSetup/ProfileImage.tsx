@@ -1,6 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
+import Loader from "../../components/Loader";
+
 import { openGallery } from "../../utils/media";
 import theme from "../../utils/theme";
 import { User } from "../../utils/schema.types";
@@ -14,11 +16,13 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 const timeoutIds = [];
 
 const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "ProfileImage">> = ({ navigation }) => {
-	const { profile, updateUserInfo } = useProfileUpdate<keyof Pick<User, "profile">>();
+	const { profile, updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "profile">>();
 
 	console.log("Profile Image [Rerender]", { profile });
 
 	const pickImage = async () => {
+		if (isLoading) return;
+
 		const images = await openGallery({ cropping: true });
 		const response = await updateUserInfo({ profile: images[0] });
 
@@ -44,8 +48,9 @@ const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pro
 		<ProfileContainer title="Step 1 of 4">
 			<View style={containerStyle}>
 				<ProfileSetupHeader title="Welcome!" description={"Add a photo so other members\n know who you are."}>
-					<View style={styles.profileImage}>
+					<View style={[styles.profileImage]}>
 						<Image source={userProfileImage} style={{ width: "100%", height: "100%" }} />
+						{isLoading && <Loader />}
 					</View>
 				</ProfileSetupHeader>
 
@@ -59,6 +64,7 @@ const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pro
 						variant: "primary",
 						text: "Uploda a photo",
 						onPress: pickImage,
+						style: isLoading && { backgroundColor: theme.colors.primary.yellow_20 },
 					}}
 				/>
 			</View>

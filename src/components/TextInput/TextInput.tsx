@@ -3,6 +3,8 @@ import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
+import Loader from "../Loader";
+
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 
@@ -71,6 +73,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 						<FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} color={theme.colors.shades.gray_80} />
 					</TouchableOpacity>
 				)}
+				{props.isLoading && <Loader style={{ alignItems: "flex-end", right: theme.spacing.medium }} />}
 			</View>
 
 			{message ? <Message message={message} messageType={messageType} /> : null}

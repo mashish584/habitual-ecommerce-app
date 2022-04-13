@@ -15,4 +15,5 @@ export interface TextInput extends Omit<Label, "label"> {
 	message?: string;
 	containerStyle?: ViewStyle;
 	label?: string;
+	isLoading?: boolean;
 }
