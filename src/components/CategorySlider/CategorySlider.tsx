@@ -6,15 +6,17 @@ import ProductCard from "../Cards/ProductCard";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { ScrollToIndexParams } from "../../utils/types";
+import { Product } from "../../utils/schema.types";
 
 interface CategorySlider {
-	data: any;
+	data: Record<string, Product[]>;
 	margin: number;
 }
 
 const WIDTH = Dimensions.get("screen").width;
 
 const CategorySlider = ({ margin, data }: CategorySlider) => {
+	console.log({ data });
 	const categoryListRef = useRef<FlatList>(null);
 	const categoryContentRef = useRef<FlatList>(null);
 	const [index, setIndex] = useState(0);
@@ -85,7 +87,7 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 				bounces={false}
 				snapToInterval={WIDTH - margin * 2}
 				decelerationRate="fast"
-				contentContainerStyle={{ marginTop: theme.spacing.medium, justifyContent: "center", alignItems: "center" }}
+				contentContainerStyle={{ marginTop: theme.spacing.medium, justifyContent: "center" }}
 				data={productsData}
 				onMomentumScrollEnd={(e) => {
 					const step = e.nativeEvent.contentOffset.x / (WIDTH - margin * 2);
@@ -95,11 +97,11 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: WIDTH - margin * 2, paddingHorizontal: theme.spacing.small }}>
-							{item.map((product, index) => {
+							{item.map((product: Product, index) => {
+								product.image = product.images[0].url;
 								return (
 									<ProductCard
 										variant="wide"
-										key={product?.id}
 										item={product}
 										containerStyle={{ marginBottom: index === productsData.length - 1 ? 0 : 10, marginHorizontal: 0 }}
 									/>

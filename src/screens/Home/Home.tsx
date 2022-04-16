@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
 
 import ColorCard from "../../components/Cards/ColorCard";
@@ -7,15 +7,30 @@ import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
 import SectionHeading from "../../components/SectionHeading";
 
-import { categorySlider, HotDeals, Products } from "../../data";
+import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Product } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
 
 const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
 
+interface HomeInfo {
+	featuredProducts: Product[];
+	hotDeals: Product[];
+	userInterests: Record<string, Product[]>;
+}
+
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
+	const { data, ...homeFetch } = useHome<"", HomeInfo>();
+
+	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
+
+	useEffect(() => {
+		homeFetch.mutateAsync();
+	}, []);
+
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
@@ -37,7 +52,8 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{Products.map((product, index) => {
+								{featuredProducts?.map((product, index) => {
+									product.image = product.images[0].url;
 									return (
 										<ProductCard
 											variant="large"
@@ -51,16 +67,21 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 									);
 								})}
 							</ScrollView>
-							{/* Your Interests */}
+							{/* Hot Deals */}
 							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{HotDeals.map((product, index) => {
+								{hotDeals?.map((product, index) => {
+									product.image = product.images[0].url;
 									return <ProductCard variant="small" key={product?.id} item={product} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
 								})}
 							</ScrollView>
-							{/* Hot Deals */}
-							<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
-							<CategorySlider margin={theme.spacing.medium} data={categorySlider} />
+							{/* Your Interests */}
+							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
+								<>
+									<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
+									<CategorySlider margin={theme.spacing.medium} data={userInterests} />
+								</>
+							)}
 							{/* Sections */}
 							<View
 								style={{

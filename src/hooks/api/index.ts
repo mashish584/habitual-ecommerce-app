@@ -1,11 +1,21 @@
 import { useMutation } from "react-query";
 import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
+import { UserState } from "../../utils/store";
 
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
+	const userAsyncData = await AsyncStorage.getItem("user");
+	let token = null;
+
+	if (userAsyncData) {
+		let userStoreInfo = JSON.parse(userAsyncData) as { state: Pick<UserState, "token" | "user"> };
+		token = userStoreInfo.state.token;
+	}
+
 	let endpoint = `${API_URL}${url}${options.path || ""}`;
 
 	if (options.path) {
@@ -21,7 +31,12 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		options.body = formData;
 	}
 
-	let response = await fetch(endpoint, options);
+	if (token) {
+		// options.headers.Authorization = `Bearer ${token}`;
+		options.headers["token"] = `Bearer ${token}`;
+	}
+
+	let response = await fetch(endpoint, { ...options });
 	if (response.status !== 200) {
 		throw await response.json();
 	} else {
@@ -38,6 +53,17 @@ export const useCategories = <T extends string, M>(query) => {
 				"Content-Type": "application/json",
 			},
 			path: mutateQuery ? mutateQuery : query,
+		});
+	});
+};
+
+export const useHome = <T extends String, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>>(() => {
+		return appFetch("home/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
 		});
 	});
 };

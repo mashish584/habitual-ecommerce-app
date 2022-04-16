@@ -25,3 +25,22 @@ export type User = {
 	createdAt: Date;
 	updatedAt: Date;
 };
+
+export type Product = {
+	id: string;
+	title: string;
+	description: string | null;
+	images: any;
+	image: string;
+	variants: any;
+	slideColors: any;
+	price: number;
+	discount: number | null;
+	quantity: number;
+	categoryIds: string[];
+	category: Category[];
+	isStaffPick: boolean | null;
+	isFeatured: boolean | null;
+	createdAt: Date;
+	updatedAt: Date;
+};
