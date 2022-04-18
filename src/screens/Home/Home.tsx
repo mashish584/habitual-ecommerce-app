@@ -59,7 +59,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 											variant="large"
 											key={product.id}
 											onPress={() => {
-												navigation.navigate("Product");
+												navigation.navigate("Product", { product });
 											}}
 											item={product}
 											containerStyle={index === 0 ? { marginLeft: 0 } : {}}

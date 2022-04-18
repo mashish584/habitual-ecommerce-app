@@ -68,6 +68,18 @@ export const useHome = <T extends String, M>() => {
 	});
 };
 
+export const useProductInfo = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string>((id) => {
+		return appFetch("product/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			path: id,
+		});
+	});
+};
+
 //@API Mutations
 export const useAuthAPI = <T extends string, M>() => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, string>>((data) => {

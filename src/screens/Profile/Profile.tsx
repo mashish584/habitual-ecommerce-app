@@ -2,6 +2,7 @@ import React from "react";
 import { Image, Text, View, ScrollView } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import Container from "../../components/Container";
 import Header from "../../components/Header/Header";
@@ -65,7 +66,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 								text="Edit my profile"
 								onPress={() => {}}
 								iconStyle={{ position: "relative", left: 0, marginRight: theme.spacing.xxSmall }}
-								iconComponent={<FontAwesomeIcon icon={faPen} />}
+								iconComponent={<FontAwesomeIcon icon={faPen as IconProp} />}
 								style={{
 									width: 175,
 									backgroundColor: theme.colors.shades.white,

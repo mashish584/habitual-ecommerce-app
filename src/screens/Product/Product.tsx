@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Dimensions, Image, TextStyle, View, Text } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
@@ -11,11 +11,13 @@ import { Review } from "../../components/Product";
 import { Header } from "../../components/Header";
 import { SmallBag, Back } from "../../components/Svg";
 
-import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
 import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Product as ProductType } from "../../utils/schema.types";
+import theme from "../../utils/theme";
+import { useProductInfo } from "../../hooks/api";
 
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
@@ -32,8 +34,12 @@ const productColorVariants = [
 	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
 ];
 
-const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation }) => {
+const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation, route }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
+	const product = route.params.product;
+	const [] = useState(product);
+
+	const fetchProductInfo = useProductInfo<string, ProductType>();
 
 	const productInfoPosition = useValue(0);
 	const productInfoSlideTiming = useValue(0);
@@ -105,6 +111,13 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 			priceInfoTransition2.start();
 		});
 	};
+
+	useEffect(() => {
+		(async () => {
+			const productInfo = await fetchProductInfo.mutateAsync(product.id);
+			console.log({ productInfo });
+		})();
+	}, []);
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
