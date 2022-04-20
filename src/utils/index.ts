@@ -48,3 +48,5 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 		}, duration);
 	};
 };
+
+export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice + currentPrice * (discount / 100)).toFixed(2);

@@ -5,7 +5,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { generateBoxShadowStyle } from "../../utils";
+import { calculateOriginalPrice, generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import Pill from "../Pill/Pill";
 import { Product } from "../../utils/schema.types";
@@ -25,7 +25,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	const height = variant === "large" ? 312 : 253;
 	const imageSectionHeight = variant === "large" ? 160 : 136;
 
-	const fullPrice = item?.discount ? (item.price + item.price * (item.discount / 100)).toFixed(2) : null;
+	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
 
 	return (
 		<TouchableOpacity

@@ -9,8 +9,8 @@ import theme from "../../utils/theme";
 import { ProductFooterActions } from "../../utils/types";
 
 type PriceInfo = {
-	price: string;
-	originalPrice: string;
+	price: number;
+	originalPrice: number;
 	discount: string;
 	buttonChild: JSX.Element;
 };

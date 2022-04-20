@@ -13,6 +13,7 @@ import { SmallBag, Back } from "../../components/Svg";
 
 import Dot from "../Onboarding/Dot";
 
+import { calculateOriginalPrice } from "../../utils";
 import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product as ProductType } from "../../utils/schema.types";
@@ -52,6 +53,9 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const [showCart, setShowCart] = useState(false);
 
 	const { scrollHandler, x } = useScrollHandler();
+
+	const productInfo = fetchProductInfo.data?.data || product;
+	console.log({ productInfo });
 
 	// → Slide Transitions
 	const slideBackgroundColor = interpolateColor(x, {
@@ -113,10 +117,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	};
 
 	useEffect(() => {
-		(async () => {
-			const productInfo = await fetchProductInfo.mutateAsync(product.id);
-			console.log({ productInfo });
-		})();
+		fetchProductInfo.mutateAsync(product.id);
 	}, []);
 
 	return (
@@ -130,7 +131,12 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								variant="secondary"
 								leftIcon={<Back fill={slideTextColor} />}
 								rightIcon={<SmallBag fill={slideTextColor} />}
-								headerStyle={{ position: "absolute", top, width: "100%" }}
+								headerStyle={{ position: "absolute", top, width: "100%", zIndex: 1 }}
+								onAction={(type) => {
+									if (type === "left") {
+										navigation.goBack();
+									}
+								}}
 							/>
 							<Animated.ScrollView
 								horizontal
@@ -141,27 +147,28 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								decelerationRate="fast"
 								snapToInterval={SLIDER_WIDTH}
 								{...scrollHandler}>
-								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Animated.Image
-										source={require("../../assets/images/example/product-sample.png")}
-										style={{ transform: [{ translateY: slideImagePosition }] }}
-									/>
-								</View>
-								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Animated.Image
-										source={require("../../assets/images/example/product-sample.png")}
-										style={{ transform: [{ translateY: slideImagePosition }] }}
-									/>
-								</View>
+								{productInfo.images?.map((image) => {
+									return (
+										<View key={image.fileId} style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
+											<Animated.Image
+												source={{ uri: image.url }}
+												style={{ width: "100%", height: "100%", transform: [{ translateY: slideImagePosition }] }}
+												resizeMode="contain"
+											/>
+										</View>
+									);
+								})}
 							</Animated.ScrollView>
 							{/* Product Content */}
 
 							{/* Slide Indicator */}
-							<View style={[theme.rowStyle, styles.slideIndicators]}>
-								{slides.map((_, index) => {
-									return <Dot key={index} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
-								})}
-							</View>
+							{productInfo?.images?.length > 1 && (
+								<View style={[theme.rowStyle, styles.slideIndicators]}>
+									{productInfo.images.map((file, index) => {
+										return <Dot key={file.fileId} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
+									})}
+								</View>
+							)}
 							<Animated.View
 								style={{
 									...styles.productContent,
@@ -186,9 +193,9 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 												{ color: !isSlideOn ? textColors[0].color : slideTextColor, marginBottom: theme.spacing.xxSmall },
 											] as TextStyle[]
 										}>
-										Xbox One Elite Series 2 Controller
+										{productInfo.title}
 									</Animated.Text>
-									<Review stars={2} color={slideTextColor} />
+									<Review stars={0} color={slideTextColor} />
 									{!isSlideOn && (
 										<View style={{ marginTop: theme.spacing.medium }}>
 											<Text style={[theme.textStyles.label, { color: theme.colors.shades.gray_60 }]}>Color</Text>
@@ -222,9 +229,9 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 						{/* Product Price Container  */}
 						<ProductPriceInfo
 							priceInfo={{
-								price: "59.99",
-								originalPrice: "79.99",
-								discount: "20% OFF",
+								price: productInfo.price,
+								originalPrice: productInfo.discount ? calculateOriginalPrice(productInfo.price, productInfo.discount) : null,
+								discount: productInfo.discount ? `${productInfo.discount}% OFF` : null,
 								buttonChild: !isSlideOn ? (
 									<FontAwesomeIcon icon={faArrowRight} />
 								) : (
