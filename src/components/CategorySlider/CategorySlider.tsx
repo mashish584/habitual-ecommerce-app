@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import ProductCard from "../Cards/ProductCard";
 
@@ -7,6 +8,8 @@ import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { ScrollToIndexParams } from "../../utils/types";
 import { Product } from "../../utils/schema.types";
+
+import { ScreenNavigationProp } from "../../navigation/types";
 
 interface CategorySlider {
 	data: Record<string, Product[]>;
@@ -16,7 +19,8 @@ interface CategorySlider {
 const WIDTH = Dimensions.get("screen").width;
 
 const CategorySlider = ({ margin, data }: CategorySlider) => {
-	console.log({ data });
+	const navigation = useNavigation<ScreenNavigationProp>();
+
 	const categoryListRef = useRef<FlatList>(null);
 	const categoryContentRef = useRef<FlatList>(null);
 	const [index, setIndex] = useState(0);
@@ -101,8 +105,10 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 								product.image = product.images[0].url;
 								return (
 									<ProductCard
+										key={product?.id}
 										variant="wide"
 										item={product}
+										onPress={() => navigation.navigate("Product", { product })}
 										containerStyle={{ marginBottom: index === productsData.length - 1 ? 0 : 10, marginHorizontal: 0 }}
 									/>
 								);

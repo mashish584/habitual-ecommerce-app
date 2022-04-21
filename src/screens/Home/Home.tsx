@@ -72,7 +72,15 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
 								{hotDeals?.map((product, index) => {
 									product.image = product.images[0].url;
-									return <ProductCard variant="small" key={product?.id} item={product} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
+									return (
+										<ProductCard
+											key={product?.id}
+											variant="small"
+											onPress={() => navigation.navigate("Product", { product })}
+											item={product}
+											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
+										/>
+									);
 								})}
 							</ScrollView>
 							{/* Your Interests */}

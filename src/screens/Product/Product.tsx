@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, Text } from "react-native";
+import { Dimensions, Image, TextStyle, View } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -22,18 +22,18 @@ import { useProductInfo } from "../../hooks/api";
 
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
-import ColorCircle from "./ColorCircle";
+// import ColorCircle from "./ColorCircle";
 import Cart from "./Cart";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
 const slides = [{ color: theme.colors.shades.gray_20 }, { color: theme.colors.shades.gray }];
 const textColors = [{ color: theme.colors.shades.gray_80 }, { color: theme.colors.shades.white }];
-const productColorVariants = [
-	{ label: "Black", color: theme.colors.shades.gray, selected: false },
-	{ label: "White", color: theme.colors.shades.white, selected: false },
-	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
-];
+// const productColorVariants = [
+// 	{ label: "Black", color: theme.colors.shades.gray, selected: false },
+// 	{ label: "White", color: theme.colors.shades.white, selected: false },
+// 	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
+// ];
 
 const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation, route }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
@@ -47,7 +47,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const productContentHeight = useValue(95);
 	const slideImagePosition = useValue(0);
 
-	const [productColors, setProductColors] = useState([...productColorVariants]);
+	// const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
 	const [showCart, setShowCart] = useState(false);
@@ -196,7 +196,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 										{productInfo.title}
 									</Animated.Text>
 									<Review stars={0} color={slideTextColor} />
-									{!isSlideOn && (
+									{/* {!isSlideOn && (
 										<View style={{ marginTop: theme.spacing.medium }}>
 											<Text style={[theme.textStyles.label, { color: theme.colors.shades.gray_60 }]}>Color</Text>
 											<Text style={[theme.textStyles.body_reg, { fontFamily: theme.fonts.lato.bold, marginTop: theme.spacing.xxSmall }]}>
@@ -222,7 +222,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 												})}
 											</View>
 										</View>
-									)}
+									)} */}
 								</View>
 							</Animated.View>
 						</Animated.View>
