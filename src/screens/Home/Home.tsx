@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
 
 import ColorCard from "../../components/Cards/ColorCard";
@@ -23,13 +23,9 @@ interface HomeInfo {
 }
 
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
-	const { data, ...homeFetch } = useHome<"", HomeInfo>();
+	const { data } = useHome<"", HomeInfo>();
 
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
-
-	useEffect(() => {
-		homeFetch.mutateAsync();
-	}, []);
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>

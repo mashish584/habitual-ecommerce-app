@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -58,7 +58,7 @@ export const useCategories = <T extends string, M>(query) => {
 };
 
 export const useHome = <T extends String, M>() => {
-	return useMutation<SuccessResponse<M>, ErrorResponse<T>>(() => {
+	return useQuery<SuccessResponse<M>, ErrorResponse<T>>("home", () => {
 		return appFetch("home/", {
 			method: "GET",
 			headers: {

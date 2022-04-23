@@ -26,6 +26,11 @@ export type User = {
 	updatedAt: Date;
 };
 
+export type SlideColors = {
+	color: string;
+	backgroundColor: string;
+};
+
 export type Product = {
 	id: string;
 	title: string;
@@ -33,7 +38,7 @@ export type Product = {
 	images: any;
 	image: string;
 	variants: any;
-	slideColors: any;
+	slideColors: SlideColors[];
 	price: number;
 	discount: number | null;
 	quantity: number;

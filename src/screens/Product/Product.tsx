@@ -16,7 +16,7 @@ import Dot from "../Onboarding/Dot";
 import { calculateOriginalPrice } from "../../utils";
 import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Product as ProductType } from "../../utils/schema.types";
+import { Product as ProductType, SlideColors } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 import { useProductInfo } from "../../hooks/api";
 
@@ -27,13 +27,28 @@ import Cart from "./Cart";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
-const slides = [{ color: theme.colors.shades.gray_20 }, { color: theme.colors.shades.gray }];
-const textColors = [{ color: theme.colors.shades.gray_80 }, { color: theme.colors.shades.white }];
-// const productColorVariants = [
-// 	{ label: "Black", color: theme.colors.shades.gray, selected: false },
-// 	{ label: "White", color: theme.colors.shades.white, selected: false },
-// 	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
-// ];
+function getSlideColors(slideColors: SlideColors[], length: number) {
+	const slides = [];
+	const textColors = [];
+
+	if (slideColors.length) {
+		slideColors.map((slideColor) => {
+			slides.push({ color: slideColor.backgroundColor });
+			textColors.push({ color: slideColor.color });
+		});
+	} else {
+		if (length < 2) {
+			length = 2;
+		}
+
+		for (let i = 0; i < length; i++) {
+			slides.push({ color: theme.colors.shades.gray_20 });
+			textColors.push({ color: theme.colors.shades.gray_80 });
+		}
+	}
+
+	return { slides, textColors };
+}
 
 const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation, route }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
@@ -55,7 +70,8 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const { scrollHandler, x } = useScrollHandler();
 
 	const productInfo = fetchProductInfo.data?.data || product;
-	console.log({ productInfo });
+
+	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length);
 
 	// → Slide Transitions
 	const slideBackgroundColor = interpolateColor(x, {
