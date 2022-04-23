@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View } from "react-native";
+import { Dimensions, Image, TextStyle, View, Text } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -212,6 +212,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 										{productInfo.title}
 									</Animated.Text>
 									<Review stars={0} color={slideTextColor} />
+									{!isSlideOn && <Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.small }]}>{productInfo?.description}</Text>}
 									{/* {!isSlideOn && (
 										<View style={{ marginTop: theme.spacing.medium }}>
 											<Text style={[theme.textStyles.label, { color: theme.colors.shades.gray_60 }]}>Color</Text>
