@@ -5,13 +5,13 @@ import { interpolateColor } from "react-native-redash";
 import Button from "../../components/Button/Button";
 
 import Pill from "../../components/Pill/Pill";
+import { calculateOriginalPrice } from "../../utils";
+import { Product } from "../../utils/schema.types";
+import { useCart } from "../../utils/store";
 import theme from "../../utils/theme";
 import { ProductFooterActions } from "../../utils/types";
 
-type PriceInfo = {
-	price: number;
-	originalPrice: number;
-	discount: string;
+type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "discount"> & {
 	buttonChild: JSX.Element;
 };
 
@@ -25,6 +25,8 @@ interface ProductPriceInfo {
 }
 
 const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, ...props }: ProductPriceInfo) => {
+	const { addItem, removeItem } = useCart();
+
 	const productInfoBackground = interpolateColor(slideAnimate, {
 		inputRange: [0, 1],
 		outputRange: [theme.colors.shades.white, theme.colors.primary.yellow],
@@ -74,8 +76,21 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 			}>
 			{props.showCartAction ? (
 				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
-					<Button variant="transparent" text="Remove" style={{ flex: 0.2 }} onPress={() => props.onPress("removeCart")} />
-					<Button variant="primary" text="Go to cart - 59.99 →" style={{ flex: 0.7 }} onPress={() => props.onPress("showCartModal")} />
+					<Button
+						variant="transparent"
+						text="Remove"
+						style={{ flex: 0.2 }}
+						onPress={() => {
+							removeItem(priceInfo.id);
+							props.onPress("removeCart");
+						}}
+					/>
+					<Button
+						variant="primary"
+						text={`Go to cart - $${priceInfo.price} →`}
+						style={{ flex: 0.7 }}
+						onPress={() => props.onPress("showCartModal")}
+					/>
 				</View>
 			) : (
 				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
@@ -90,11 +105,11 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 								style={
 									[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_60, marginHorizontal: theme.spacing.xxSmall }] as ViewStyle
 								}>
-								${priceInfo?.originalPrice}
+								${calculateOriginalPrice(priceInfo.price, priceInfo.discount)}
 							</Animated.Text>
 							<Pill
 								variant="saved"
-								text={priceInfo?.discount}
+								text={`${priceInfo?.discount}% OFF`}
 								colors={{
 									textColor: pillTextColor,
 									pillColor: pillContainerColor,
@@ -102,7 +117,15 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 							/>
 						</View>
 					</View>
-					<TouchableOpacity onPress={() => props.onPress("slideUp")}>
+					<TouchableOpacity
+						onPress={() => {
+							//add item to cart
+							const item = { ...priceInfo };
+							delete item.buttonChild;
+							delete item.discount;
+							addItem(item);
+							props.onPress("slideUp");
+						}}>
 						<Animated.View
 							style={
 								{

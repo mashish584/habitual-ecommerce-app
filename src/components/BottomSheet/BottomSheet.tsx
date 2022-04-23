@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet, Pressable } from "react-native";
 import { Easing } from "react-native-reanimated";
-import GBottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
+import GBottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 import { Header } from "../Header";
+
+import { rgba } from "../../utils/theme";
+
 import BottomSheetI from "./types";
 
 const SCREEN_HEIGHT = Dimensions.get("screen").height;
@@ -63,9 +66,12 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 				/>
 			)}
 			enableContentPanningGesture={false}
-			backdropComponent={(props) => (visible ? <BottomSheetBackdrop {...props} /> : null)}
+			backdropComponent={() =>
+				visible ? <Pressable style={{ ...StyleSheet.absoluteFillObject, backgroundColor: rgba.black(0.5) }} onPress={onClose} /> : null
+			}
 			onChange={(index) => {
-				if (index === -1) {
+				if (index === 0) {
+					currentSnapIndex.current = 0;
 					onClose();
 				}
 			}}>

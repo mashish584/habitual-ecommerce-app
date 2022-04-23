@@ -4,6 +4,7 @@ import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
@@ -13,7 +14,6 @@ import { SmallBag, Back } from "../../components/Svg";
 
 import Dot from "../Onboarding/Dot";
 
-import { calculateOriginalPrice } from "../../utils";
 import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product as ProductType, SlideColors } from "../../utils/schema.types";
@@ -200,7 +200,6 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								<View>
 									<Animated.Text
 										onPress={() => {
-											alert("as");
 											crashlytics().crash();
 										}}
 										style={
@@ -246,11 +245,13 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 						{/* Product Price Container  */}
 						<ProductPriceInfo
 							priceInfo={{
+								id: product.id,
+								image: product.image,
+								title: product.title,
 								price: productInfo.price,
-								originalPrice: productInfo.discount ? calculateOriginalPrice(productInfo.price, productInfo.discount) : null,
-								discount: productInfo.discount ? `${productInfo.discount}% OFF` : null,
+								discount: productInfo.discount,
 								buttonChild: !isSlideOn ? (
-									<FontAwesomeIcon icon={faArrowRight} />
+									<FontAwesomeIcon icon={faArrowRight as IconProp} />
 								) : (
 									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
 								),
@@ -296,12 +297,13 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							visible={showCart}
 							maxHeight={0.5}
 							headerTitle="My Cart"
-							items={[]}
 							onCheckout={() => {
 								setShowCart(false);
 								navigation.navigate("Checkout");
 							}}
-							onClose={() => setShowCart(false)}
+							onClose={() => {
+								setShowCart(false);
+							}}
 						/>
 					</>
 				);

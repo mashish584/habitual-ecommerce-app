@@ -42,7 +42,7 @@ const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: Bu
 		<TouchableOpacity
 			activeOpacity={0.7}
 			onPress={() => {
-				if (props.isLoading) return;
+				if (props.isLoading || variant === "disabled") return;
 				onPress();
 			}}
 			style={[styles.button, buttonStyle, style]}>
