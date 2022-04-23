@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+.env
 
 # Xcode
 #
@@ -62,3 +63,5 @@ buck-out/
 
 #Android
 /android/app/google-services.json
+
+

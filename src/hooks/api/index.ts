@@ -105,3 +105,15 @@ export const useUpdateUser = <T extends string, M>(path: string) => {
 		});
 	});
 };
+
+export const useCartCheckout = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, any>>((data) => {
+		return appFetch("checkout/", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: data,
+		});
+	});
+};
