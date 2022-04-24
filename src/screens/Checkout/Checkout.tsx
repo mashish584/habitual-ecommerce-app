@@ -11,12 +11,24 @@ import { Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { useCart } from "../../utils/store";
+
+import { useStripeCheckout } from "../../hooks/logic/useStripeCheckout";
 
 // spacing of bot
 const footerTopPadding = theme.spacing.medium;
 const scrollViewBottomSpace = footerTopPadding * 2 + (footerTopPadding + 48);
 
 const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = ({ navigation }) => {
+	const { initiatePaymentSheet } = useStripeCheckout();
+	const total = useCart((store) => store.total);
+
+	const processCheckout = async () => {
+		const response = await initiatePaymentSheet();
+		console.log({ response });
+		navigation.navigate("CheckoutSuccess");
+	};
+
 	return (
 		<Container avoidHomBar={true}>
 			{(_, bottom) => {
@@ -72,7 +84,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 								</View>
 								<View style={[theme.rowStyle, { justifyContent: "space-between", marginTop: theme.spacing.large, alignItems: "center" }]}>
 									<Text style={[theme.textStyles.pill_reg, { textTransform: "uppercase", color: theme.colors.shades.gray_60 }]}>Total</Text>
-									<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>$135.98</Text>
+									<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>${total}</Text>
 								</View>
 							</View>
 						</ScrollView>
@@ -88,12 +100,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 								backgroundColor: theme.colors.shades.white,
 								bottom: 0,
 							}}>
-							<Button
-								variant="primary"
-								text="Pay Now"
-								style={{ marginHorizontal: theme.spacing.medium }}
-								onPress={() => navigation.navigate("CheckoutSuccess")}
-							/>
+							<Button variant="primary" text="Pay Now" style={{ marginHorizontal: theme.spacing.medium }} onPress={processCheckout} />
 						</View>
 					</>
 				);

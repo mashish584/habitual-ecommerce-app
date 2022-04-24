@@ -113,7 +113,19 @@ export const useCartCheckout = <T extends string, M>() => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: data,
+			body: JSON.stringify(data),
+		});
+	});
+};
+
+export const useUpdateTransaction = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, any>>((data) => {
+		return appFetch("payment-success/", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 		});
 	});
 };
