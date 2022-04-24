@@ -20,9 +20,11 @@ export interface UserState {
 export interface CartState {
 	items: CartItems;
 	total: number;
+	visible: boolean;
 	addItem: (item: CartProduct) => void;
 	removeItem: (id: string) => void;
 	updateQuantity: (id: string, type: QuantityAction) => void;
+	toggleCart: (value: boolean) => void;
 }
 
 const calculateTotal = (cart: CartItems) => {
@@ -54,6 +56,7 @@ export const useUser = create<UserState, SetState<UserState>, GetState<UserState
 export const useCart = create<CartState, SetState<CartState>, GetState<CartState>, StoreApiWithPersist<CartState>>(
 	persist(
 		(set, get) => ({
+			visible: false as boolean,
 			items: {} as CartItems,
 			total: 0,
 			addItem: ({ id, ...product }) => {
@@ -94,6 +97,9 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 				}
 
 				set({ items, total: calculateTotal(items) });
+			},
+			toggleCart: (value: boolean) => {
+				set({ visible: value });
 			},
 		}),
 		{

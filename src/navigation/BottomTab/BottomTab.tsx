@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomStackScreens, RootStackScreens } from "../types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
+import { useCart } from "../../utils/store";
 
 type Screens = keyof RootStackScreens | keyof BottomStackScreens;
 
@@ -50,6 +51,7 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 	const barPosition = useRef(new Animated.Value(0)).current;
 
 	const { bottom } = useSafeAreaInsets();
+	const toggleCart = useCart((store) => store.toggleCart);
 	const { index: routeIndex } = props.state;
 
 	const searchBackgroundColor = routeIndex === 2 ? theme.colors.shades.gray : theme.colors.primary.yellow;
@@ -94,6 +96,11 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 						key={`bottom-tab-${index}`}
 						activeOpacity={1}
 						onPress={() => {
+							if (option.route === "Cart") {
+								toggleCart(true);
+								return;
+							}
+
 							onNavigate(option.route);
 						}}
 						style={[styles.tab, { marginBottom: bottom / 2 }]}>

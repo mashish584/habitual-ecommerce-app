@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, Text } from "react-native";
+import { Dimensions, Image, TextStyle, View, Text, Pressable } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -18,12 +18,12 @@ import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product as ProductType, SlideColors } from "../../utils/schema.types";
 import theme from "../../utils/theme";
+import { useCart } from "../../utils/store";
 import { useProductInfo } from "../../hooks/api";
 
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 // import ColorCircle from "./ColorCircle";
-import Cart from "./Cart";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
@@ -55,6 +55,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const product = route.params.product;
 	const [] = useState(product);
 
+	const toggleCart = useCart((store) => store.toggleCart);
 	const fetchProductInfo = useProductInfo<string, ProductType>();
 
 	const productInfoPosition = useValue(0);
@@ -65,7 +66,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	// const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
-	const [showCart, setShowCart] = useState(false);
+	// const [showCart, setShowCart] = useState(false);
 
 	const { scrollHandler, x } = useScrollHandler();
 
@@ -146,7 +147,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							<Header
 								variant="secondary"
 								leftIcon={<Back fill={slideTextColor} />}
-								rightIcon={<SmallBag fill={slideTextColor} />}
+								rightIcon={
+									<Pressable onPress={() => toggleCart(true)}>
+										<SmallBag fill={slideTextColor} />
+									</Pressable>
+								}
 								headerStyle={{ position: "absolute", top, width: "100%", zIndex: 1 }}
 								onAction={(type) => {
 									if (type === "left") {
@@ -287,22 +292,9 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								}
 
 								if (actionType === "showCartModal") {
-									setShowCart(true);
+									toggleCart(true);
 									return;
 								}
-							}}
-						/>
-						{/* Cart */}
-						<Cart
-							visible={showCart}
-							maxHeight={0.5}
-							headerTitle="My Cart"
-							onCheckout={() => {
-								setShowCart(false);
-								navigation.navigate("Checkout");
-							}}
-							onClose={() => {
-								setShowCart(false);
 							}}
 						/>
 					</>

@@ -11,6 +11,7 @@ import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 import { Profile } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
+import GlobalUI from "../screens/GlobalUI";
 
 import { UserState } from "../utils/store";
 
@@ -52,8 +53,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Home} />
 			<BottomTabStack.Screen name="Search" component={Home} />
@@ -85,6 +85,7 @@ export default () => {
 	return (
 		<NavigationContainer ref={navigationRef}>
 			<RootStackScreen />
+			<GlobalUI />
 		</NavigationContainer>
 	);
 };
