@@ -10,6 +10,7 @@ import SectionHeading from "../../components/SectionHeading";
 import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product } from "../../utils/schema.types";
+import { useUser } from "../../utils/store";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
@@ -25,6 +26,7 @@ interface HomeInfo {
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
 	const { data } = useHome<"", HomeInfo>();
 
+	const profile = useUser((store) => store.user.profile);
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
 
 	return (
@@ -39,9 +41,12 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
 									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
 									<TouchableOpacity
-										style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden" }}
+										style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden", backgroundColor: theme.colors.shades.white }}
 										onPress={() => navigation.push("Profile")}>
-										<Image source={{ uri: "https://unsplash.it/50/50" }} style={{ width: "100%", height: "100%" }} />
+										<Image
+											source={{ uri: profile || "https://avatars.dicebear.com/api/identicon/your-custom-seed.png" }}
+											style={{ width: "100%", height: "100%" }}
+										/>
 									</TouchableOpacity>
 								</View>
 								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
