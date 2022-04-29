@@ -7,6 +7,7 @@ export type Category = {
 	parentCategory: {
 		id: string;
 		name: string;
+		image: string;
 	};
 	interestedUserIds: string[];
 	productIds: string[];
@@ -22,6 +23,7 @@ export type User = {
 	profile: string | null;
 	joining_reasons: string[];
 	stripe_customer_id: string;
+	bio: string;
 	addresses: Addresses;
 	interests: Category[];
 	interestIds: string[];

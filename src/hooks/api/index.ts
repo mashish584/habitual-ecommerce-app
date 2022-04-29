@@ -45,6 +45,19 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 };
 
 //@API Query
+
+export const useUserProfile = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((profileId) => {
+		return appFetch("user/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			path: profileId,
+		});
+	});
+};
+
 export const useCategories = <T extends string, M>(query) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((mutateQuery) => {
 		return appFetch("category/", {

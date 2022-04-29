@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import { Platform } from "react-native";
+import { Dimensions, Platform } from "react-native";
+import theme from "./theme";
 import { DateFormats } from "./types";
 
 export const isIOS = Platform.OS === "ios";
@@ -50,3 +51,7 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 };
 
 export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice + currentPrice * (discount / 100)).toFixed(2);
+
+export const defaultAvatar = "https://avatars.dicebear.com/api/identicon/your-custom-seed.png";
+
+export const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;

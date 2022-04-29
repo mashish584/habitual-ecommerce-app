@@ -10,7 +10,6 @@ export type QuantityAction = "+" | "-";
 export interface UserState {
 	token: string;
 	user: User;
-	cart: CartItems;
 	onLoginSuccess: ({ token: string, user: User }) => void;
 	setToken: (token: string) => void;
 	setUser: (user: User) => void;
@@ -41,7 +40,6 @@ export const useUser = create<UserState, SetState<UserState>, GetState<UserState
 		(set) => ({
 			token: "",
 			user: {} as User,
-			cart: {} as CartItems,
 			onLoginSuccess: (data) => set(data),
 			setToken: (token: string) => set({ token }),
 			setUser: (user: User) => set({ user }),
