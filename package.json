@@ -42,6 +42,7 @@
 		"react-native-dotenv": "^3.3.1",
 		"react-native-gesture-handler": "^2.2.0",
 		"react-native-image-crop-picker": "^0.37.3",
+		"react-native-keyboard-manager": "^6.5.4-4",
 		"react-native-linear-gradient": "^2.5.6",
 		"react-native-permissions": "^3.2.0",
 		"react-native-reanimated": "1.13.4",

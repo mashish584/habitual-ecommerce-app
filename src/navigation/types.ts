@@ -17,6 +17,9 @@ export type RootStackScreens = {
 	Checkout: undefined;
 	CheckoutSuccess: undefined;
 	Profile: undefined;
+	Address: {
+		id: number;
+	};
 	ProfileSetupComplete: undefined;
 	BottomStack: BottomStackScreens;
 };

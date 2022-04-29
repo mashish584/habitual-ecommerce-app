@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, Pressable } from "react-native";
 
 import Container from "../../components/Container";
 import CreditCard from "../../components/Cards/CreditCard";
@@ -11,7 +11,7 @@ import { Back } from "../../components/Svg";
 
 import theme from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { useCart } from "../../utils/store";
+import { useCart, useUser } from "../../utils/store";
 
 import { useStripeCheckout } from "../../hooks/logic/useStripeCheckout";
 
@@ -20,13 +20,15 @@ const footerTopPadding = theme.spacing.medium;
 const scrollViewBottomSpace = footerTopPadding * 2 + (footerTopPadding + 48);
 
 const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = ({ navigation }) => {
-	const { initiatePaymentSheet } = useStripeCheckout();
+	const { initiatePaymentSheet, isLoading } = useStripeCheckout();
+	const addresses = useUser((store) => store.user.addresses);
 	const total = useCart((store) => store.total);
 
 	const processCheckout = async () => {
-		const response = await initiatePaymentSheet();
-		console.log({ response });
-		navigation.navigate("CheckoutSuccess");
+		const response = await initiatePaymentSheet(addresses[0]);
+		if (response) {
+			navigation.navigate("CheckoutSuccess");
+		}
 	};
 
 	return (
@@ -63,13 +65,43 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 										title="Address"
 										headingStyle={{ textTransform: "uppercase" }}
 										containerStyle={{ paddingHorizontal: 0 }}
-										actionText="Edit"
+										actionText={addresses?.length ? "Edit" : ""}
+										onPress={() => {
+											navigation.navigate("Address", {
+												id: 0,
+											});
+										}}
 									/>
+
 									<View style={{ marginTop: theme.spacing.small }}>
-										<Text style={theme.textStyles.h5}>Leslie Flores</Text>
-										<Text style={[theme.textStyles.body_reg, { width: "70%", marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
-											2972 Westheimer Rd. Santa Ana, Illinois 85486, United States of America
-										</Text>
+										{addresses?.length < 1 ? (
+											<View style={theme.rowStyle}>
+												<Text style={{ color: theme.colors.shades.gray_80 }}>Please add address to continue.</Text>
+												<Pressable onPress={() => navigation.navigate("Address")} style={{ marginLeft: 5 }}>
+													<Text style={[theme.textStyles.link_sm]}>Add Address</Text>
+												</Pressable>
+											</View>
+										) : (
+											<>
+												{addresses.map((address, index) => {
+													const { firstName, lastName, streetName, city, state, pin, mobileNumber } = address;
+													return (
+														<React.Fragment key={index}>
+															<Text style={theme.textStyles.h5}>
+																{firstName} {lastName}
+															</Text>
+															<Text
+																style={[
+																	theme.textStyles.body_reg,
+																	{ width: "70%", marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 },
+																]}>
+																{`${streetName}, ${city}, ${state} ${pin}, \n${mobileNumber}`}
+															</Text>
+														</React.Fragment>
+													);
+												})}
+											</>
+										)}
 									</View>
 								</View>
 								{/* Promo Code */}
@@ -100,7 +132,13 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 								backgroundColor: theme.colors.shades.white,
 								bottom: 0,
 							}}>
-							<Button variant="primary" text="Pay Now" style={{ marginHorizontal: theme.spacing.medium }} onPress={processCheckout} />
+							<Button
+								variant="primary"
+								text="Pay Now"
+								isLoading={isLoading}
+								style={{ marginHorizontal: theme.spacing.medium }}
+								onPress={processCheckout}
+							/>
 						</View>
 					</>
 				);

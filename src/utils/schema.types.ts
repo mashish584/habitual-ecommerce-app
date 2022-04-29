@@ -1,3 +1,5 @@
+import { Address } from "./types";
+
 export type Category = {
 	id: string;
 	name: string;
@@ -20,6 +22,7 @@ export type User = {
 	profile: string | null;
 	joining_reasons: string[];
 	stripe_customer_id: string;
+	addresses: Addresses;
 	interests: Category[];
 	interestIds: string[];
 	createdAt: Date;
@@ -30,6 +33,8 @@ export type SlideColors = {
 	color: string;
 	backgroundColor: string;
 };
+
+export type Addresses = Address[];
 
 export type Product = {
 	id: string;

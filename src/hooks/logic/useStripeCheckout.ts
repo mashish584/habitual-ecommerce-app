@@ -1,4 +1,4 @@
-import { useStripe } from "@stripe/stripe-react-native";
+import { Address, useStripe } from "@stripe/stripe-react-native";
 import { useCallback } from "react";
 import { useCart } from "../../utils/store";
 import { useCartCheckout, useUpdateTransaction } from "../api";
@@ -14,43 +14,50 @@ interface CheckoutResponse {
 
 export const useStripeCheckout = () => {
 	const { initPaymentSheet, presentPaymentSheet } = useStripe();
-	const items = useCart((store) => store.items);
+
 	const cartCheckout = useCartCheckout<"cart", CheckoutResponse>();
 	const updateTransaction = useUpdateTransaction();
 
-	const initiatePaymentSheet = useCallback(async () => {
-		try {
-			const response = await cartCheckout.mutateAsync({ cart: items });
+	const items = useCart((store) => store.items);
+	const resetCart = useCart((store) => store.resetCart);
 
-			if (response.data) {
-				const { error } = await initPaymentSheet({
-					paymentIntentClientSecret: response.data.paymentIntent,
-					customerEphemeralKeySecret: response.data.ephemeralKey,
-					customerId: response.data.customer,
-				});
+	const initiatePaymentSheet = useCallback(
+		async (address: Address) => {
+			try {
+				const response = await cartCheckout.mutateAsync({ cart: items });
 
-				if (!error) {
-					const { error } = await presentPaymentSheet();
+				if (response.data) {
+					const { error } = await initPaymentSheet({
+						paymentIntentClientSecret: response.data.paymentIntent,
+						customerEphemeralKeySecret: response.data.ephemeralKey,
+						customerId: response.data.customer,
+					});
 
 					if (!error) {
-						const transactionData = {
-							transactionId: response.data.paymentId,
-							receiptUrl: response.data.receiptUrl,
-							status: "SUCCESS",
-							details: items,
-							productIds: Object.keys(items),
-						};
-						const data = await updateTransaction.mutateAsync(transactionData);
-						return data;
+						const { error } = await presentPaymentSheet();
+
+						if (!error) {
+							const transactionData = {
+								transactionId: response.data.paymentId,
+								status: "SUCCESS",
+								details: items,
+								productIds: Object.keys(items),
+								address,
+							};
+							const data = await updateTransaction.mutateAsync(transactionData);
+							resetCart();
+							return data;
+						}
 					}
+
+					return error;
 				}
-
-				return error;
+			} catch (error) {
+				console.log({ error });
 			}
-		} catch (error) {
-			console.log({ error });
-		}
-	}, [items]);
+		},
+		[items],
+	);
 
-	return { initiatePaymentSheet };
+	return { initiatePaymentSheet, isLoading: cartCheckout.isLoading };
 };

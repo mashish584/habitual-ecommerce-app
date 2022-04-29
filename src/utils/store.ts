@@ -25,6 +25,7 @@ export interface CartState {
 	removeItem: (id: string) => void;
 	updateQuantity: (id: string, type: QuantityAction) => void;
 	toggleCart: (value: boolean) => void;
+	resetCart: () => void;
 }
 
 const calculateTotal = (cart: CartItems) => {
@@ -101,6 +102,7 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 			toggleCart: (value: boolean) => {
 				set({ visible: value });
 			},
+			resetCart: () => set({ items: {} }),
 		}),
 		{
 			name: "cart",

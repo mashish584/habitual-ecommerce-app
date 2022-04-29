@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Home } from "../screens/Home";
 import Product from "../screens/Product/Product";
-import { Checkout } from "../screens/Checkout";
+import { Checkout, Address } from "../screens/Checkout";
 import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 import { Profile } from "../screens/Profile";
@@ -30,6 +30,7 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 			try {
 				const user = await AsyncStorage.getItem("user");
 				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
+				console.log({ data });
 				if (data.token && data.user && data.user.joining_reasons?.length !== 0) {
 					navigation.replace("BottomStack");
 				} else {
@@ -77,6 +78,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Checkout" component={Checkout} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
 			<RootStack.Screen name="Profile" component={Profile} />
+			<RootStack.Screen name="Address" component={Address} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} />
 		</RootStack.Navigator>
 	);

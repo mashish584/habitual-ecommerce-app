@@ -14,6 +14,7 @@
 		218D5F498AEA4F659FF20D37 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0D1445E061F4CAD8CE75A16 /* Lato-Regular.ttf */; };
 		59F78EFB454544A19E277B2C /* Lato-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B905842065C34C18A3869CFD /* Lato-Heavy.ttf */; };
 		6D5ABE6F386E54EAF339B7D7 /* libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 314A3CA7C7963D529DA5372B /* libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a */; };
+		73602A46281B852E005540EF /* Enable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73602A45281B852E005540EF /* Enable.swift */; };
 		7373248227CFA5F2002B802D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7373248127CFA5F2002B802D /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A66C19284E81B9533909CE3A /* libPods-habitual_ecommerce_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC6C9FDC433048E5980AED9 /* libPods-habitual_ecommerce_app.a */; };
@@ -47,6 +48,8 @@
 		50A2ED4F36445FB13884292E /* Pods-habitual_ecommerce_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habitual_ecommerce_app.debug.xcconfig"; path = "Target Support Files/Pods-habitual_ecommerce_app/Pods-habitual_ecommerce_app.debug.xcconfig"; sourceTree = "<group>"; };
 		6C51BA278D299D911115CE71 /* Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.debug.xcconfig"; path = "Target Support Files/Pods-habitual_ecommerce_app-habitual_ecommerce_appTests/Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6EC6C9FDC433048E5980AED9 /* libPods-habitual_ecommerce_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-habitual_ecommerce_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		73602A44281B852E005540EF /* habitual_ecommerce_app-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "habitual_ecommerce_app-Bridging-Header.h"; sourceTree = "<group>"; };
+		73602A45281B852E005540EF /* Enable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enable.swift; sourceTree = "<group>"; };
 		7373248127CFA5F2002B802D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = habitual_ecommerce_app/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B905842065C34C18A3869CFD /* Lato-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Heavy.ttf"; path = "../src/assets/fonts/Lato-Heavy.ttf"; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				73602A45281B852E005540EF /* Enable.swift */,
+				73602A44281B852E005540EF /* habitual_ecommerce_app-Bridging-Header.h */,
 			);
 			name = habitual_ecommerce_app;
 			sourceTree = "<group>";
@@ -235,7 +240,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
@@ -471,6 +476,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73602A46281B852E005540EF /* Enable.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -491,6 +497,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C51BA278D299D911115CE71 /* Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -518,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BF59FE7FE8E49E5DA5F04A8B /* Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = habitual_ecommerce_appTests/Info.plist;
@@ -558,6 +566,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = habitual_ecommerce_app;
+				SWIFT_OBJC_BRIDGING_HEADER = "habitual_ecommerce_app-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -583,6 +592,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = habitual_ecommerce_app;
+				SWIFT_OBJC_BRIDGING_HEADER = "habitual_ecommerce_app-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

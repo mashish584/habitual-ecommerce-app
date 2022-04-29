@@ -16,6 +16,16 @@ export type Auth = {
 	password: string;
 };
 
+export type Address = {
+	firstName: string;
+	lastName: string;
+	streetName: string;
+	state: string;
+	city: string;
+	pin: string;
+	mobileNumber: string;
+};
+
 //@API
 export type ErrorMessage<T> = {
 	key: T;
