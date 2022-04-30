@@ -37,13 +37,9 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 					source={props.image}
 					resizeMode="contain"
 					style={{
-						width: COLOR_CARD_WIDTH * 0.9,
+						width: COLOR_CARD_WIDTH * 0.6,
 						aspectRatio: 1,
-						position: "absolute",
-						alignItems: "center",
-						justifyContent: "center",
-						alignSelf: "center",
-						bottom: 30,
+						bottom: 50,
 					}}
 				/>
 			)}

@@ -50,10 +50,11 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 		fetchUserInfo();
 	}, []);
 
+	console.log({ profile });
 	const parentCategories = profile.interests?.reduce((prev, category) => {
 		const data = { ...prev };
-		const parentCategory = category.parentCategory;
-		if (!data[parentCategory.id]) {
+		const parentCategory = category.parentCategory || category;
+		if (!data[parentCategory?.id]) {
 			data[parentCategory.id] = parentCategory;
 		}
 		return data;
@@ -134,8 +135,9 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 							<View style={styles.interestsSection}>
 								{Object.keys(parentCategories || {})
 									?.slice(0, 4)
-									?.map((categoryId) => {
+									?.map((categoryId, index) => {
 										const category = parentCategories[categoryId];
+										const colors = [theme.colors.accents.red, theme.colors.accents.indigo, theme.colors.accents.orange, theme.colors.accents.teal];
 										return (
 											<ColorCard
 												key={categoryId}
@@ -143,7 +145,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 												text={category.name}
 												image={{ uri: category.image }}
 												width={COLOR_CARD_WIDTH}
-												cardColor={theme.colors.accents.red}
+												cardColor={colors[index]}
 												cardStyle={{ marginBottom: theme.spacing.small, aspectRatio: 0.78 }}
 											/>
 										);

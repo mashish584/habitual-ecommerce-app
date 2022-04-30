@@ -5,7 +5,7 @@ import theme, { rgba } from "../../utils/theme";
 
 interface Card {
 	cardStyle?: ViewStyle;
-	onPress: () => void;
+	onPress?: () => void;
 }
 
 const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {

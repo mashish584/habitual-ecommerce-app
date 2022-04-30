@@ -30,9 +30,9 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 			try {
 				const user = await AsyncStorage.getItem("user");
 				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
-				console.log({ data });
-				if (data.token && data.user && data.user.joining_reasons?.length !== 0) {
-					navigation.replace("BottomStack");
+				if (data.token && data.user) {
+					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
+					navigation.replace(route);
 				} else {
 					navigation.replace("UnauthStack");
 				}

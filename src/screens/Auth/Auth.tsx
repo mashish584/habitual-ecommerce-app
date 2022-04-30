@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput as RNTextInput, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../../components/Button";
@@ -16,20 +16,20 @@ import theme from "../../utils/theme";
 import { ScreenNavigationProp } from "../../navigation/types";
 import useAuth from "../../hooks/logic/useAuth";
 
-const socialLogins = [
-	{
-		label: "Continue with Apple",
-		icon: <FontAwesomeIcon icon={faApple} />,
-	},
-	{
-		label: "Continue with Facebook",
-		icon: <FontAwesomeIcon icon={faFacebook} color="#4267B2" />,
-	},
-	{
-		label: "Continue with Google",
-		icon: <FontAwesomeIcon icon={faGoogle} color="#EA4335" />,
-	},
-];
+// const socialLogins = [
+// 	{
+// 		label: "Continue with Apple",
+// 		icon: <FontAwesomeIcon icon={faApple} />,
+// 	},
+// 	{
+// 		label: "Continue with Facebook",
+// 		icon: <FontAwesomeIcon icon={faFacebook} color="#4267B2" />,
+// 	},
+// 	{
+// 		label: "Continue with Google",
+// 		icon: <FontAwesomeIcon icon={faGoogle} color="#EA4335" />,
+// 	},
+// ];
 
 interface Auth {
 	type: "signup" | "signin";
@@ -93,7 +93,7 @@ const Auth = ({ type }: Auth) => {
 							)}
 							<Seperator mt={theme.spacing.medium} />
 							{/* Social Logins */}
-							<View style={{ marginTop: theme.spacing.medium }}>
+							{/* <View style={{ marginTop: theme.spacing.medium }}>
 								{socialLogins.map(({ label, icon }, index) => (
 									<Button
 										variant="bordered"
@@ -104,7 +104,7 @@ const Auth = ({ type }: Auth) => {
 										onPress={() => {}}
 									/>
 								))}
-							</View>
+							</View> */}
 							<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 								<View style={[theme.rowStyle, { marginTop: theme.spacing.small, alignItems: "center" }]}>
 									<Text style={theme.textStyles.body_reg}>{isSignIn ? "New to Habitual?" : "Already have an account?"}</Text>

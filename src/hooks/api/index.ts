@@ -94,9 +94,9 @@ export const useProductInfo = <T extends string, M>() => {
 };
 
 //@API Mutations
-export const useAuthAPI = <T extends string, M>() => {
+export const useAuthAPI = <T extends string, M>(isSignIn = false) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, string>>((data) => {
-		return appFetch("register/", {
+		return appFetch(!isSignIn ? "register/" : "signin/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

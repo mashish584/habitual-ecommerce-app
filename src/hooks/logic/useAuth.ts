@@ -16,7 +16,7 @@ const values: Auth = {
 
 function useAuth(isSignIn = false) {
 	const navigation = useNavigation<ScreenNavigationProp>();
-	const authenticate = useAuthAPI<keyof Auth, User>();
+	const authenticate = useAuthAPI<keyof Auth, User>(isSignIn);
 	const onLoginSuccess = useUser((state) => state.onLoginSuccess);
 
 	const formik = useFormik({
@@ -27,7 +27,11 @@ function useAuth(isSignIn = false) {
 			authenticate.mutate(data, {
 				onSuccess: (response) => {
 					onLoginSuccess({ token: response.token, user: response.data });
-					navigation.replace("ProfileSetup");
+					if (isSignIn) {
+						navigation.replace("BottomStack");
+					} else {
+						navigation.replace("ProfileSetup");
+					}
 				},
 				onError: (errors) => {
 					if (errors.errors?.length) {
