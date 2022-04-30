@@ -37,12 +37,15 @@ const calculateTotal = (cart: CartItems) => {
 
 export const useUser = create<UserState, SetState<UserState>, GetState<UserState>, StoreApiWithPersist<UserState>>(
 	persist(
-		(set) => ({
+		(set, get) => ({
 			token: "",
 			user: {} as User,
 			onLoginSuccess: (data) => set(data),
 			setToken: (token: string) => set({ token }),
-			setUser: (user: User) => set({ user }),
+			setUser: (user: User) => {
+				const prevState = { ...get().user };
+				set({ user: { ...prevState, ...user } });
+			},
 			removeToken: () => set({ token: "", user: {} as User }),
 		}),
 		{

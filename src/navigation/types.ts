@@ -1,6 +1,6 @@
 import { ParamListBase, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Product } from "../utils/schema.types";
+import { Product, User } from "../utils/schema.types";
 
 export interface StackNavigationProps<ParamList extends ParamListBase, RouteName extends keyof ParamList = string> {
 	navigation: StackNavigationProp<ParamList, RouteName>;
@@ -17,6 +17,9 @@ export type RootStackScreens = {
 	Checkout: undefined;
 	CheckoutSuccess: undefined;
 	Profile: undefined;
+	EditProfile: {
+		profile: User;
+	};
 	Address: {
 		id: number;
 	};

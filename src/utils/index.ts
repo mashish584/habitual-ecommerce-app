@@ -55,3 +55,21 @@ export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice 
 export const defaultAvatar = "https://avatars.dicebear.com/api/identicon/your-custom-seed.png";
 
 export const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
+
+export const breakFullName = (fullName: string) => {
+	if (!fullName) return ["", ""];
+	const name = fullName.split(" ");
+	const lastName = name.pop();
+	const firstName = name.join(" ");
+
+	return [firstName, lastName];
+};
+
+export const isValidJSONString = (value: string) => {
+	try {
+		JSON.parse(value);
+	} catch (error) {
+		return false;
+	}
+	return true;
+};

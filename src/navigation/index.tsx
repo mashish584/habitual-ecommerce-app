@@ -9,7 +9,7 @@ import Product from "../screens/Product/Product";
 import { Checkout, Address } from "../screens/Checkout";
 import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
-import { Profile } from "../screens/Profile";
+import { EditProfile, Profile } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
 import GlobalUI from "../screens/GlobalUI";
 
@@ -78,6 +78,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Checkout" component={Checkout} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
 			<RootStack.Screen name="Profile" component={Profile} />
+			<RootStack.Screen name="EditProfile" component={EditProfile} />
 			<RootStack.Screen name="Address" component={Address} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} />
 		</RootStack.Navigator>

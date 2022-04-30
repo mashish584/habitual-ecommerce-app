@@ -38,7 +38,7 @@ const AccountSettingOptions = [
 
 const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ navigation }) => {
 	const profile = useUser((store) => store.user);
-	const { fetchUserInfo } = useProfileUpdate();
+	const { fetchUserInfo } = useProfileUpdate(profile);
 
 	useEffect(() => {
 		fetchUserInfo();
@@ -95,7 +95,11 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 								<Button
 									variant="primary"
 									text="Edit my profile"
-									onPress={() => {}}
+									onPress={() =>
+										navigation.navigate("EditProfile", {
+											profile,
+										})
+									}
 									iconStyle={{ position: "relative", left: 0, marginRight: theme.spacing.xxSmall }}
 									iconComponent={<FontAwesomeIcon icon={faPen as IconProp} />}
 									style={{
@@ -113,7 +117,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 								// actionText="Edit"
 								containerStyle={{ marginTop: theme.spacing.medium, marginBottom: theme.spacing.small }}
 							/>
-							{profile.interestIds.length === 0 && (
+							{profile.interestIds?.length === 0 && (
 								<EmptyInfoCard
 									title="Tell us what interests you!"
 									description="You don’t have any interests listed. Tell us what you love the most and we’ll recommend relevant products to you."
@@ -122,7 +126,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 								/>
 							)}
 							<View style={styles.interestsSection}>
-								{Object.keys(parentCategories)
+								{Object.keys(parentCategories || {})
 									?.slice(0, 4)
 									?.map((categoryId) => {
 										const category = parentCategories[categoryId];
@@ -168,7 +172,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 	);
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 	profile: {
 		width: 80,
 		height: 80,
