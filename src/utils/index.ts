@@ -52,7 +52,7 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 
 export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice + currentPrice * (discount / 100)).toFixed(2);
 
-export const defaultAvatar = "https://avatars.dicebear.com/api/identicon/your-custom-seed.png";
+export const defaultAvatar = "https://ik.imagekit.io/imashish/avatar_3x_1izETN4cA.png";
 
 export const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
 

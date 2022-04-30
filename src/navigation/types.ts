@@ -9,6 +9,7 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 
 export type RootStackScreens = {
 	Start: undefined;
+	Onboarding: undefined;
 	UnauthStack: undefined;
 	ProfileSetup: undefined;
 	Product: {
@@ -36,7 +37,6 @@ export type BottomStackScreens = {
 };
 
 export type UnauthStackScreens = {
-	Onboarding: undefined;
 	SignIn: undefined;
 	SignUp: undefined;
 };

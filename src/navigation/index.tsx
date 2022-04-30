@@ -12,6 +12,7 @@ import Orders from "../screens/Orders/Orders";
 import { EditProfile, Profile } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
 import GlobalUI from "../screens/GlobalUI";
+import { Onboarding } from "../screens/Onboarding";
 
 import { UserState } from "../utils/store";
 
@@ -34,10 +35,10 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
 				} else {
-					navigation.replace("UnauthStack");
+					navigation.replace("Onboarding");
 				}
 			} catch (err) {
-				navigation.replace("UnauthStack");
+				navigation.replace("Onboarding");
 			}
 		})();
 	}, []);
@@ -71,6 +72,7 @@ const RootStackScreen = () => {
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
+			<RootStack.Screen name="Onboarding" component={Onboarding} />
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
