@@ -6,38 +6,44 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import Container from "../../components/Container";
 import Header from "../../components/Header/Header";
-import { Back, Bag, MapPin, Payment } from "../../components/Svg";
+import { Back, MapPin, Lock } from "../../components/Svg";
 import Curve from "../../components/Container/Curve";
 import Button from "../../components/Button/Button";
 import SectionHeading from "../../components/SectionHeading";
 import EmptyInfoCard from "../../components/Cards/EmptyInfoCard";
-import Card from "../../components/Cards/Card";
+import { Card, ColorCard } from "../../components/Cards";
 
 import theme, { rgba } from "../../utils/theme";
 import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "../../utils";
 import { useUser } from "../../utils/store";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import ColorCard from "../../components/Cards/ColorCard";
+
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
 import { Category } from "../../utils/schema.types";
 
 const AccountSettingOptions = [
-	{
-		Icon: Payment,
-		label: "Payment",
-	},
+	// {
+	// 	Icon: Payment,
+	// 	label: "Payment",
+	// },
 	{
 		Icon: MapPin,
 		label: "Address",
+		type: "ADDRESS",
 	},
 	{
-		Icon: () => <Bag fill={theme.colors.shades.gray_60} />,
-		label: "Buy Again",
+		Icon: Lock,
+		label: "Log Out",
+		type: "LOGOUT",
 	},
+	// {
+	// 	Icon: () => <Bag fill={theme.colors.shades.gray_60} />,
+	// 	label: "Buy Again",
+	// },
 ];
 
 const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ navigation }) => {
-	const profile = useUser((store) => store.user);
+	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
 	const { fetchUserInfo } = useProfileUpdate(profile);
 
 	useEffect(() => {
@@ -138,7 +144,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 												image={{ uri: category.image }}
 												width={COLOR_CARD_WIDTH}
 												cardColor={theme.colors.accents.red}
-												cardStyle={{ marginBottom: theme.spacing.small, aspectRatio: 0.78, alignItems: "flex-start" }}
+												cardStyle={{ marginBottom: theme.spacing.small, aspectRatio: 0.78 }}
 											/>
 										);
 									})}
@@ -149,9 +155,15 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens, "Profile">> = ({ 
 								style={{ paddingVertical: theme.spacing.medium, marginBottom: theme.spacing.medium }}
 								horizontal={true}
 								showsHorizontalScrollIndicator={false}>
-								{AccountSettingOptions.map(({ label, Icon }, index) => (
+								{AccountSettingOptions.map(({ label, Icon, type }, index) => (
 									<Card
 										key={`${label}_${index}`}
+										onPress={() => {
+											if (type === "LOGOUT") {
+												navigation.replace("UnauthStack");
+												removeToken();
+											}
+										}}
 										cardStyle={{
 											width: 113,
 											height: 108,

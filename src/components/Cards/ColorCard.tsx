@@ -31,7 +31,7 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 				...generateBoxShadowStyle(0, 10, rgba.black(0.04), 1, 10, 10, rgba.black(1)),
 				...props.cardStyle,
 			}}>
-			<Text style={[theme.textStyles.h4, { margin: theme.spacing.small, color: theme.colors.shades.white }]}>{text}</Text>
+			<Text style={[theme.textStyles.h4, { margin: theme.spacing.small, color: theme.colors.shades.white, alignSelf: "flex-start" }]}>{text}</Text>
 			{props.image && (
 				<Image
 					source={props.image}
@@ -58,7 +58,9 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 						justifyContent: "center",
 						alignItems: "center",
 						alignSelf: "flex-end",
-						margin: theme.spacing.small,
+						position: "absolute",
+						right: theme.spacing.small,
+						bottom: theme.spacing.small,
 						...generateBoxShadowStyle(0, 5, rgba.black(0.1), 1, 15, 10, rgba.black(1)),
 					}}>
 					<FontAwesomeIcon icon={faAngleRight as IconProp} />

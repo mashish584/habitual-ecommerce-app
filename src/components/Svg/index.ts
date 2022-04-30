@@ -10,3 +10,4 @@ export { default as Bag, SmallBag } from "./Bag";
 export { default as Payment } from "./Payment";
 export { default as MapPin } from "./MapPin";
 export { default as Chip } from "./Chip";
+export { default as Lock } from "./Lock";
