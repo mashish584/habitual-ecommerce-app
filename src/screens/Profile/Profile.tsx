@@ -170,6 +170,12 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 													if (type === "LOGOUT") {
 														navigation.replace("UnauthStack");
 														removeToken();
+														return;
+													}
+
+													if (type === "ADDRESS") {
+														navigation.navigate("Addresses");
+														return;
 													}
 												}}
 												cardStyle={{

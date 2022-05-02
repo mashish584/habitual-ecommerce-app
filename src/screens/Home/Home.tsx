@@ -1,17 +1,17 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import ColorCard from "../../components/Cards/ColorCard";
 import ProductCard from "../../components/Cards/ProductCard";
 import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
+import ProfileImage from "../../components/ProfileImage";
 import SectionHeading from "../../components/SectionHeading";
 
 import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { COLOR_CARD_WIDTH, defaultAvatar } from "../../utils";
+import { COLOR_CARD_WIDTH } from "../../utils";
 import { Product } from "../../utils/schema.types";
-import { useUser } from "../../utils/store";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
@@ -25,7 +25,6 @@ interface HomeInfo {
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
 	const { data } = useHome<"", HomeInfo>();
 
-	const profile = useUser((store) => store.user.profile);
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
 
 	return (
@@ -39,11 +38,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
 									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
-									<TouchableOpacity
-										style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden", backgroundColor: theme.colors.shades.white }}
-										onPress={() => navigation.push("Profile")}>
-										<Image source={{ uri: profile || defaultAvatar }} style={{ width: "100%", height: "100%" }} />
-									</TouchableOpacity>
+									<ProfileImage />
 								</View>
 								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
 							</View>

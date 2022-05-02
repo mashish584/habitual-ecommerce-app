@@ -13,7 +13,7 @@ const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {
 		<Pressable
 			onPress={onPress}
 			style={{
-				height: "100%",
+				// height: "100%",
 				aspectRatio: 1,
 				borderRadius: 10,
 				backgroundColor: theme.colors.shades.white,

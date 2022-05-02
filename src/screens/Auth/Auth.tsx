@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput as RNTextInput, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 // import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -53,13 +54,11 @@ const Auth = ({ type }: Auth) => {
 					<>
 						<Header
 							variant="primary"
-							leftIcon={<FontAwesomeIcon icon={faClose} />}
+							leftIcon={<FontAwesomeIcon icon={faClose as IconProp} />}
 							title={isSignIn ? "Log in" : "Sign Up"}
 							onAction={(type) => {
 								if (type === "left") {
-									if (isSignIn) {
-										navigation.goBack();
-									}
+									navigation.goBack();
 								}
 							}}
 						/>
@@ -86,11 +85,11 @@ const Auth = ({ type }: Auth) => {
 								onSubmitEditing={() => Keyboard.dismiss()}
 							/>
 							<Button variant="primary" isLoading={isLoading} text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
-							{type === "signin" && (
+							{/* {type === "signin" && (
 								<TouchableOpacity style={{ maxWidth: 100, marginTop: theme.spacing.small }}>
 									<Text style={theme.textStyles.link_sm}>Forgot Password</Text>
 								</TouchableOpacity>
-							)}
+							)} */}
 							<Seperator mt={theme.spacing.medium} />
 							{/* Social Logins */}
 							{/* <View style={{ marginTop: theme.spacing.medium }}>

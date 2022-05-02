@@ -176,7 +176,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding"
 								text={isLastSlide ? "Sign me up!" : "Next"}
 								onPress={() => {
 									if (isLastSlide) {
-										navigation.replace("SignUp");
+										navigation.navigate("SignUp");
 									} else {
 										moveToSlide();
 									}
@@ -199,7 +199,11 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding"
 
 						{/* Header Components */}
 						<Animated.View style={[{ opacity: dotOpacity, alignSelf: "flex-end", top }, styles.headerContent]}>
-							<TouchableOpacity onPress={() => navigation.replace("SignIn")} style={{ padding: theme.spacing.small }}>
+							<TouchableOpacity
+								onPress={() => {
+									navigation.navigate("SignIn");
+								}}
+								style={{ padding: theme.spacing.small }}>
 								<Text style={[theme.textStyles.strikethrough_reg, { textDecorationLine: "none" }]}>Skip</Text>
 							</TouchableOpacity>
 						</Animated.View>

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "react-query";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Urls } from "../../utils/types";
+import { Address, Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
 import { UserState } from "../../utils/store";
 
@@ -38,7 +38,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 
 	let response = await fetch(endpoint, { ...options });
 	if (response.status !== 200) {
-		throw await response.json();
+		return response.json();
 	} else {
 		return response.json();
 	}
@@ -114,6 +114,19 @@ export const useUpdateUser = <T extends string, M>(path: string) => {
 				"Content-Type": "multipart/form-data",
 			},
 			body: data,
+			path,
+		});
+	});
+};
+
+export const useUpdateAddress = <T extends string, M>(path?: string) => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<"address", Omit<Address, "id">>>((data) => {
+		return appFetch("user/address/", {
+			method: path ? "PATCH" : "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 			path,
 		});
 	});

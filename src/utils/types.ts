@@ -17,6 +17,7 @@ export type Auth = {
 };
 
 export type Address = {
+	id: string;
 	firstName: string;
 	lastName: string;
 	streetName: string;
@@ -31,7 +32,7 @@ export type ErrorMessage<T> = {
 	key: T;
 	message: string;
 };
-export type Urls = "register/" | "signin/" | "user/" | "category/" | "home/" | "product/" | "checkout/" | "payment-success/";
+export type Urls = "register/" | "signin/" | "user/" | "category/" | "home/" | "product/" | "checkout/" | "payment-success/" | "user/address/";
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;

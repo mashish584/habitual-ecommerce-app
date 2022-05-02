@@ -12,7 +12,7 @@ import { Product } from "../../utils/schema.types";
 
 type CardVariant = "large" | "small" | "wide";
 interface ProductCard {
-	item: Product;
+	item: Partial<Product>;
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
 	contentStyle?: ViewStyle;

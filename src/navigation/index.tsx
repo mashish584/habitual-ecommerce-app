@@ -9,10 +9,9 @@ import Product from "../screens/Product/Product";
 import { Checkout, Address } from "../screens/Checkout";
 import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
-import { EditProfile, Profile } from "../screens/Profile";
+import { EditProfile, Profile, Addresses } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
 import GlobalUI from "../screens/GlobalUI";
-import { Onboarding } from "../screens/Onboarding";
 
 import { UserState } from "../utils/store";
 
@@ -35,10 +34,10 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
 				} else {
-					navigation.replace("Onboarding");
+					navigation.replace("UnauthStack");
 				}
 			} catch (err) {
-				navigation.replace("Onboarding");
+				navigation.replace("UnauthStack");
 			}
 		})();
 	}, []);
@@ -72,7 +71,6 @@ const RootStackScreen = () => {
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
-			<RootStack.Screen name="Onboarding" component={Onboarding} />
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
@@ -80,6 +78,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="Checkout" component={Checkout} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
 			<RootStack.Screen name="Profile" component={Profile} />
+			<RootStack.Screen name="Addresses" component={Addresses} />
 			<RootStack.Screen name="EditProfile" component={EditProfile} />
 			<RootStack.Screen name="Address" component={Address} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} />

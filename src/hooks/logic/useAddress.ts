@@ -3,11 +3,12 @@ import { FormikProps, useFormik } from "formik";
 import { Address } from "../../utils/types";
 import { AddressSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
-import { useUser } from "../../utils/store";
 
-import useProfileUpdate from "./useProfileUpdate";
+import { useUpdateAddress } from "../api";
 
-const values: Address = {
+type AddressT = Omit<Address, "id">;
+
+const values: AddressT = {
 	firstName: "",
 	lastName: "",
 	streetName: "",
@@ -17,15 +18,26 @@ const values: Address = {
 	mobileNumber: "",
 };
 
-function useAddress(index = 0) {
-	const addresses = useUser((store) => store.user.addresses);
-	const { updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "addresses">>();
-	const formik: FormikProps<Address> = useFormik({
-		initialValues: addresses.length ? addresses[index] : values,
+function useAddress(id?: string) {
+	// const setUser = useUser((store) => store.setUser);
+	const { mutateAsync, isLoading } = useUpdateAddress<"address", User>(id);
+	const formik: FormikProps<AddressT> = useFormik({
+		initialValues: values,
 		validationSchema: AddressSchema,
 		validateOnChange: true,
-		onSubmit: async (data: Address) => {
-			updateUserInfo({ addresses: JSON.stringify([data]) });
+		onSubmit: async (data: AddressT) => {
+			return mutateAsync(
+				{ address: data },
+				{
+					onSuccess: (response) => {
+						console.log({ response });
+						// setUser(response.data);
+					},
+					onError: (err) => {
+						console.log(err);
+					},
+				},
+			);
 		},
 	});
 

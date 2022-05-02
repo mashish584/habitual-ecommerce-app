@@ -8,6 +8,7 @@ import SectionHeading from "../../components/SectionHeading";
 import Header, { ActionType } from "../../components/Header/Header";
 import { TextInput } from "../../components/TextInput";
 import { Back } from "../../components/Svg";
+import AddressText from "../../components/AddressText";
 
 import theme from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
@@ -74,7 +75,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 									/>
 
 									<View style={{ marginTop: theme.spacing.small }}>
-										{addresses?.length < 1 ? (
+										{!addresses ? (
 											<View style={theme.rowStyle}>
 												<Text style={{ color: theme.colors.shades.gray_80 }}>Please add address to continue.</Text>
 												<Pressable onPress={() => navigation.navigate("Address")} style={{ marginLeft: 5 }}>
@@ -83,20 +84,10 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 											</View>
 										) : (
 											<>
-												{addresses.map((address, index) => {
-													const { firstName, lastName, streetName, city, state, pin, mobileNumber } = address;
+												{addresses?.map((address, index) => {
 													return (
 														<React.Fragment key={index}>
-															<Text style={theme.textStyles.h5}>
-																{firstName} {lastName}
-															</Text>
-															<Text
-																style={[
-																	theme.textStyles.body_reg,
-																	{ width: "70%", marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 },
-																]}>
-																{`${streetName}, ${city}, ${state} ${pin}, \n${mobileNumber}`}
-															</Text>
+															<AddressText address={address} />
 														</React.Fragment>
 													);
 												})}

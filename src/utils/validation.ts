@@ -14,7 +14,7 @@ export const AuthSchema = () => {
 };
 
 export const AddressSchema = () => {
-	const schema: yup.SchemaOf<Address> = yup.object().shape({
+	const schema: yup.SchemaOf<Omit<Address, "id">> = yup.object().shape({
 		firstName: yup.string().trim().required("First name is required.").max(100, "First name should not exceed 100 chars."),
 		lastName: yup.string().trim().required("Last name is required.").max(100, "Last name should not exceed 100 chars."),
 		streetName: yup.string().trim().required("Street name is required.").max(100, "Street name should not exceed 100 chars."),
