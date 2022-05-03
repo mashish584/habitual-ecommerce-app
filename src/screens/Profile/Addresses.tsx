@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Pressable, ScrollView, View } from "react-native";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -46,10 +46,17 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 						/>
 						<ScrollView contentContainerStyle={styles.containerStyle}>
 							{addresses.map((address) => {
+								const activeCardStyle = address.default ? { borderWidth: 1, borderColor: theme.colors.accents.teal } : {};
+
 								return (
-									<Card key={address.id} cardStyle={styles.addressCard}>
+									<Card key={address.id} cardStyle={{ ...styles.addressCard, ...activeCardStyle }}>
 										<AddressText address={{ ...address }} />
-										<Pressable onPress={() => markAddressAsDefault(address.id)} style={styles.check}>
+										<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.more]}>
+											{[...Array(3)].map((i) => (
+												<View style={styles.circle} />
+											))}
+										</Pressable>
+										<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.check]}>
 											{address.default && <FontAwesomeIcon icon={faCheckCircle as IconProp} color={theme.colors.accents.teal} />}
 										</Pressable>
 									</Card>
@@ -77,15 +84,24 @@ const styles = StyleSheet.create({
 		alignItems: "flex-start",
 		marginBottom: theme.spacing.normal,
 	},
-	check: {
+	action: {
 		alignSelf: "flex-end",
 		width: 17,
 		height: 17,
-		backgroundColor: rgba.black(0.1),
-		borderRadius: 50,
 		position: "absolute",
 		right: theme.spacing.small,
+	},
+	check: {
+		backgroundColor: rgba.black(0.1),
+		borderRadius: 50,
 		bottom: theme.spacing.small,
+	},
+	more: {
+		top: theme.spacing.small,
+		...theme.rowStyle,
+		width: 25,
+		justifyContent: "space-between",
+		alignItems: "center",
 	},
 	addBtn: {
 		width: 50,
@@ -95,6 +111,12 @@ const styles = StyleSheet.create({
 		right: theme.spacing.medium,
 		zIndex: 999,
 		...generateBoxShadowStyle(1, 4, rgba.black(0.2), 1, 10, 10, rgba.black(1)),
+	},
+	circle: {
+		width: 7,
+		height: 7,
+		borderRadius: 3.5,
+		backgroundColor: theme.colors.shades.gray_40,
 	},
 });
 

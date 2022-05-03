@@ -1,6 +1,7 @@
 import create, { GetState, SetState } from "zustand";
 import { persist, StoreApiWithPersist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Product, User } from "./schema.types";
 
 export type CartProduct = Pick<Product, "id" | "image" | "title" | "price">;
@@ -44,7 +45,8 @@ export const useUser = create<UserState, SetState<UserState>, GetState<UserState
 			setToken: (token: string) => set({ token }),
 			setUser: (user: User) => {
 				const prevState = { ...get().user };
-				set({ user: { ...prevState, ...user } });
+				const defaultAddress = user.addresses.filter((address) => address.default)[0];
+				set({ user: { ...prevState, ...user, defaultAddress } });
 			},
 			removeToken: () => set({ token: "", user: {} as User }),
 		}),

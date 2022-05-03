@@ -25,6 +25,7 @@ export type User = {
 	stripe_customer_id: string;
 	bio: string;
 	addresses: Addresses;
+	defaultAddress?: Address;
 	interests: Category[];
 	interestIds: string[];
 	createdAt: Date;
