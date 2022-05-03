@@ -25,6 +25,7 @@ export type Address = {
 	city: string;
 	pin: string;
 	mobileNumber: string;
+	default: boolean;
 };
 
 //@API

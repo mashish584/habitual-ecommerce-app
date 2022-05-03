@@ -16,9 +16,11 @@ import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import theme, { rgba } from "../../utils/theme";
 import { generateBoxShadowStyle } from "../../utils";
 import { useUser } from "../../utils/store";
+import useAddress from "../../hooks/logic/useAddress";
 
 const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
 	const addresses = useUser((store) => store.user.addresses);
+	const { markAddressAsDefault } = useAddress();
 
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: theme.colors.primary.yellow }}>
@@ -47,12 +49,8 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 								return (
 									<Card key={address.id} cardStyle={styles.addressCard}>
 										<AddressText address={{ ...address }} />
-										<Pressable
-											onPress={() => {
-												navigation.navigate("Address");
-											}}
-											style={styles.check}>
-											<FontAwesomeIcon icon={faCheckCircle as IconProp} color={theme.colors.accents.teal} />
+										<Pressable onPress={() => markAddressAsDefault(address.id)} style={styles.check}>
+											{address.default && <FontAwesomeIcon icon={faCheckCircle as IconProp} color={theme.colors.accents.teal} />}
 										</Pressable>
 									</Card>
 								);
@@ -81,10 +79,13 @@ const styles = StyleSheet.create({
 	},
 	check: {
 		alignSelf: "flex-end",
-		width: 15,
-		height: 15,
+		width: 17,
+		height: 17,
 		backgroundColor: rgba.black(0.1),
 		borderRadius: 50,
+		position: "absolute",
+		right: theme.spacing.small,
+		bottom: theme.spacing.small,
 	},
 	addBtn: {
 		width: 50,

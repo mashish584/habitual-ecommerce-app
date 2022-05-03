@@ -6,6 +6,12 @@ import { Address, Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
 import { UserState } from "../../utils/store";
 
+type AddressData = {
+	address?: Omit<Address, "id">;
+	path?: string;
+	default?: boolean;
+};
+
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
 	const userAsyncData = await AsyncStorage.getItem("user");
@@ -119,8 +125,10 @@ export const useUpdateUser = <T extends string, M>(path: string) => {
 	});
 };
 
-export const useUpdateAddress = <T extends string, M>(path?: string) => {
-	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<"address", Omit<Address, "id">>>((data) => {
+export const useUpdateAddress = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, AddressData>((data) => {
+		const { path } = data;
+		delete data.path;
 		return appFetch("user/address/", {
 			method: path ? "PATCH" : "POST",
 			headers: {

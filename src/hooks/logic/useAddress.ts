@@ -3,6 +3,7 @@ import { FormikProps, useFormik } from "formik";
 import { Address } from "../../utils/types";
 import { AddressSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
+import { useUser } from "../../utils/store";
 
 import { useUpdateAddress } from "../api";
 
@@ -16,11 +17,12 @@ const values: AddressT = {
 	city: "",
 	pin: "",
 	mobileNumber: "",
+	default: false,
 };
 
-function useAddress(id?: string) {
-	// const setUser = useUser((store) => store.setUser);
-	const { mutateAsync, isLoading } = useUpdateAddress<"address", User>(id);
+function useAddress() {
+	const setUser = useUser((store) => store.setUser);
+	const { mutateAsync, isLoading } = useUpdateAddress<"address" | "path" | "default", User>();
 	const formik: FormikProps<AddressT> = useFormik({
 		initialValues: values,
 		validationSchema: AddressSchema,
@@ -41,7 +43,22 @@ function useAddress(id?: string) {
 		},
 	});
 
-	return { formik, isLoading };
+	const markAddressAsDefault = (addressId: string) => {
+		return mutateAsync(
+			{ default: true, path: addressId },
+			{
+				onSuccess: (response) => {
+					console.log("Address set as default.");
+					setUser(response.data);
+				},
+				onError: (error) => {
+					console.log({ error });
+				},
+			},
+		);
+	};
+
+	return { formik, isLoading, markAddressAsDefault };
 }
 
 export default useAddress;
