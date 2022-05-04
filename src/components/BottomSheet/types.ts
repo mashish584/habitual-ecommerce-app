@@ -1,7 +1,7 @@
 interface BottomSheet {
 	visible: boolean;
 	headerTitle: string;
-	maxHeight: number;
+	maxHeight?: number;
 	onClose: () => void;
 }
 

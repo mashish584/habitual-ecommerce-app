@@ -17,8 +17,10 @@ import theme, { rgba } from "../../utils/theme";
 import { generateBoxShadowStyle } from "../../utils";
 import { useUser } from "../../utils/store";
 import useAddress from "../../hooks/logic/useAddress";
+import AddressOptions from "../../components/Sheet/AddressOptions";
 
 const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
+	const [options, setOptions] = React.useState({ visible: false, index: null });
 	const addresses = useUser((store) => store.user.addresses);
 	const { markAddressAsDefault } = useAddress();
 
@@ -45,15 +47,18 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 							onPress={() => navigation.navigate("Address")}
 						/>
 						<ScrollView contentContainerStyle={styles.containerStyle}>
-							{addresses.map((address) => {
+							{addresses.map((address, index) => {
 								const activeCardStyle = address.default ? { borderWidth: 1, borderColor: theme.colors.accents.teal } : {};
-
 								return (
 									<Card key={address.id} cardStyle={{ ...styles.addressCard, ...activeCardStyle }}>
 										<AddressText address={{ ...address }} />
-										<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.more]}>
-											{[...Array(3)].map((i) => (
-												<View style={styles.circle} />
+										<Pressable
+											onPress={() => {
+												setOptions({ visible: true, index });
+											}}
+											style={[styles.action, styles.more]}>
+											{[...Array(3)].map((_, index) => (
+												<View key={index} style={styles.circle} />
 											))}
 										</Pressable>
 										<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.check]}>
@@ -64,6 +69,22 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 							})}
 						</ScrollView>
 					</Curve>
+					<AddressOptions
+						visible={options.visible}
+						headerTitle="Choose Option"
+						onAction={(type) => {
+							const address = addresses[options.index];
+							setOptions({ visible: false, index: null });
+							if (type === "edit") {
+								navigation.navigate("Address", {
+									address,
+								});
+							}
+						}}
+						onClose={() => {
+							setOptions({ visible: false, index: null });
+						}}
+					/>
 				</>
 			)}
 		</Container>

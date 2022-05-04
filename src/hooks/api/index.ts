@@ -7,7 +7,7 @@ import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interfa
 import { UserState } from "../../utils/store";
 
 type AddressData = {
-	address?: Omit<Address, "id">;
+	address?: Omit<Address, "id" | "default">;
 	path?: string;
 	default?: boolean;
 };
@@ -125,10 +125,11 @@ export const useUpdateUser = <T extends string, M>(path: string) => {
 	});
 };
 
-export const useUpdateAddress = <T extends string, M>() => {
+export const useUpdateAddress = <T extends string, M>(path?: string) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, AddressData>((data) => {
-		const { path } = data;
-		delete data.path;
+		if (!path) {
+			path = data?.path;
+		}
 		return appFetch("user/address/", {
 			method: path ? "PATCH" : "POST",
 			headers: {

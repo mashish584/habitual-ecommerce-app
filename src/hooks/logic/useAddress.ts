@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FormikProps, useFormik } from "formik";
 
 import { Address } from "../../utils/types";
@@ -7,7 +8,7 @@ import { useUser } from "../../utils/store";
 
 import { useUpdateAddress } from "../api";
 
-type AddressT = Omit<Address, "id">;
+type AddressT = Omit<Address, "id" | "default">;
 
 const values: AddressT = {
 	firstName: "",
@@ -17,23 +18,34 @@ const values: AddressT = {
 	city: "",
 	pin: "",
 	mobileNumber: "",
-	default: false,
 };
 
-function useAddress() {
+function useAddress(address?: Address) {
 	const setUser = useUser((store) => store.setUser);
-	const { mutateAsync, isLoading } = useUpdateAddress<"address" | "path" | "default", User>();
+	const { mutateAsync, isLoading } = useUpdateAddress<"address" | "path" | "default", User>(address?.id);
 	const formik: FormikProps<AddressT> = useFormik({
 		initialValues: values,
 		validationSchema: AddressSchema,
 		validateOnChange: true,
 		onSubmit: async (data: AddressT) => {
+			if (address?.id) {
+				const updateValues = { ...data };
+				for (let key in updateValues) {
+					if (updateValues[key] === address[key]) {
+						delete updateValues[key];
+					}
+				}
+
+				if (Object.keys(updateValues).length === 0) {
+					return true;
+				}
+			}
+
 			return mutateAsync(
 				{ address: data },
 				{
 					onSuccess: (response) => {
-						console.log({ response });
-						// setUser(response.data);
+						setUser(response.data);
 					},
 					onError: (err) => {
 						console.log(err);
@@ -57,6 +69,16 @@ function useAddress() {
 			},
 		);
 	};
+
+	useEffect(() => {
+		if (address?.id) {
+			const data = { ...address };
+			delete data.id;
+			delete data.default;
+			console.log({ data });
+			formik.setValues(data);
+		}
+	}, [address?.id]);
 
 	return { formik, isLoading, markAddressAsDefault };
 }

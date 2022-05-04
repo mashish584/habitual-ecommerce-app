@@ -12,8 +12,8 @@ import useAddress from "../../hooks/logic/useAddress";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import theme from "../../utils/theme";
 
-const Address: React.FC<StackNavigationProps<RootStackScreens, "Address">> = ({ navigation }) => {
-	const { formik, isLoading } = useAddress();
+const Address: React.FC<StackNavigationProps<RootStackScreens, "Address">> = ({ navigation, route }) => {
+	const { formik, isLoading } = useAddress(route.params?.address);
 	const { values, handleChange, handleSubmit, submitCount, errors } = formik;
 
 	const isFormSubmit = submitCount > 0;
