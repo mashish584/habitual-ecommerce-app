@@ -141,6 +141,22 @@ export const useUpdateAddress = <T extends string, M>(path?: string) => {
 	});
 };
 
+export const useRemoveAddress = <T extends string, M>(path?: string) => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, AddressData>((data) => {
+		if (!path) {
+			path = data?.path;
+		}
+		return appFetch("user/address/", {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: {},
+			path,
+		});
+	});
+};
+
 export const useCartCheckout = <T extends string, M>() => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, any>>((data) => {
 		return appFetch("checkout/", {

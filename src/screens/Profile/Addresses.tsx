@@ -22,7 +22,7 @@ import AddressOptions from "../../components/Sheet/AddressOptions";
 const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
 	const [options, setOptions] = React.useState({ visible: false, index: null });
 	const addresses = useUser((store) => store.user.addresses);
-	const { markAddressAsDefault } = useAddress();
+	const { markAddressAsDefault, deleteAddress } = useAddress();
 
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: theme.colors.primary.yellow }}>
@@ -79,6 +79,9 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 								navigation.navigate("Address", {
 									address,
 								});
+							}
+							if (type === "delete") {
+								deleteAddress(address.id);
 							}
 						}}
 						onClose={() => {

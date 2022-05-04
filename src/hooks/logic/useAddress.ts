@@ -6,7 +6,7 @@ import { AddressSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
 import { useUser } from "../../utils/store";
 
-import { useUpdateAddress } from "../api";
+import { useRemoveAddress, useUpdateAddress } from "../api";
 
 type AddressT = Omit<Address, "id" | "default">;
 
@@ -22,7 +22,8 @@ const values: AddressT = {
 
 function useAddress(address?: Address) {
 	const setUser = useUser((store) => store.setUser);
-	const { mutateAsync, isLoading } = useUpdateAddress<"address" | "path" | "default", User>(address?.id);
+	const { mutateAsync, ...updateAddress } = useUpdateAddress<"address" | "path" | "default" | "method", User>(address?.id);
+	const removeAddress = useRemoveAddress<"path", User>();
 	const formik: FormikProps<AddressT> = useFormik({
 		initialValues: values,
 		validationSchema: AddressSchema,
@@ -70,6 +71,21 @@ function useAddress(address?: Address) {
 		);
 	};
 
+	const deleteAddress = (addressId: string) => {
+		return removeAddress.mutateAsync(
+			{ path: addressId },
+			{
+				onSuccess: (response) => {
+					console.log("Address removed.");
+					setUser(response.data);
+				},
+				onError: (error) => {
+					console.log({ error });
+				},
+			},
+		);
+	};
+
 	useEffect(() => {
 		if (address?.id) {
 			const data = { ...address };
@@ -80,7 +96,7 @@ function useAddress(address?: Address) {
 		}
 	}, [address?.id]);
 
-	return { formik, isLoading, markAddressAsDefault };
+	return { formik, isLoading: updateAddress.isLoading || removeAddress.isLoading, markAddressAsDefault, deleteAddress };
 }
 
 export default useAddress;
