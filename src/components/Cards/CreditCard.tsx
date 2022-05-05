@@ -15,7 +15,6 @@ interface CreditCard {
 }
 
 const CreditCard = ({ card }: CreditCard) => {
-	console.log({ card });
 	return (
 		<View
 			style={{

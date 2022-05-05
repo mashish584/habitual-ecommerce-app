@@ -17,8 +17,6 @@ const PaymentCards = () => {
 	const { scrollHandler, x } = useScrollHandler();
 	const cards = useCards<"", Card[]>();
 
-	console.log({ cards });
-
 	return (
 		<>
 			<Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} decelerationRate="fast" snapToInterval={width} {...scrollHandler}>

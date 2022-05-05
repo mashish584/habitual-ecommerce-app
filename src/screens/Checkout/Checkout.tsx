@@ -28,7 +28,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 	const processCheckout = async () => {
 		const response = await initiatePaymentSheet(addresses[0]);
 		if (response) {
-			navigation.navigate("CheckoutSuccess");
+			navigation.replace("CheckoutSuccess");
 		}
 	};
 
