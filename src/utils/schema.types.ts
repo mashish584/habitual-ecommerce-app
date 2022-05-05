@@ -57,3 +57,9 @@ export type Product = {
 	createdAt: Date;
 	updatedAt: Date;
 };
+
+export type Card = {
+	brand: string;
+	expiry: string;
+	last4: string;
+};

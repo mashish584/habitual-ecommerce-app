@@ -99,6 +99,17 @@ export const useProductInfo = <T extends string, M>() => {
 	});
 };
 
+export const useCards = <T extends string, M>() => {
+	return useQuery<SuccessResponse<M>, ErrorResponse<T>>("userCards", () => {
+		return appFetch("cards/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+	});
+};
+
 //@API Mutations
 export const useAuthAPI = <T extends string, M>(isSignIn = false) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, Record<T, string>>((data) => {

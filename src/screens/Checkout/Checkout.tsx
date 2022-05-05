@@ -2,13 +2,13 @@ import React from "react";
 import { ScrollView, Text, View, Pressable } from "react-native";
 
 import Container from "../../components/Container";
-import CreditCard from "../../components/Cards/CreditCard";
 import { Button } from "../../components/Button";
 import SectionHeading from "../../components/SectionHeading";
 import Header, { ActionType } from "../../components/Header/Header";
 import { TextInput } from "../../components/TextInput";
 import { Back } from "../../components/Svg";
 import AddressText from "../../components/AddressText";
+import PaymentCards from "../../components/PaymentCards";
 
 import theme from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
@@ -31,6 +31,8 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 			navigation.navigate("CheckoutSuccess");
 		}
 	};
+
+	const defaultAddress = addresses?.filter((address) => address.default)[0];
 
 	return (
 		<Container avoidHomBar={true}>
@@ -57,7 +59,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 									headingStyle={{ textTransform: "uppercase" }}
 									containerStyle={{ marginBottom: theme.spacing.small }}
 								/>
-								<CreditCard />
+								<PaymentCards />
 							</View>
 							<View style={{ marginHorizontal: theme.spacing.medium }}>
 								{/* Address */}
@@ -68,14 +70,12 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 										containerStyle={{ paddingHorizontal: 0 }}
 										actionText={addresses?.length ? "Edit" : ""}
 										onPress={() => {
-											navigation.navigate("Address", {
-												id: 0,
-											});
+											navigation.navigate("Addresses");
 										}}
 									/>
 
 									<View style={{ marginTop: theme.spacing.small }}>
-										{!addresses ? (
+										{addresses?.length === 0 ? (
 											<View style={theme.rowStyle}>
 												<Text style={{ color: theme.colors.shades.gray_80 }}>Please add address to continue.</Text>
 												<Pressable onPress={() => navigation.navigate("Address")} style={{ marginLeft: 5 }}>
@@ -84,13 +84,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 											</View>
 										) : (
 											<>
-												{addresses?.map((address, index) => {
-													return (
-														<React.Fragment key={index}>
-															<AddressText address={address} />
-														</React.Fragment>
-													);
-												})}
+												<AddressText address={defaultAddress} />
 											</>
 										)}
 									</View>
