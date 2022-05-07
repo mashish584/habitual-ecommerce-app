@@ -43,7 +43,8 @@ export type Urls =
 	| "checkout/"
 	| "payment-success/"
 	| "user/address/"
-	| "cards/";
+	| "cards/"
+	| "user/orders/";
 
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";

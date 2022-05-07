@@ -11,6 +11,7 @@ interface CheckoutResponse {
 	paymentIntent: string;
 	customer: string;
 	ephemeralKey: string;
+	cartTotal: number;
 }
 
 export const useStripeCheckout = () => {
@@ -44,7 +45,9 @@ export const useStripeCheckout = () => {
 								details: items,
 								productIds: Object.keys(items),
 								address,
+								amount: response.data.cartTotal,
 							};
+
 							const data = await updateTransaction.mutateAsync(transactionData);
 							resetCart();
 							return data;

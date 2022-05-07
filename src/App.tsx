@@ -11,7 +11,10 @@ import { STRIPE_PUBLIC_KEY } from "@env";
 
 import Navigation from "./navigation";
 
-LogBox.ignoreLogs(["[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!"]);
+LogBox.ignoreLogs([
+	"[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+	"Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).",
+]);
 
 const queryClient = new QueryClient();
 

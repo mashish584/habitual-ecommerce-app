@@ -15,9 +15,9 @@ export const Products = [
 		title: "Bose Headphones",
 		description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
 		image: "https://ik.imagekit.io/imashish/habitual-ecommerce/bose.png?ik-sdk-version=javascript-1.4.3&updatedAt=1647093601187",
-		price: "265.99",
+		price: 265.99,
 		fullPrice: "279.99",
-		discount: "10",
+		discount: 10,
 		rating: "5.0",
 	},
 	{

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -24,10 +24,18 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			token = userStoreInfo.state.token;
 		}
 
-		let endpoint = `${API_URL}${url}${options.path || ""}`;
+		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
+
+		if (!endpoint.includes("http")) {
+			endpoint = `${API_URL}${endpoint}`;
+		}
 
 		if (options.path) {
 			delete options.path;
+		}
+
+		if (options.query) {
+			delete options.query;
 		}
 
 		if (options.headers["Content-Type"] === "multipart/form-data") {
@@ -45,10 +53,11 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		}
 
 		let response = await fetch(endpoint, { ...options });
-		if (response.status !== 200) {
+
+		if (response.status === 200) {
 			return response.json();
 		} else {
-			return response.json();
+			throw new Error(`Unable to fetch ${endpoint}`);
 		}
 	} catch (error) {
 		showToast("error", { title: "Network Error", message: error?.message });
@@ -111,6 +120,19 @@ export const useCards = <T extends string, M>() => {
 			headers: {
 				"Content-Type": "application/json",
 			},
+		});
+	});
+};
+
+export const useOrders = <T extends string, M>(url = "user/orders/") => {
+	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["orders", url], (params) => {
+		console.log({ params });
+		return appFetch("user/orders/", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			url: params?.pageParam?.url || url,
 		});
 	});
 };
