@@ -61,8 +61,10 @@ function useAddress(address?: Address) {
 			{ default: true, path: addressId },
 			{
 				onSuccess: (response) => {
-					console.log("Address set as default.");
-					setUser(response.data);
+					if (response?.data) {
+						console.log("Address set as default.");
+						setUser(response.data);
+					}
 				},
 				onError: (error) => {
 					console.log({ error });
@@ -76,8 +78,10 @@ function useAddress(address?: Address) {
 			{ path: addressId },
 			{
 				onSuccess: (response) => {
-					console.log("Address removed.");
-					setUser(response.data);
+					if (response?.data) {
+						console.log("Address removed.");
+						setUser(response.data);
+					}
 				},
 				onError: (error) => {
 					console.log({ error });

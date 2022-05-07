@@ -1,5 +1,6 @@
 import { Address, useStripe } from "@stripe/stripe-react-native";
 import { useCallback } from "react";
+import { showToast } from "../../utils";
 import { useCart } from "../../utils/store";
 import { useCartCheckout, useUpdateTransaction } from "../api";
 
@@ -26,7 +27,7 @@ export const useStripeCheckout = () => {
 			try {
 				const response = await cartCheckout.mutateAsync({ cart: items });
 
-				if (response.data) {
+				if (response?.data) {
 					const { error } = await initPaymentSheet({
 						paymentIntentClientSecret: response.data.paymentIntent,
 						customerEphemeralKeySecret: response.data.ephemeralKey,
@@ -53,6 +54,7 @@ export const useStripeCheckout = () => {
 					return error;
 				}
 			} catch (error) {
+				showToast("error", { title: "Habitual Ecommerce", message: "Error while initiating payment." });
 				console.log({ error });
 			}
 		},

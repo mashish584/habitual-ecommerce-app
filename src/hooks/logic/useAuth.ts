@@ -27,7 +27,8 @@ function useAuth(isSignIn = false) {
 		onSubmit: async (data: Auth) =>
 			authenticate.mutate(data, {
 				onSuccess: (response) => {
-					if (response.data) {
+					console.log({ response });
+					if (response?.data) {
 						showToast("success", { title: "Habitual Ecommerce", message: `Welcom back, ${response.data.fullname || response.data.email}.` });
 						onLoginSuccess({ token: response.token, user: response.data });
 						if (isSignIn) {
@@ -37,12 +38,12 @@ function useAuth(isSignIn = false) {
 						}
 					}
 
-					if (response.message && !response.data) {
+					if (response?.message && !response?.data) {
 						showToast("error", { title: "Habitual Ecommerce", message: response.message });
 					}
 				},
 				onError: (errors) => {
-					if (errors.errors?.length) {
+					if (errors?.errors?.length) {
 						const fieldErrors = errors.errors.reduce((previousErrros, error) => ({ ...previousErrros, [error.key]: error.message }), {});
 						formik.setErrors(fieldErrors);
 					}

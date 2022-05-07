@@ -20,6 +20,7 @@ import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
+import OnboardingStack from "./Stacks/OnboardingStack";
 
 /**
  * Where ot navigation user
@@ -72,6 +73,7 @@ const RootStackScreen = () => {
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
+			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 			<RootStack.Screen name="Product" component={Product} />

@@ -48,8 +48,10 @@ function useProfileUpdate<T extends string>(user?: User) {
 	const updateUserInfo = useCallback((data: Record<T, any>) => {
 		return mutateAsync(data, {
 			onSuccess: (response) => {
-				console.log("Profile detail updated", { profile: response.data });
-				setUser(response.data);
+				if (response?.data) {
+					console.log("Profile detail updated", { profile: response.data });
+					setUser(response.data);
+				}
 			},
 			onError: (error) => {
 				console.log(error);
@@ -60,8 +62,10 @@ function useProfileUpdate<T extends string>(user?: User) {
 	const fetchUserInfo = useCallback(() => {
 		return fetchProfile.mutateAsync(userId, {
 			onSuccess: (response) => {
-				console.log({ response });
-				setUser(response.data);
+				if (response?.data) {
+					console.log({ response });
+					setUser(response.data);
+				}
 			},
 			onError: (error) => {
 				console.log({ error });

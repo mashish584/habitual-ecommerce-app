@@ -3,7 +3,7 @@ import { LogBox, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
-import Toast from "react-native-toast-message";
+
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
 
@@ -27,7 +27,6 @@ const App = () => {
 			<StripeProvider publishableKey={STRIPE_PUBLIC_KEY} merchantIdentifier="merchant.identifier">
 				<QueryClientProvider client={queryClient}>
 					<Navigation />
-					<Toast />
 				</QueryClientProvider>
 			</StripeProvider>
 		</SafeAreaProvider>

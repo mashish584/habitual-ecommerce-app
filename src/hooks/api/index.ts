@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Address, Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
 import { UserState } from "../../utils/store";
+import { showToast } from "../../utils";
 
 type AddressData = {
 	address?: Omit<Address, "id" | "default">;
@@ -14,39 +15,43 @@ type AddressData = {
 
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
-	const userAsyncData = await AsyncStorage.getItem("user");
-	let token = null;
+	try {
+		const userAsyncData = await AsyncStorage.getItem("user");
+		let token = null;
 
-	if (userAsyncData) {
-		let userStoreInfo = JSON.parse(userAsyncData) as { state: Pick<UserState, "token" | "user"> };
-		token = userStoreInfo.state.token;
-	}
-
-	let endpoint = `${API_URL}${url}${options.path || ""}`;
-
-	if (options.path) {
-		delete options.path;
-	}
-
-	if (options.headers["Content-Type"] === "multipart/form-data") {
-		const data = { ...options.body };
-		const formData = new FormData();
-		for (let key in data) {
-			formData.append(key, data[key]);
+		if (userAsyncData) {
+			let userStoreInfo = JSON.parse(userAsyncData) as { state: Pick<UserState, "token" | "user"> };
+			token = userStoreInfo.state.token;
 		}
-		options.body = formData;
-	}
 
-	if (token) {
-		// options.headers.Authorization = `Bearer ${token}`;
-		options.headers["token"] = `Bearer ${token}`;
-	}
+		let endpoint = `${API_URL}${url}${options.path || ""}`;
 
-	let response = await fetch(endpoint, { ...options });
-	if (response.status !== 200) {
-		return response.json();
-	} else {
-		return response.json();
+		if (options.path) {
+			delete options.path;
+		}
+
+		if (options.headers["Content-Type"] === "multipart/form-data") {
+			const data = { ...options.body };
+			const formData = new FormData();
+			for (let key in data) {
+				formData.append(key, data[key]);
+			}
+			options.body = formData;
+		}
+
+		if (token) {
+			// options.headers.Authorization = `Bearer ${token}`;
+			options.headers["token"] = `Bearer ${token}`;
+		}
+
+		let response = await fetch(endpoint, { ...options });
+		if (response.status !== 200) {
+			return response.json();
+		} else {
+			return response.json();
+		}
+	} catch (error) {
+		showToast("error", { title: "Network Error", message: error?.message });
 	}
 };
 
