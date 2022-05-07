@@ -15,7 +15,7 @@ import { Card, ColorCard } from "../../components/Cards";
 
 import theme, { rgba } from "../../utils/theme";
 import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "../../utils";
-import { useUser } from "../../utils/store";
+import { useUI, useUser } from "../../utils/store";
 import { RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
 
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
@@ -45,10 +45,13 @@ const AccountSettingOptions = [
 const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens, "Profile">> = ({ navigation }) => {
 	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
 	const { fetchUserInfo } = useProfileUpdate(profile);
+	const updateValue = useUI((store) => store.updateValue);
 
 	useEffect(() => {
-		fetchUserInfo();
-	}, []);
+		if (profile?.id) {
+			fetchUserInfo();
+		}
+	}, [profile?.id]);
 
 	const parentCategories = profile.interests?.reduce((prev, category) => {
 		const data = { ...prev };
@@ -168,9 +171,18 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 												key={`${label}_${index}`}
 												onPress={() => {
 													if (type === "LOGOUT") {
-														navigation.replace("UnauthStack");
-														removeToken();
-														return;
+														updateValue({
+															showConfirmationModal: true,
+															message: "Are you sure you want to logout?",
+															onAction: (action) => {
+																if (action === "Yes") {
+																	updateValue({ showConfirmationModal: false });
+																	removeToken();
+																} else {
+																	updateValue({ showConfirmationModal: false });
+																}
+															},
+														});
 													}
 
 													if (type === "ADDRESS") {

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import theme from "../../utils/theme";
 import { BottomSheet, BottomSheetI } from "../BottomSheet";
+import Line from "../Line";
 
 type AddressOptionActions = "edit" | "delete";
 
@@ -29,7 +30,7 @@ const AddressOptions = (props: AddressOptions) => {
 							Update Address
 						</Text>
 					</TouchableOpacity>
-					<View style={{ width: "100%", height: 2, backgroundColor: theme.colors.shades.gray_40 }} />
+					<Line />
 					<TouchableOpacity onPress={() => props.onAction("delete")} style={{ paddingVertical: theme.spacing.small }}>
 						<Text style={[theme.textStyles.h5, { fontFamily: theme.fonts.lato.regular, textAlign: "center", color: theme.colors.accents.red }]}>
 							Remove Address

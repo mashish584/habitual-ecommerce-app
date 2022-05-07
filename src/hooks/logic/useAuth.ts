@@ -37,7 +37,7 @@ function useAuth(isSignIn = false) {
 						}
 					}
 
-					if (response.message) {
+					if (response.message && !response.data) {
 						showToast("error", { title: "Habitual Ecommerce", message: response.message });
 					}
 				},

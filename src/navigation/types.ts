@@ -11,6 +11,7 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 export type RootStackScreens = {
 	Start: undefined;
 	UnauthStack: undefined;
+	OnboardingStack: undefined;
 	ProfileSetup: undefined;
 	Product: {
 		product: Product;

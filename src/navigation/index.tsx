@@ -34,10 +34,10 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
 				} else {
-					navigation.replace("UnauthStack");
+					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
-				navigation.replace("UnauthStack");
+				navigation.replace("OnboardingStack");
 			}
 		})();
 	}, []);

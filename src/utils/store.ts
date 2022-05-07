@@ -1,4 +1,4 @@
-import create, { GetState, SetState } from "zustand";
+import create, { GetState, SetState, StoreApi } from "zustand";
 import { persist, StoreApiWithPersist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,6 +8,17 @@ export type CartProduct = Pick<Product, "id" | "image" | "title" | "price">;
 export type CartItem = { quantity: number; product: Omit<CartProduct, "id"> };
 export type CartItems = Record<string, CartItem>;
 export type QuantityAction = "+" | "-";
+
+interface UIInterface {
+	showConfirmationModal: boolean;
+	message: string;
+	onAction: (action: "Yes" | "No") => void;
+}
+
+export interface UIState extends UIInterface {
+	updateValue: (value: Partial<UIInterface>) => void;
+}
+
 export interface UserState {
 	token: string;
 	user: User;
@@ -113,3 +124,10 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 		},
 	),
 );
+
+export const useUI = create<UIState, SetState<Partial<UIInterface>>, GetState<UIState>, StoreApi<UIState>>((set) => ({
+	showConfirmationModal: false,
+	message: "",
+	onAction: null,
+	updateValue: (value) => set(value),
+}));
