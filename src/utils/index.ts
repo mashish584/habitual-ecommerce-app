@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { Dimensions, Platform } from "react-native";
+import Toast from "react-native-toast-message";
 import theme from "./theme";
 import { DateFormats } from "./types";
 
@@ -72,4 +73,12 @@ export const isValidJSONString = (value: string) => {
 		return false;
 	}
 	return true;
+};
+
+export const showToast = (type: "success" | "error", data: { title: string; message: string }) => {
+	Toast.show({
+		text1: data.title,
+		text2: data.message,
+		type,
+	});
 };

@@ -11,7 +11,7 @@ import BottomSheetI from "./types";
 
 const SCREEN_HEIGHT = Dimensions.get("screen").height;
 
-const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, children }) => {
+const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, children, ...props }) => {
 	const bottomSheetRef = useRef<GBottomSheet>(null);
 	const currentSnapIndex = useRef(0);
 
@@ -24,7 +24,7 @@ const BottomSheet: React.FC<BottomSheetI> = ({ visible, headerTitle, onClose, ch
 				layout: { height },
 			},
 		}) => {
-			const maxHeight = SCREEN_HEIGHT * 0.5;
+			const maxHeight = props.maxHeight ? props.maxHeight : SCREEN_HEIGHT * 0.5;
 			setContentHeight(height <= maxHeight ? height : maxHeight);
 		},
 		[],
