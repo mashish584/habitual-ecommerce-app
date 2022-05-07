@@ -402,6 +402,8 @@ PODS:
     - React-RCTText
   - RNCAsyncStorage (1.17.3):
     - React-Core
+  - RNCMaskedView (0.2.6):
+    - React-Core
   - RNFBApp (14.7.0):
     - Firebase/CoreOnly (= 8.14.0)
     - React-Core
@@ -518,6 +520,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -641,6 +644,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-manager"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBCrashlytics:
@@ -725,6 +730,7 @@ SPEC CHECKSUMS:
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   ReactNativeKeyboardManager: f82a63e0982254fb0f6a17ba327fac575a46f1e9
   RNCAsyncStorage: 005c0e2f09575360f142d0d1f1f15e4ec575b1af
+  RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNFBApp: 097a31d372b3db15b41c7a1a5c429433b0609e12
   RNFBCrashlytics: 4ec9aae1a1dbb6572d095417392483bec82b07bb
   RNGestureHandler: 50e6ffee79932d14ea747d4ea4cc99aac0f24e86

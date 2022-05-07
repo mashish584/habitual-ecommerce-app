@@ -7,6 +7,7 @@ import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
 import ProfileImage from "../../components/ProfileImage";
 import SectionHeading from "../../components/SectionHeading";
+import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
 import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
@@ -23,7 +24,7 @@ interface HomeInfo {
 }
 
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
-	const { data } = useHome<"", HomeInfo>();
+	const { data, isLoading } = useHome<"", HomeInfo>();
 
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
 
@@ -33,6 +34,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 				return (
 					<>
 						<Shape />
+
 						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: top + 30 }} showsVerticalScrollIndicator={false}>
 							{/* Header */}
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
@@ -44,6 +46,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
+								{isLoading && <ProductCardListingSkelton />}
 								{featuredProducts?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -62,6 +65,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							{/* Hot Deals */}
 							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
+								{isLoading && <HotDealListing />}
 								{hotDeals?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -76,6 +80,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 								})}
 							</ScrollView>
 							{/* Your Interests */}
+							{isLoading && <InterestsSkelton />}
 							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
 								<>
 									<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />

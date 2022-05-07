@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View, FlatList, ViewStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ProductCard from "../Cards/ProductCard";
@@ -15,6 +15,16 @@ interface CategorySlider {
 	data: Record<string, Product[]>;
 	margin: number;
 }
+
+export const CategoryContainerStyle: ViewStyle = {
+	maxWidth: "100%",
+	minHeight: 386,
+	backgroundColor: theme.colors.shades.white,
+	borderRadius: 10,
+	paddingVertical: theme.spacing.small,
+	margin: theme.spacing.medium,
+	...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
+};
 
 const WIDTH = Dimensions.get("screen").width;
 
@@ -38,16 +48,7 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 	});
 
 	return (
-		<View
-			style={{
-				maxWidth: "100%",
-				minHeight: 386,
-				backgroundColor: theme.colors.shades.white,
-				margin,
-				borderRadius: 10,
-				paddingVertical: theme.spacing.small,
-				...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
-			}}>
+		<View style={[CategoryContainerStyle, { margin }]}>
 			<View style={{ height: 25, marginTop: theme.spacing.xSmall }}>
 				<FlatList
 					ref={categoryListRef}
@@ -67,7 +68,7 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 									scrollTo(categoryContentRef, fIndex);
 									setIndex(fIndex);
 								}}
-								style={{ paddingHorizontal: 20 }}>
+								style={{ paddingHorizontal: theme.spacing.normal }}>
 								<Text style={selected ? theme.textStyles.h5 : { ...theme.textStyles.body_reg, color: theme.colors.shades.gray_40 }}>{item}</Text>
 
 								<View
