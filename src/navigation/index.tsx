@@ -6,11 +6,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Home } from "../screens/Home";
 import Product from "../screens/Product/Product";
-import { Checkout } from "../screens/Checkout";
+import { Checkout, Address } from "../screens/Checkout";
 import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
-import { Profile } from "../screens/Profile";
+import { EditProfile, Profile, Addresses } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
+import GlobalUI from "../screens/GlobalUI";
 
 import { UserState } from "../utils/store";
 
@@ -19,6 +20,7 @@ import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
+import OnboardingStack from "./Stacks/OnboardingStack";
 
 /**
  * Where ot navigation user
@@ -29,14 +31,14 @@ const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigat
 			try {
 				const user = await AsyncStorage.getItem("user");
 				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
-
-				if (data.token && data.user && data.user.joining_reasons?.length === 0) {
-					navigation.replace("ProfileSetup");
+				if (data.token && data.user) {
+					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
+					navigation.replace(route);
 				} else {
-					navigation.replace("BottomStack");
+					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
-				navigation.replace("UnauthStack");
+				navigation.replace("OnboardingStack");
 			}
 		})();
 	}, []);
@@ -53,7 +55,8 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Home} />
 			<BottomTabStack.Screen name="Search" component={Home} />
@@ -70,12 +73,16 @@ const RootStackScreen = () => {
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
+			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 			<RootStack.Screen name="Product" component={Product} />
 			<RootStack.Screen name="Checkout" component={Checkout} />
 			<RootStack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
 			<RootStack.Screen name="Profile" component={Profile} />
+			<RootStack.Screen name="Addresses" component={Addresses} />
+			<RootStack.Screen name="EditProfile" component={EditProfile} />
+			<RootStack.Screen name="Address" component={Address} />
 			<RootStack.Screen name="BottomStack" component={BottamTabScreen} />
 		</RootStack.Navigator>
 	);
@@ -85,6 +92,7 @@ export default () => {
 	return (
 		<NavigationContainer ref={navigationRef}>
 			<RootStackScreen />
+			<GlobalUI />
 		</NavigationContainer>
 	);
 };

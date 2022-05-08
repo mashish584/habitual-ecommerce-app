@@ -1,22 +1,39 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, Pressable } from "react-native";
 
 import Container from "../../components/Container";
-import CreditCard from "../../components/Cards/CreditCard";
 import { Button } from "../../components/Button";
 import SectionHeading from "../../components/SectionHeading";
 import Header, { ActionType } from "../../components/Header/Header";
 import { TextInput } from "../../components/TextInput";
 import { Back } from "../../components/Svg";
+import AddressText from "../../components/AddressText";
+import PaymentCards from "../../components/PaymentCards";
 
 import theme from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { useCart, useUser } from "../../utils/store";
+
+import { useStripeCheckout } from "../../hooks/logic/useStripeCheckout";
 
 // spacing of bot
 const footerTopPadding = theme.spacing.medium;
 const scrollViewBottomSpace = footerTopPadding * 2 + (footerTopPadding + 48);
 
 const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = ({ navigation }) => {
+	const { initiatePaymentSheet, isLoading } = useStripeCheckout();
+	const addresses = useUser((store) => store.user.addresses);
+	const total = useCart((store) => store.total);
+
+	const processCheckout = async () => {
+		const response = await initiatePaymentSheet(addresses[0]);
+		if (response) {
+			navigation.replace("CheckoutSuccess");
+		}
+	};
+
+	const defaultAddress = addresses?.filter((address) => address.default)[0];
+
 	return (
 		<Container avoidHomBar={true}>
 			{(_, bottom) => {
@@ -42,7 +59,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 									headingStyle={{ textTransform: "uppercase" }}
 									containerStyle={{ marginBottom: theme.spacing.small }}
 								/>
-								<CreditCard />
+								<PaymentCards />
 							</View>
 							<View style={{ marginHorizontal: theme.spacing.medium }}>
 								{/* Address */}
@@ -51,13 +68,25 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 										title="Address"
 										headingStyle={{ textTransform: "uppercase" }}
 										containerStyle={{ paddingHorizontal: 0 }}
-										actionText="Edit"
+										actionText={addresses?.length ? "Edit" : ""}
+										onPress={() => {
+											navigation.navigate("Addresses");
+										}}
 									/>
+
 									<View style={{ marginTop: theme.spacing.small }}>
-										<Text style={theme.textStyles.h5}>Leslie Flores</Text>
-										<Text style={[theme.textStyles.body_reg, { width: "70%", marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
-											2972 Westheimer Rd. Santa Ana, Illinois 85486, United States of America
-										</Text>
+										{addresses?.length === 0 ? (
+											<View style={theme.rowStyle}>
+												<Text style={{ color: theme.colors.shades.gray_80 }}>Please add address to continue.</Text>
+												<Pressable onPress={() => navigation.navigate("Address")} style={{ marginLeft: 5 }}>
+													<Text style={[theme.textStyles.link_sm]}>Add Address</Text>
+												</Pressable>
+											</View>
+										) : (
+											<>
+												<AddressText address={defaultAddress} />
+											</>
+										)}
 									</View>
 								</View>
 								{/* Promo Code */}
@@ -72,7 +101,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 								</View>
 								<View style={[theme.rowStyle, { justifyContent: "space-between", marginTop: theme.spacing.large, alignItems: "center" }]}>
 									<Text style={[theme.textStyles.pill_reg, { textTransform: "uppercase", color: theme.colors.shades.gray_60 }]}>Total</Text>
-									<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>$135.98</Text>
+									<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>${total}</Text>
 								</View>
 							</View>
 						</ScrollView>
@@ -91,8 +120,9 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 							<Button
 								variant="primary"
 								text="Pay Now"
+								isLoading={isLoading}
 								style={{ marginHorizontal: theme.spacing.medium }}
-								onPress={() => navigation.navigate("CheckoutSuccess")}
+								onPress={processCheckout}
 							/>
 						</View>
 					</>

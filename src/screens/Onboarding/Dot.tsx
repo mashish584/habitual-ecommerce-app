@@ -9,7 +9,7 @@ interface Dot {
 	scrollX: Animated.Value<number>;
 	width: number;
 	mh: number;
-	activeColor: string;
+	activeColor?: string;
 }
 
 const Dot = ({ currentIndex, scrollX, mh, width, activeColor = theme.colors.shades.gray_60 }: Dot) => {

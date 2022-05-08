@@ -3,15 +3,16 @@ import { TouchableOpacity, View, ViewStyle, Text, Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { generateBoxShadowStyle } from "../../utils";
+import { calculateOriginalPrice, generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import Pill from "../Pill/Pill";
-import { Product } from "../../data";
+import { Product } from "../../utils/schema.types";
 
 type CardVariant = "large" | "small" | "wide";
 interface ProductCard {
-	item: Product;
+	item: Partial<Product>;
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
 	contentStyle?: ViewStyle;
@@ -23,6 +24,8 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	const width = variant === "large" ? 284 : 156;
 	const height = variant === "large" ? 312 : 253;
 	const imageSectionHeight = variant === "large" ? 160 : 136;
+
+	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
 
 	return (
 		<TouchableOpacity
@@ -72,7 +75,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 								right: 8,
 								...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
 							}}>
-							<FontAwesomeIcon icon={faHeart} />
+							<FontAwesomeIcon icon={faHeart as IconProp} />
 						</TouchableOpacity>
 					)}
 				</View>
@@ -88,9 +91,9 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 						<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between", marginTop: theme.spacing.xxSmall / 2 }]}>
 							<View style={[theme.rowStyle, { alignItems: "center" }]}>
 								<Text style={[variant === "large" ? theme.textStyles.h5 : theme.textStyles.h6]}>${item?.price}</Text>
-								{item?.fullPrice && (
+								{item?.discount && (
 									<Text style={[theme.textStyles.strikethrough_sm, { color: theme.colors.shades.gray_40, marginLeft: theme.spacing.xxSmall }]}>
-										${item?.fullPrice}
+										${fullPrice}
 									</Text>
 								)}
 							</View>
@@ -99,7 +102,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 						</View>
 						{/* Show description for large variant */}
 						{variant === "large" && (
-							<Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
+							<Text numberOfLines={2} style={[theme.textStyles.body_sm, { marginTop: theme.spacing.xxSmall, color: theme.colors.shades.gray_60 }]}>
 								{item?.description}
 							</Text>
 						)}
@@ -113,27 +116,29 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 								{["large", "small"].includes(variant) && (
 									<>
 										<FontAwesomeIcon
-											icon={faStar}
+											icon={faStar as IconProp}
 											style={{ width: 10, height: 10, marginRight: theme.spacing.xxSmall / 2 }}
 											color={theme.colors.primary.yellow}
 										/>
-										<Text style={theme.textStyles.body_sm_alt}>{item?.rating}</Text>
+										<Text style={theme.textStyles.body_sm_alt}>0</Text>
 									</>
 								)}
 								{variant === "large" && (
 									<>
-										<Text style={theme.textStyles.body_sm}> (43)</Text>
-										<Text style={[theme.textStyles.body_sm_alt, { marginLeft: theme.spacing.xxSmall }]}>Category</Text>
+										<Text style={theme.textStyles.body_sm}> (0)</Text>
+										<Text style={[theme.textStyles.body_sm_alt, { marginLeft: theme.spacing.xxSmall }]}>
+											{item?.category?.map((category) => category.name).join(", ")}
+										</Text>
 									</>
 								)}
 							</View>
-							{variant === "large" && (
+							{/* {variant === "large" && (
 								<Pill
 									variant="saved"
 									text="Staff Pick"
 									colors={{ pillColor: theme.colors.secondary.blue_20, textColor: theme.colors.secondary.blue }}
 								/>
-							)}
+							)} */}
 						</View>
 					)}
 				</View>

@@ -1,49 +1,58 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View, Image, Dimensions } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-import ColorCard from "../../components/Cards/ColorCard";
 import ProductCard from "../../components/Cards/ProductCard";
 import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
+import ProfileImage from "../../components/ProfileImage";
 import SectionHeading from "../../components/SectionHeading";
+import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
-import { categorySlider, HotDeals, Products } from "../../data";
+import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Product } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
 
-const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
+interface HomeInfo {
+	featuredProducts: Product[];
+	hotDeals: Product[];
+	userInterests: Record<string, Product[]>;
+}
 
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
+	const { data, isLoading } = useHome<"", HomeInfo>();
+
+	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
+
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
 				return (
 					<>
 						<Shape />
+
 						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: top + 30 }} showsVerticalScrollIndicator={false}>
 							{/* Header */}
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
 									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
-									<TouchableOpacity
-										style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden" }}
-										onPress={() => navigation.push("Profile")}>
-										<Image source={{ uri: "https://unsplash.it/50/50" }} style={{ width: "100%", height: "100%" }} />
-									</TouchableOpacity>
+									<ProfileImage />
 								</View>
 								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{Products.map((product, index) => {
+								{isLoading && <ProductCardListingSkelton />}
+								{featuredProducts?.map((product, index) => {
+									product.image = product.images[0].url;
 									return (
 										<ProductCard
 											variant="large"
 											key={product.id}
 											onPress={() => {
-												navigation.navigate("Product");
+												navigation.navigate("Product", { product });
 											}}
 											item={product}
 											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
@@ -51,18 +60,33 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 									);
 								})}
 							</ScrollView>
-							{/* Your Interests */}
+							{/* Hot Deals */}
 							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{HotDeals.map((product, index) => {
-									return <ProductCard variant="small" key={product?.id} item={product} containerStyle={index === 0 ? { marginLeft: 0 } : {}} />;
+								{isLoading && <HotDealListing />}
+								{hotDeals?.map((product, index) => {
+									product.image = product.images[0].url;
+									return (
+										<ProductCard
+											key={product?.id}
+											variant="small"
+											onPress={() => navigation.navigate("Product", { product })}
+											item={product}
+											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
+										/>
+									);
 								})}
 							</ScrollView>
-							{/* Hot Deals */}
-							<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
-							<CategorySlider margin={theme.spacing.medium} data={categorySlider} />
+							{/* Your Interests */}
+							{isLoading && <InterestsSkelton />}
+							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
+								<>
+									<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
+									<CategorySlider margin={theme.spacing.medium} data={userInterests} />
+								</>
+							)}
 							{/* Sections */}
-							<View
+							{/* <View
 								style={{
 									flexDirection: "row",
 									paddingHorizontal: theme.spacing.medium,
@@ -98,7 +122,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 									cardColor={theme.colors.accents.orange}
 									cardStyle={{ marginBottom: theme.spacing.small }}
 								/>
-							</View>
+							</View> */}
 						</ScrollView>
 					</>
 				);

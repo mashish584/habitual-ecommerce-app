@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput as RNTextInput, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+// import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../../components/Button";
@@ -16,20 +17,20 @@ import theme from "../../utils/theme";
 import { ScreenNavigationProp } from "../../navigation/types";
 import useAuth from "../../hooks/logic/useAuth";
 
-const socialLogins = [
-	{
-		label: "Continue with Apple",
-		icon: <FontAwesomeIcon icon={faApple} />,
-	},
-	{
-		label: "Continue with Facebook",
-		icon: <FontAwesomeIcon icon={faFacebook} color="#4267B2" />,
-	},
-	{
-		label: "Continue with Google",
-		icon: <FontAwesomeIcon icon={faGoogle} color="#EA4335" />,
-	},
-];
+// const socialLogins = [
+// 	{
+// 		label: "Continue with Apple",
+// 		icon: <FontAwesomeIcon icon={faApple} />,
+// 	},
+// 	{
+// 		label: "Continue with Facebook",
+// 		icon: <FontAwesomeIcon icon={faFacebook} color="#4267B2" />,
+// 	},
+// 	{
+// 		label: "Continue with Google",
+// 		icon: <FontAwesomeIcon icon={faGoogle} color="#EA4335" />,
+// 	},
+// ];
 
 interface Auth {
 	type: "signup" | "signin";
@@ -39,8 +40,10 @@ const Auth = ({ type }: Auth) => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const isSignIn = type === "signin";
 
-	const { formik } = useAuth(isSignIn);
+	const { formik, isLoading } = useAuth(isSignIn);
 	const { values, handleChange, handleSubmit, submitCount, errors } = formik;
+
+	const passwordRef = React.useRef<RNTextInput>(null);
 
 	const isFormSubmit = submitCount > 0;
 
@@ -51,13 +54,11 @@ const Auth = ({ type }: Auth) => {
 					<>
 						<Header
 							variant="primary"
-							leftIcon={<FontAwesomeIcon icon={faClose} />}
+							leftIcon={<FontAwesomeIcon icon={faClose as IconProp} />}
 							title={isSignIn ? "Log in" : "Sign Up"}
 							onAction={(type) => {
 								if (type === "left") {
-									if (isSignIn) {
-										navigation.goBack();
-									}
+									navigation.goBack();
 								}
 							}}
 						/>
@@ -69,25 +70,29 @@ const Auth = ({ type }: Auth) => {
 								onChangeText={handleChange("email")}
 								value={values.email}
 								messageType={isFormSubmit && errors.email ? "error" : "null"}
+								returnKeyType="next"
+								onSubmitEditing={() => passwordRef?.current?.focus()}
 								message={isFormSubmit ? errors.email : ""}
 							/>
 							<TextInput
 								label="Password"
-								type="text"
+								type="password"
+								ref={passwordRef}
 								onChangeText={handleChange("password")}
 								value={values.password}
 								messageType={isFormSubmit && errors.password ? "error" : "null"}
 								message={isFormSubmit ? errors.password : ""}
+								onSubmitEditing={() => Keyboard.dismiss()}
 							/>
-							<Button variant="primary" text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
-							{type === "signin" && (
+							<Button variant="primary" isLoading={isLoading} text={isSignIn ? "Log in" : "Get started"} onPress={handleSubmit} />
+							{/* {type === "signin" && (
 								<TouchableOpacity style={{ maxWidth: 100, marginTop: theme.spacing.small }}>
 									<Text style={theme.textStyles.link_sm}>Forgot Password</Text>
 								</TouchableOpacity>
-							)}
+							)} */}
 							<Seperator mt={theme.spacing.medium} />
 							{/* Social Logins */}
-							<View style={{ marginTop: theme.spacing.medium }}>
+							{/* <View style={{ marginTop: theme.spacing.medium }}>
 								{socialLogins.map(({ label, icon }, index) => (
 									<Button
 										variant="bordered"
@@ -98,7 +103,7 @@ const Auth = ({ type }: Auth) => {
 										onPress={() => {}}
 									/>
 								))}
-							</View>
+							</View> */}
 							<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 								<View style={[theme.rowStyle, { marginTop: theme.spacing.small, alignItems: "center" }]}>
 									<Text style={theme.textStyles.body_reg}>{isSignIn ? "New to Habitual?" : "Already have an account?"}</Text>

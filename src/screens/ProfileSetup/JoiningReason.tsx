@@ -15,7 +15,7 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 const reasons = ["Discover new products", "Make monthly shopping easier", "Relevant recommendations", "Get notified of deals"];
 
 const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "JoiningReason">> = ({ navigation }) => {
-	const { updateUserInfo, joining_reasons } = useProfileUpdate<keyof Pick<User, "joining_reasons">>();
+	const { updateUserInfo, joining_reasons, isLoading } = useProfileUpdate<keyof Pick<User, "joining_reasons">>();
 	const [selectedReasons, setSelectedReasons] = useState([]);
 
 	const addJoiningReasons = async () => {
@@ -82,6 +82,7 @@ const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Jo
 						text: "Continue",
 						style: { width: 115 },
 						onPress: addJoiningReasons,
+						isLoading,
 					}}
 				/>
 			</View>

@@ -5,6 +5,8 @@ export interface FetchConfig {
 	headers: FetchHeader;
 	body?: any;
 	path?: string;
+	query?: string;
+	url?: string;
 }
 
 export interface ErrorResponse<T> {
@@ -17,4 +19,5 @@ export interface SuccessResponse<T> {
 	message: string;
 	token: string;
 	data: T;
+	next: string;
 }

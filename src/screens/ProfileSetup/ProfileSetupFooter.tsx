@@ -16,7 +16,7 @@ const ProfileSetupFooter = ({ button1, button2, containerStyle }: ProfileSetupFo
 	return (
 		<View style={[theme.rowStyle, { justifyContent: "space-between" }, containerStyle]}>
 			<Button {...button1} />
-			<Button style={{ flex: 0.6 }} {...button2} />
+			<Button {...button2} style={{ flex: 0.6, ...button2.style }} />
 		</View>
 	);
 };

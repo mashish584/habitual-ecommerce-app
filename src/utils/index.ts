@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
-import { Platform } from "react-native";
+import { Dimensions, Platform } from "react-native";
+import Toast from "react-native-toast-message";
+import theme from "./theme";
 import { DateFormats } from "./types";
 
 export const isIOS = Platform.OS === "ios";
@@ -47,4 +49,36 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 			fn(...args);
 		}, duration);
 	};
+};
+
+export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice + currentPrice * (discount / 100)).toFixed(2);
+
+export const defaultAvatar = "https://ik.imagekit.io/imashish/avatar_3x_1izETN4cA.png";
+
+export const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
+
+export const breakFullName = (fullName: string) => {
+	if (!fullName) return ["", ""];
+	const name = fullName.split(" ");
+	const lastName = name.pop();
+	const firstName = name.join(" ");
+
+	return [firstName, lastName];
+};
+
+export const isValidJSONString = (value: string) => {
+	try {
+		JSON.parse(value);
+	} catch (error) {
+		return false;
+	}
+	return true;
+};
+
+export const showToast = (type: "success" | "error", data: { title: string; message: string }) => {
+	Toast.show({
+		text1: data.title,
+		text2: data.message,
+		type,
+	});
 };

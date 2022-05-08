@@ -1,7 +1,7 @@
-import { ViewStyle } from "react-native";
+import { ViewStyle, KeyboardType } from "react-native";
 
 export type MessageType = "success" | "error" | "null";
-export type InputType = "text" | "search";
+export type InputType = KeyboardType | "text" | "search" | "password";
 
 export interface Label {
 	label: string;
@@ -15,4 +15,5 @@ export interface TextInput extends Omit<Label, "label"> {
 	message?: string;
 	containerStyle?: ViewStyle;
 	label?: string;
+	isLoading?: boolean;
 }

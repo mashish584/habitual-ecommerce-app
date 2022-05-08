@@ -1,5 +1,7 @@
 import { ParamListBase, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Product, User } from "../utils/schema.types";
+import { Address } from "../utils/types";
 
 export interface StackNavigationProps<ParamList extends ParamListBase, RouteName extends keyof ParamList = string> {
 	navigation: StackNavigationProp<ParamList, RouteName>;
@@ -9,11 +11,21 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 export type RootStackScreens = {
 	Start: undefined;
 	UnauthStack: undefined;
+	OnboardingStack: undefined;
 	ProfileSetup: undefined;
-	Product: undefined;
+	Product: {
+		product: Product;
+	};
 	Checkout: undefined;
 	CheckoutSuccess: undefined;
 	Profile: undefined;
+	EditProfile: {
+		profile: User;
+	};
+	Address: {
+		address?: Address;
+	};
+	Addresses: undefined;
 	ProfileSetupComplete: undefined;
 	BottomStack: BottomStackScreens;
 };
@@ -27,9 +39,9 @@ export type BottomStackScreens = {
 };
 
 export type UnauthStackScreens = {
-	Onboarding: undefined;
 	SignIn: undefined;
 	SignUp: undefined;
+	Onboarding: undefined;
 };
 
 export type ProfileSetupStackScreens = {
@@ -41,4 +53,4 @@ export type ProfileSetupStackScreens = {
 	};
 };
 
-export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens>;
+export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens & UnauthStackScreens>;

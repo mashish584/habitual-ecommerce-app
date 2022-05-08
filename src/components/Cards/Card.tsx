@@ -1,17 +1,19 @@
 import React from "react";
-import { View, ViewStyle } from "react-native";
+import { Pressable, ViewStyle } from "react-native";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 
 interface Card {
 	cardStyle?: ViewStyle;
+	onPress?: () => void;
 }
 
-const Card: React.FC<Card> = ({ cardStyle, children }) => {
+const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {
 	return (
-		<View
+		<Pressable
+			onPress={onPress}
 			style={{
-				height: "100%",
+				// height: "100%",
 				aspectRatio: 1,
 				borderRadius: 10,
 				backgroundColor: theme.colors.shades.white,
@@ -21,7 +23,7 @@ const Card: React.FC<Card> = ({ cardStyle, children }) => {
 				...cardStyle,
 			}}>
 			{children}
-		</View>
+		</Pressable>
 	);
 };
 

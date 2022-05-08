@@ -1,5 +1,9 @@
-import React, { ForwardedRef, useState } from "react";
-import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, Image } from "react-native";
+import React from "react";
+import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, Image, TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+
+import Loader from "../Loader";
 
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -11,7 +15,7 @@ import { MessageType, TextInput as ITextInput } from "./types";
 
 export type Ref = RNTextInput | null;
 
-type Input = ITextInput & TextInputProps & { ref: ForwardedRef<Ref> };
+type Input = ITextInput & TextInputProps & { ref: React.ForwardedRef<Ref> };
 
 const getTextInputStyle = (type: MessageType) => {
 	const textInputStyle: TextStyle = {};
@@ -31,9 +35,9 @@ const getTextInputStyle = (type: MessageType) => {
 	return { textInputStyle, shadowStyle };
 };
 
-const TextInput = ({ ref, label, isOptional, messageType, message, style, ...props }: Input) => {
-	const [isFocused, setIsFocused] = useState(false);
-
+export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, message, style, ...props }, ref) => {
+	const [isFocused, setIsFocused] = React.useState(false);
+	const [showPassword, setShowPassword] = React.useState(false);
 	const { textInputStyle, shadowStyle } = getTextInputStyle(messageType || "null");
 
 	return (
@@ -59,15 +63,23 @@ const TextInput = ({ ref, label, isOptional, messageType, message, style, ...pro
 					]}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
+					autoCapitalize={"none"}
+					secureTextEntry={props.type === "password" && !showPassword}
 					{...props}
 				/>
 				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+				{props.type === "password" && (
+					<TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword((prev) => !prev)}>
+						<FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} color={theme.colors.shades.gray_80} />
+					</TouchableOpacity>
+				)}
+				{props.isLoading && <Loader style={{ alignItems: "flex-end", right: theme.spacing.medium }} />}
 			</View>
 
 			{message ? <Message message={message} messageType={messageType} /> : null}
 		</View>
 	);
-};
+});
 
 const styles = StyleSheet.create({
 	successShadow: {
@@ -80,6 +92,8 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		left: theme.spacing.small,
 	},
+	eyeIcon: {
+		position: "absolute",
+		right: theme.spacing.small,
+	},
 });
-
-export default React.forwardRef<Ref, Input>((props, ref) => <TextInput {...props} ref={ref} />);

@@ -1,6 +1,7 @@
 import React from "react";
 import { Dimensions, View, StyleSheet, Text } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import { Card } from "../../utils/schema.types";
 
 import theme from "../../utils/theme";
 import Chip from "../Svg/Chip";
@@ -9,7 +10,11 @@ const aspectRatio = 192 / 327;
 const CARD_WIDTH = Dimensions.get("screen").width - theme.spacing.medium * 2;
 const CARD_HEIGHT = CARD_WIDTH * aspectRatio;
 
-const CreditCard = () => {
+interface CreditCard {
+	card: Card;
+}
+
+const CreditCard = ({ card }: CreditCard) => {
 	return (
 		<View
 			style={{
@@ -31,14 +36,14 @@ const CreditCard = () => {
 			<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
 				<Chip />
 				<View style={{ alignItems: "flex-end" }}>
-					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.white }]}>Bank of America</Text>
-					<Text style={[theme.textStyles.h5, { color: theme.colors.shades.white }]}>Leslie Flores</Text>
+					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.white }]}>{card?.brand}</Text>
+					<Text style={[theme.textStyles.h5, { color: theme.colors.shades.white }]}>{card?.expiry}</Text>
 				</View>
 			</View>
 			{/* Footer */}
 			<View style={{ flexDirection: "row", alignItems: "center" }}>
 				<Text style={[theme.textStyles.body_reg, { color: theme.colors.shades.white, top: 5 }]}>****</Text>
-				<Text style={[theme.textStyles.body_reg, { color: theme.colors.shades.white, marginLeft: theme.spacing.xxSmall }]}>0817</Text>
+				<Text style={[theme.textStyles.body_reg, { color: theme.colors.shades.white, marginLeft: theme.spacing.xxSmall }]}>{card?.last4}</Text>
 			</View>
 		</View>
 	);

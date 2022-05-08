@@ -24,7 +24,7 @@
 		"import/order": 2,
 		"no-tabs": 0,
 		"no-useless-constructor": "error",
-		"no-undefined": "error",
+		"no-undefined": "warn",
 		"react/prop-types": 0
 	}
 }

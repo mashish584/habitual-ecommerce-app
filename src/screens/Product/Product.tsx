@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, Text } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, Image, TextStyle, View, Text, Pressable } from "react-native";
 import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
 import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
@@ -11,41 +12,67 @@ import { Review } from "../../components/Product";
 import { Header } from "../../components/Header";
 import { SmallBag, Back } from "../../components/Svg";
 
-import theme from "../../utils/theme";
 import Dot from "../Onboarding/Dot";
 
 import { ProductFooterActions } from "../../utils/types";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { Product as ProductType, SlideColors } from "../../utils/schema.types";
+import theme from "../../utils/theme";
+import { useCart } from "../../utils/store";
+import { useProductInfo } from "../../hooks/api";
 
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
-import ColorCircle from "./ColorCircle";
-import Cart from "./Cart";
+// import ColorCircle from "./ColorCircle";
 
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
-const slides = [{ color: theme.colors.shades.gray_20 }, { color: theme.colors.shades.gray }];
-const textColors = [{ color: theme.colors.shades.gray_80 }, { color: theme.colors.shades.white }];
-const productColorVariants = [
-	{ label: "Black", color: theme.colors.shades.gray, selected: false },
-	{ label: "White", color: theme.colors.shades.white, selected: false },
-	{ label: "Blue", color: theme.colors.secondary.blue, selected: false },
-];
+function getSlideColors(slideColors: SlideColors[], length: number) {
+	const slides = [];
+	const textColors = [];
 
-const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation }) => {
+	if (slideColors?.length) {
+		slideColors.map((slideColor) => {
+			slides.push({ color: slideColor.backgroundColor });
+			textColors.push({ color: slideColor.color });
+		});
+	} else {
+		if (length < 2) {
+			length = 2;
+		}
+
+		for (let i = 0; i < length; i++) {
+			slides.push({ color: theme.colors.shades.gray_20 });
+			textColors.push({ color: theme.colors.shades.gray_80 });
+		}
+	}
+
+	return { slides, textColors };
+}
+
+const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation, route }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
+	const product = route.params.product;
+	const [] = useState(product);
+
+	const toggleCart = useCart((store) => store.toggleCart);
+	const fetchProductInfo = useProductInfo<string, ProductType>();
 
 	const productInfoPosition = useValue(0);
 	const productInfoSlideTiming = useValue(0);
 	const productContentHeight = useValue(95);
 	const slideImagePosition = useValue(0);
 
-	const [productColors, setProductColors] = useState([...productColorVariants]);
+	// const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
-	const [showCart, setShowCart] = useState(false);
+	// const [showCart, setShowCart] = useState(false);
 
 	const { scrollHandler, x } = useScrollHandler();
+
+	const productInfo = fetchProductInfo.data?.data || product;
+
+	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length);
 
 	// → Slide Transitions
 	const slideBackgroundColor = interpolateColor(x, {
@@ -106,6 +133,10 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 		});
 	};
 
+	useEffect(() => {
+		fetchProductInfo.mutateAsync(product.id);
+	}, []);
+
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
@@ -116,8 +147,17 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							<Header
 								variant="secondary"
 								leftIcon={<Back fill={slideTextColor} />}
-								rightIcon={<SmallBag fill={slideTextColor} />}
-								headerStyle={{ position: "absolute", top, width: "100%" }}
+								rightIcon={
+									<Pressable onPress={() => toggleCart(true)}>
+										<SmallBag fill={slideTextColor} />
+									</Pressable>
+								}
+								headerStyle={{ position: "absolute", top, width: "100%", zIndex: 1 }}
+								onAction={(type) => {
+									if (type === "left") {
+										navigation.goBack();
+									}
+								}}
 							/>
 							<Animated.ScrollView
 								horizontal
@@ -128,27 +168,28 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								decelerationRate="fast"
 								snapToInterval={SLIDER_WIDTH}
 								{...scrollHandler}>
-								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Animated.Image
-										source={require("../../assets/images/example/product-sample.png")}
-										style={{ transform: [{ translateY: slideImagePosition }] }}
-									/>
-								</View>
-								<View style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
-									<Animated.Image
-										source={require("../../assets/images/example/product-sample.png")}
-										style={{ transform: [{ translateY: slideImagePosition }] }}
-									/>
-								</View>
+								{productInfo.images?.map((image) => {
+									return (
+										<View key={image.fileId} style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
+											<Animated.Image
+												source={{ uri: image.url }}
+												style={{ width: "100%", height: "100%", transform: [{ translateY: slideImagePosition }] }}
+												resizeMode="contain"
+											/>
+										</View>
+									);
+								})}
 							</Animated.ScrollView>
 							{/* Product Content */}
 
 							{/* Slide Indicator */}
-							<View style={[theme.rowStyle, styles.slideIndicators]}>
-								{slides.map((_, index) => {
-									return <Dot key={index} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
-								})}
-							</View>
+							{productInfo?.images?.length > 1 && (
+								<View style={[theme.rowStyle, styles.slideIndicators]}>
+									{productInfo.images.map((file, index) => {
+										return <Dot key={file.fileId} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
+									})}
+								</View>
+							)}
 							<Animated.View
 								style={{
 									...styles.productContent,
@@ -164,7 +205,6 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								<View>
 									<Animated.Text
 										onPress={() => {
-											alert("as");
 											crashlytics().crash();
 										}}
 										style={
@@ -173,10 +213,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 												{ color: !isSlideOn ? textColors[0].color : slideTextColor, marginBottom: theme.spacing.xxSmall },
 											] as TextStyle[]
 										}>
-										Xbox One Elite Series 2 Controller
+										{productInfo.title}
 									</Animated.Text>
-									<Review stars={2} color={slideTextColor} />
-									{!isSlideOn && (
+									<Review stars={0} color={slideTextColor} />
+									{!isSlideOn && <Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.small }]}>{productInfo?.description}</Text>}
+									{/* {!isSlideOn && (
 										<View style={{ marginTop: theme.spacing.medium }}>
 											<Text style={[theme.textStyles.label, { color: theme.colors.shades.gray_60 }]}>Color</Text>
 											<Text style={[theme.textStyles.body_reg, { fontFamily: theme.fonts.lato.bold, marginTop: theme.spacing.xxSmall }]}>
@@ -202,18 +243,20 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 												})}
 											</View>
 										</View>
-									)}
+									)} */}
 								</View>
 							</Animated.View>
 						</Animated.View>
 						{/* Product Price Container  */}
 						<ProductPriceInfo
 							priceInfo={{
-								price: "59.99",
-								originalPrice: "79.99",
-								discount: "20% OFF",
+								id: product.id,
+								image: product.image,
+								title: product.title,
+								price: productInfo.price,
+								discount: productInfo.discount,
 								buttonChild: !isSlideOn ? (
-									<FontAwesomeIcon icon={faArrowRight} />
+									<FontAwesomeIcon icon={faArrowRight as IconProp} />
 								) : (
 									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
 								),
@@ -249,22 +292,10 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								}
 
 								if (actionType === "showCartModal") {
-									setShowCart(true);
+									toggleCart(true);
 									return;
 								}
 							}}
-						/>
-						{/* Cart */}
-						<Cart
-							visible={showCart}
-							maxHeight={0.5}
-							headerTitle="My Cart"
-							items={[]}
-							onCheckout={() => {
-								setShowCart(false);
-								navigation.navigate("Checkout");
-							}}
-							onClose={() => setShowCart(false)}
 						/>
 					</>
 				);

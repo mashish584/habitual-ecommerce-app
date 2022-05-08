@@ -16,13 +16,47 @@ export type Auth = {
 	password: string;
 };
 
+export type Address = {
+	id: string;
+	firstName: string;
+	lastName: string;
+	streetName: string;
+	state: string;
+	city: string;
+	pin: string;
+	mobileNumber: string;
+	default: boolean;
+};
+
 //@API
 export type ErrorMessage<T> = {
 	key: T;
 	message: string;
 };
-export type Urls = "register/" | "user/" | "category/";
+export type Urls =
+	| "register/"
+	| "signin/"
+	| "user/"
+	| "category/"
+	| "home/"
+	| "product/"
+	| "checkout/"
+	| "payment-success/"
+	| "user/address/"
+	| "cards/"
+	| "user/orders/";
+
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;
 };
+
+/* eslint-disable no-unused-vars */
+
+export enum OrderStatus {
+	INPROCESS = "INPROCESS",
+	SHIPPED = "SHIPPED",
+	DELIVERED = "DELIVERED",
+}
+
+/* eslint-enable no-unused-vars */

@@ -1,19 +1,32 @@
 import React from "react";
-import { View, Image, Text, Animated, TouchableOpacity, ScrollView } from "react-native";
+import { View, Image, Text, Animated, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import { BottomSheet, BottomSheetI } from "../../components/BottomSheet";
 import { Button } from "../../components/Button";
+
 import theme from "../../utils/theme";
+import { CartItem as CartItemT, QuantityAction, useCart } from "../../utils/store";
 
 interface Cart extends BottomSheetI {
-	items: any;
 	onCheckout: () => void;
 }
 
-const AddCartActions = ({ dragX }) => {
+interface ShoppingCartItem {
+	item: CartItemT;
+	onUpdate: (type: QuantityAction) => void;
+}
+
+interface AddCartActions {
+	dragX: Animated.AnimatedInterpolation;
+	quantity: number;
+	onUpdate: (type: QuantityAction) => void;
+}
+
+const AddCartActions = ({ dragX, quantity, onUpdate }: AddCartActions) => {
 	const translateX = dragX.interpolate({
 		inputRange: [-100, 0],
 		outputRange: [0, 100],
@@ -41,6 +54,7 @@ const AddCartActions = ({ dragX }) => {
 				},
 			]}>
 			<TouchableOpacity
+				onPress={() => onUpdate("-")}
 				style={{
 					width: 22,
 					height: 22,
@@ -50,10 +64,11 @@ const AddCartActions = ({ dragX }) => {
 					borderWidth: 2,
 					borderRadius: 50,
 				}}>
-				<FontAwesomeIcon icon={faMinus} color={theme.colors.shades.white} />
+				<FontAwesomeIcon icon={faMinus as IconProp} color={theme.colors.shades.white} />
 			</TouchableOpacity>
-			<Text style={[theme.textStyles.h5, { color: theme.colors.shades.white }]}>1</Text>
+			<Text style={[theme.textStyles.h5, { color: theme.colors.shades.white }]}>{quantity}</Text>
 			<TouchableOpacity
+				onPress={() => onUpdate("+")}
 				style={{
 					width: 22,
 					height: 22,
@@ -63,15 +78,17 @@ const AddCartActions = ({ dragX }) => {
 					borderWidth: 2,
 					borderRadius: 50,
 				}}>
-				<FontAwesomeIcon icon={faPlus} color={theme.colors.shades.white} />
+				<FontAwesomeIcon icon={faPlus as IconProp} color={theme.colors.shades.white} />
 			</TouchableOpacity>
 		</Animated.View>
 	);
 };
 
-const CartItem = () => {
+const CartItem = ({ item, onUpdate }: ShoppingCartItem) => {
+	const product = item.product;
+
 	return (
-		<Swipeable renderRightActions={(progress, dragX) => <AddCartActions dragX={dragX} />}>
+		<Swipeable renderRightActions={(progress, dragX) => <AddCartActions dragX={dragX} quantity={item.quantity} onUpdate={onUpdate} />}>
 			<View
 				style={[
 					theme.rowStyle,
@@ -84,25 +101,41 @@ const CartItem = () => {
 					},
 				]}>
 				<View style={{ width: 70, height: 68, backgroundColor: theme.colors.shades.gray_20, borderRadius: 5 }}>
-					<Image source={require("../../assets/images/example/product-sample.png")} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
+					<Image source={{ uri: product.image }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
 				</View>
 				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center", paddingLeft: theme.spacing.small }]}>
-					<Text style={[theme.textStyles.body_reg, { flex: 0.6 }]}>Xbox Elite controller</Text>
-					<Text style={theme.textStyles.h6}>x1</Text>
-					<Text style={theme.textStyles.h5}>$59.99</Text>
+					<Text style={[theme.textStyles.body_reg, { flex: 0.6 }]}>{product.title}</Text>
+					<Text style={theme.textStyles.h6}>x{item.quantity}</Text>
+					<Text style={theme.textStyles.h5}>${product.price}</Text>
 				</View>
 			</View>
 		</Swipeable>
 	);
 };
 
-const Cart = ({ items, ...props }: Cart) => {
+const Cart = ({ ...props }: Cart) => {
+	const { items, updateQuantity, total } = useCart();
+
 	return (
 		<BottomSheet {...{ ...props }}>
-			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 100 }}>
-				{new Array(2).fill(1).map((_, index) => (
-					<CartItem key={index} />
-				))}
+			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 100, height: Dimensions.get("window").height * 0.3 }}>
+				{Object.keys(items).map((id) => {
+					return (
+						<CartItem
+							key={id}
+							item={items[id]}
+							onUpdate={(type) => {
+								updateQuantity(id, type);
+							}}
+						/>
+					);
+				})}
+				{Object.keys(items).length === 0 && (
+					<View style={{ height: Dimensions.get("window").height * 0.3, justifyContent: "center", alignItems: "center" }}>
+						<Image source={require("../../assets/images/empty-illustration.png")} />
+						<Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.medium }]}>Hey you! There is no items in your cart.</Text>
+					</View>
+				)}
 			</ScrollView>
 			<View
 				style={[
@@ -120,9 +153,9 @@ const Cart = ({ items, ...props }: Cart) => {
 				]}>
 				<View>
 					<Text style={[theme.textStyles.pill_sm, { color: theme.colors.shades.gray_60, textTransform: "uppercase" }]}>Total</Text>
-					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>$165.97</Text>
+					<Text style={[theme.textStyles.h4, { color: theme.colors.shades.gray_80 }]}>${total}</Text>
 				</View>
-				<Button variant="primary" text="Checkout →" onPress={props.onCheckout} style={{ flex: 0.7 }} />
+				<Button variant={total > 0 ? "primary" : "disabled"} text="Checkout →" onPress={props.onCheckout} style={{ flex: 0.7 }} />
 			</View>
 		</BottomSheet>
 	);

@@ -1,14 +1,15 @@
 import React from "react";
-import { ImageURISource, Text, TouchableOpacity, ViewStyle } from "react-native";
+import { ImageURISource, Text, TouchableOpacity, ViewStyle, Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import theme, { rgba } from "../../utils/theme";
-import { generateBoxShadowStyle } from "../../utils";
+import { COLOR_CARD_WIDTH, generateBoxShadowStyle } from "../../utils";
 import Card from "./Card";
 
 interface ColorCard {
-	variant: "defaul" | "fixed";
+	variant: "default" | "fixed";
 	width: number;
 	text: string;
 	cardStyle?: ViewStyle;
@@ -30,9 +31,21 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 				...generateBoxShadowStyle(0, 10, rgba.black(0.04), 1, 10, 10, rgba.black(1)),
 				...props.cardStyle,
 			}}>
-			<Text style={[theme.textStyles.h4, { margin: theme.spacing.small, color: theme.colors.shades.white }]}>{text}</Text>
+			<Text style={[theme.textStyles.h4, { margin: theme.spacing.small, color: theme.colors.shades.white, alignSelf: "flex-start" }]}>{text}</Text>
+			{props.image && (
+				<Image
+					source={props.image}
+					resizeMode="contain"
+					style={{
+						width: COLOR_CARD_WIDTH * 0.6,
+						aspectRatio: 1,
+						bottom: 50,
+					}}
+				/>
+			)}
 			{!props.hideButtton && (
 				<TouchableOpacity
+					activeOpacity={0.9}
 					style={{
 						width: 32,
 						height: 32,
@@ -41,10 +54,12 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 						justifyContent: "center",
 						alignItems: "center",
 						alignSelf: "flex-end",
-						margin: theme.spacing.small,
+						position: "absolute",
+						right: theme.spacing.small,
+						bottom: theme.spacing.small,
 						...generateBoxShadowStyle(0, 5, rgba.black(0.1), 1, 15, 10, rgba.black(1)),
 					}}>
-					<FontAwesomeIcon icon={faAngleRight} />
+					<FontAwesomeIcon icon={faAngleRight as IconProp} />
 				</TouchableOpacity>
 			)}
 		</Card>
