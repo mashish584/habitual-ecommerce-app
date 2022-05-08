@@ -8,13 +8,20 @@ import { CategoryContainerStyle } from "../CategorySlider/CategorySlider";
 interface ProductCardSkelton {
 	width: number;
 	height: number;
+	mh?: number;
+	mb?: number;
 	children?: JSX.Element;
 }
 
 const ProductCardSkelton = (props: ProductCardSkelton) => {
 	return (
 		<SkeletonPlaceholder>
-			<SkeletonPlaceholder.Item width={props.width} minHeight={props.height} borderRadius={10} marginHorizontal={theme.spacing.xxSmall}>
+			<SkeletonPlaceholder.Item
+				width={props.width}
+				minHeight={props.height}
+				borderRadius={10}
+				marginHorizontal={props.mh || theme.spacing.xxSmall}
+				marginBottom={props.mb || 0}>
 				{props.children}
 			</SkeletonPlaceholder.Item>
 		</SkeletonPlaceholder>
@@ -65,4 +72,4 @@ const InterestsSkelton = () => {
 	);
 };
 
-export { ProductCardListingSkelton, HotDealListing, InterestsSkelton };
+export { ProductCardListingSkelton, HotDealListing, InterestsSkelton, ProductCardSkelton };

@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import ColorCard from "../../components/Cards/ColorCard";
 import ProductCard from "../../components/Cards/ProductCard";
 import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
@@ -11,7 +10,6 @@ import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../
 
 import { useHome } from "../../hooks/api";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { COLOR_CARD_WIDTH } from "../../utils";
 import { Product } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 
@@ -88,7 +86,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 								</>
 							)}
 							{/* Sections */}
-							<View
+							{/* <View
 								style={{
 									flexDirection: "row",
 									paddingHorizontal: theme.spacing.medium,
@@ -124,7 +122,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 									cardColor={theme.colors.accents.orange}
 									cardStyle={{ marginBottom: theme.spacing.small }}
 								/>
-							</View>
+							</View> */}
 						</ScrollView>
 					</>
 				);

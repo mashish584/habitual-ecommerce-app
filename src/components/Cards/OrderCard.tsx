@@ -19,6 +19,8 @@ interface OrderCard {
 	status: OrderStatus;
 }
 
+export const ORDER_CARD_WIDTH = Dimensions.get("screen").width - theme.spacing.medium * 2;
+
 const getStatusText = (status: OrderStatus) => {
 	switch (status) {
 		case OrderStatus.INPROCESS:
@@ -56,7 +58,7 @@ const OrderCard = (props: OrderCard) => {
 	return (
 		<View
 			style={{
-				width: Dimensions.get("screen").width - theme.spacing.medium * 2,
+				width: ORDER_CARD_WIDTH,
 				marginHorizontal: theme.spacing.medium,
 				padding: theme.spacing.small,
 				backgroundColor: theme.colors.shades.white,

@@ -4,10 +4,11 @@ import { useOrders } from "../../hooks/api";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	url: string;
+	skelton: () => JSX.Element;
 }
 
-const PaginatedFlatlist = ({ url, ...props }: PaginatedFlatlist) => {
-	const { data, fetchNextPage } = useOrders<"", any[]>(url);
+const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
+	const { data, fetchNextPage, isLoading } = useOrders<"", any[]>(url);
 
 	const info = data?.pages.reduce(
 		(prev, page) => {
@@ -22,6 +23,17 @@ const PaginatedFlatlist = ({ url, ...props }: PaginatedFlatlist) => {
 		},
 		{ data: [], next: null },
 	);
+
+	if (isLoading) {
+		const Skelton = skelton;
+		return (
+			<>
+				{new Array(5).fill(1).map((_, index) => {
+					return <Skelton />;
+				})}
+			</>
+		);
+	}
 
 	return (
 		<FlatList

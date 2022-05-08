@@ -31,7 +31,7 @@ function getSlideColors(slideColors: SlideColors[], length: number) {
 	const slides = [];
 	const textColors = [];
 
-	if (slideColors.length) {
+	if (slideColors?.length) {
 		slideColors.map((slideColor) => {
 			slides.push({ color: slideColor.backgroundColor });
 			textColors.push({ color: slideColor.color });

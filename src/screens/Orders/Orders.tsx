@@ -3,7 +3,7 @@ import React from "react";
 import Container from "../../components/Container";
 import Header from "../../components/Header/Header";
 import Curve from "../../components/Container/Curve";
-import OrderCard from "../../components/Cards/OrderCard";
+import OrderCard, { ORDER_CARD_WIDTH } from "../../components/Cards/OrderCard";
 import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
 import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "../../components/Cards/EmptyInfoCard";
 
@@ -13,6 +13,7 @@ import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import { CartItem } from "../../utils/store";
 import ProfileImage from "../../components/ProfileImage";
+import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
 const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = () => {
 	const isEmptyCard = false;
@@ -59,6 +60,7 @@ const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 											const orderItems = item.details[0] as Record<string, CartItem>;
 											return <OrderCard amount={item.amount} status={item.orderStatus} date={item.createdAt} orders={orderItems} />;
 										}}
+										skelton={() => <ProductCardSkelton width={ORDER_CARD_WIDTH} height={120} mh={theme.spacing.medium} mb={theme.spacing.xxSmall} />}
 									/>
 								</>
 							</>
