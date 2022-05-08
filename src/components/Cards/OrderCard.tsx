@@ -98,7 +98,7 @@ const OrderCard = (props: OrderCard) => {
 							const item = props.orders[product];
 							return (
 								<Text
-									key={index}
+									key={`${id}_${index}`}
 									style={[theme.textStyles.body_sm, { fontFamily: theme.fonts.lato.regular, marginBottom: theme.spacing.xxSmall / 2 }]}>
 									{item.product.title} x {item.quantity} (${item.product.price})
 								</Text>

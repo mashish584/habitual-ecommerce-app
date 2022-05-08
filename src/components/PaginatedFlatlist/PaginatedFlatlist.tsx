@@ -29,7 +29,7 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 		return (
 			<>
 				{new Array(5).fill(1).map((_, index) => {
-					return <Skelton />;
+					return <Skelton key={index} />;
 				})}
 			</>
 		);
