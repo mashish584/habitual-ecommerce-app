@@ -12,8 +12,12 @@ const PaginatedFlatlist = ({ url, ...props }: PaginatedFlatlist) => {
 	const info = data?.pages.reduce(
 		(prev, page) => {
 			const data = { ...prev };
-			data.data = [...data.data, ...page.data];
-			data.next = page.next;
+
+			if (page?.data) {
+				data.data = [...data.data, ...page.data];
+				data.next = page.next;
+			}
+
 			return data;
 		},
 		{ data: [], next: null },

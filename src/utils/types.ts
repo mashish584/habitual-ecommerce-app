@@ -50,3 +50,13 @@ export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;
 };
+
+/* eslint-disable no-unused-vars */
+
+export enum OrderStatus {
+	INPROCESS = "INPROCESS",
+	SHIPPED = "SHIPPED",
+	DELIVERED = "DELIVERED",
+}
+
+/* eslint-enable no-unused-vars */

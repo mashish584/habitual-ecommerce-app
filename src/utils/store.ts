@@ -116,7 +116,7 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 			toggleCart: (value: boolean) => {
 				set({ visible: value });
 			},
-			resetCart: () => set({ items: {} }),
+			resetCart: () => set({ items: {}, total: 0 }),
 		}),
 		{
 			name: "cart",
