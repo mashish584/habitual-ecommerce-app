@@ -1,14 +1,16 @@
 import React from "react";
-import { FlatList, FlatListProps } from "react-native";
-import { useOrders } from "../../hooks/api";
+import { FlatList, FlatListProps, View, ViewStyle } from "react-native";
+import { usePaginateAPI } from "../../hooks/api";
+import { Urls } from "../../utils/types";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
-	url: string;
+	url: Urls;
 	skelton: () => JSX.Element;
+	skeltonContainerStyle?: ViewStyle;
 }
 
 const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
-	const { data, fetchNextPage, isLoading } = useOrders<"", any[]>(url);
+	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url);
 
 	const info = data?.pages.reduce(
 		(prev, page) => {
@@ -27,11 +29,11 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 	if (isLoading) {
 		const Skelton = skelton;
 		return (
-			<>
+			<View style={props.skeltonContainerStyle}>
 				{new Array(5).fill(1).map((_, index) => {
 					return <Skelton key={index} />;
 				})}
-			</>
+			</View>
 		);
 	}
 
@@ -39,6 +41,8 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 		<FlatList
 			{...{ ...props }}
 			data={info?.data}
+			onRefresh={() => refetch()}
+			refreshing={isRefetching}
 			onEndReached={() => {
 				if (info?.next) {
 					fetchNextPage({

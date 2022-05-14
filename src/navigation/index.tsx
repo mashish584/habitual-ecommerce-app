@@ -11,6 +11,7 @@ import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 import { EditProfile, Profile, Addresses } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
+import { Wishlist } from "../screens/Wishlist";
 import GlobalUI from "../screens/GlobalUI";
 
 import { UserState } from "../utils/store";
@@ -55,10 +56,9 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
-			<BottomTabStack.Screen name="Wishlist" component={Home} />
+			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Home} />
 			<BottomTabStack.Screen name="Orders" component={Orders} />
 			<BottomTabStack.Screen name="Cart" component={Home} />

@@ -6,14 +6,12 @@ import Curve from "../../components/Container/Curve";
 import OrderCard, { ORDER_CARD_WIDTH } from "../../components/Cards/OrderCard";
 import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
 import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "../../components/Cards/EmptyInfoCard";
-
-import theme from "../../utils/theme";
-
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-
-import { CartItem } from "../../utils/store";
 import ProfileImage from "../../components/ProfileImage";
 import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
+
+import theme from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { CartItem } from "../../utils/store";
 
 const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = () => {
 	const isEmptyCard = false;
@@ -33,15 +31,14 @@ const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 						<Curve isCurve={isEmptyCard} style={{ marginTop: isEmptyCard ? 180 : theme.spacing.small }}>
 							<>
 								{isEmptyCard && (
-									<>
-										<EmptyInfoCard
-											style={{ marginTop: -EMPTY_ORDER_CARD_HEIGHT / 2 }}
-											title="Uh oh! You have no orders."
-											description="You have no orders at the moment. Go take a look at what we have an we’ll get your delivery to you asap!"
-											buttonText="View recommended products"
-											onAction={() => {}}
-										/>
-									</>
+									<EmptyInfoCard
+										style={{ marginTop: -EMPTY_ORDER_CARD_HEIGHT / 2 }}
+										illustration={require("../../assets/images/empty-illustration.png")}
+										title="Uh oh! You have no orders."
+										description="You have no orders at the moment. Go take a look at what we have an we’ll get your delivery to you asap!"
+										buttonText="View recommended products"
+										onAction={() => {}}
+									/>
 								)}
 
 								<>

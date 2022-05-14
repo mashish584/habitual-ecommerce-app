@@ -45,8 +45,10 @@ export type Urls =
 	| "user/address/"
 	| "cards/"
 	| "user/orders/"
+	| "user/orders/?take=5"
 	| "user/mark-favourite/"
-	| "user/favourites/";
+	| "user/favourites/"
+	| "user/favourites/?take=5";
 
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";

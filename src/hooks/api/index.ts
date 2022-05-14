@@ -124,10 +124,10 @@ export const useCards = <T extends string, M>() => {
 	});
 };
 
-export const useOrders = <T extends string, M>(url = "user/orders/") => {
+export const usePaginateAPI = <T extends string, M>(url: Urls) => {
 	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["orders", url], (params) => {
 		console.log({ params });
-		return appFetch("user/orders/", {
+		return appFetch(url, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",

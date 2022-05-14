@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Image, Text, View, ViewStyle } from "react-native";
+import { Dimensions, Image, ImageSourcePropType, Text, View, ViewStyle } from "react-native";
 
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -13,6 +13,7 @@ interface EmptyOrderCard {
 	title: string;
 	description: string;
 	buttonText: string;
+	illustration: ImageSourcePropType;
 	onAction: () => void;
 	style?: ViewStyle;
 }
@@ -33,7 +34,7 @@ const EmptyInfoCard = ({ title, description, buttonText, style, ...props }: Empt
 				...style,
 			}}>
 			<View style={{ justifyContent: "center", alignItems: "center", marginTop: theme.spacing.small }}>
-				<Image source={require("../../assets/images/empty-illustration.png")} />
+				<Image source={props.illustration} />
 				<Text style={[theme.textStyles.h4, theme.textStyles.center, { marginTop: theme.spacing.small, marginBottom: theme.spacing.xxSmall }]}>
 					{title}
 				</Text>
