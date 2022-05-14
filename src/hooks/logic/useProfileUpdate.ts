@@ -9,7 +9,6 @@ import { ProfileSchema, UserProfile } from "../../utils/validation";
 import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
 import { breakFullName, isValidJSONString } from "../../utils";
 import { ScreenNavigationProp } from "../../navigation/types";
-import { faVanShuttle } from "@fortawesome/free-solid-svg-icons";
 
 const userProfile = (user: User) => {
 	const [firstName, lastName] = breakFullName(user?.fullname);

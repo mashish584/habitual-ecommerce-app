@@ -12,7 +12,6 @@ import { useHome } from "../../hooks/api";
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product } from "../../utils/schema.types";
-import { useUser } from "../../utils/store";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
