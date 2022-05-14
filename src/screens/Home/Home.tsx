@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import ProductCard from "../../components/Cards/ProductCard";
+import ProductCard, { PressAction } from "../../components/Cards/ProductCard";
 import { CategorySlider } from "../../components/CategorySlider";
 import Container from "../../components/Container";
 import ProfileImage from "../../components/ProfileImage";
@@ -9,8 +9,10 @@ import SectionHeading from "../../components/SectionHeading";
 import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
 import { useHome } from "../../hooks/api";
+import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product } from "../../utils/schema.types";
+import { useUser } from "../../utils/store";
 import theme from "../../utils/theme";
 
 import Shape from "./Shape";
@@ -23,8 +25,20 @@ interface HomeInfo {
 
 const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
 	const { data, isLoading } = useHome<"", HomeInfo>();
-
+	const { markProductAsFavourite, favouriteProductIds } = useProfileUpdate();
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
+
+	const handleCardAction = async (type: PressAction, product: Product) => {
+		try {
+			if (type === "card") {
+				navigation.navigate("Product", { product });
+			} else {
+				await markProductAsFavourite(product?.id);
+			}
+		} catch (error) {
+			console.log({ error });
+		}
+	};
 
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
@@ -51,9 +65,8 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 										<ProductCard
 											variant="large"
 											key={product.id}
-											onPress={() => {
-												navigation.navigate("Product", { product });
-											}}
+											isFavouriteProduct={favouriteProductIds?.includes(product.id)}
+											onPress={(action) => handleCardAction(action, product)}
 											item={product}
 											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
 										/>
@@ -70,7 +83,8 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 										<ProductCard
 											key={product?.id}
 											variant="small"
-											onPress={() => navigation.navigate("Product", { product })}
+											isFavouriteProduct={favouriteProductIds?.includes(product?.id)}
+											onPress={(action) => handleCardAction(action, product)}
 											item={product}
 											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
 										/>

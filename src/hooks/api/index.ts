@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Address, Urls } from "../../utils/types";
+import { Address, RequestMethods, Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
 import { UserState } from "../../utils/store";
 import { showToast } from "../../utils";
@@ -215,6 +215,18 @@ export const useUpdateTransaction = <T extends string, M>() => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(data),
+		});
+	});
+};
+
+export const useFavouriteProduct = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, { id: string; method: RequestMethods }>((data) => {
+		return appFetch("user/mark-favourite/", {
+			method: data.method,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			query: `?id=${data.id}`,
 		});
 	});
 };

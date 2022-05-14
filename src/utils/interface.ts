@@ -1,7 +1,7 @@
-import { ErrorMessage, FetchHeader } from "./types";
+import { ErrorMessage, FetchHeader, RequestMethods } from "./types";
 
 export interface FetchConfig {
-	method: "POST" | "GET" | "PATCH" | "DELETE" | "PUT";
+	method: RequestMethods;
 	headers: FetchHeader;
 	body?: any;
 	path?: string;

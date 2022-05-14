@@ -6,9 +6,10 @@ import { User } from "../../utils/schema.types";
 import { useUser } from "../../utils/store";
 import { ProfileSchema, UserProfile } from "../../utils/validation";
 
-import { useUpdateUser, useUserProfile } from "../api";
+import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
 import { breakFullName, isValidJSONString } from "../../utils";
 import { ScreenNavigationProp } from "../../navigation/types";
+import { faVanShuttle } from "@fortawesome/free-solid-svg-icons";
 
 const userProfile = (user: User) => {
 	const [firstName, lastName] = breakFullName(user?.fullname);
@@ -22,10 +23,11 @@ const userProfile = (user: User) => {
 };
 
 function useProfileUpdate<T extends string>(user?: User) {
-	const [{ id: userId, profile, joining_reasons }, setUser] = useUser((store) => [store.user, store.setUser]);
+	const [{ id: userId, profile, joining_reasons, favouriteProductIds }, setUser] = useUser((store) => [store.user, store.setUser]);
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const { mutateAsync, isLoading } = useUpdateUser<T, User>(userId);
 	const fetchProfile = useUserProfile<T, User>();
+	const updateFavouriteProduct = useFavouriteProduct<T, User>();
 
 	const formik = useFormik({
 		initialValues: userProfile(user),
@@ -59,6 +61,28 @@ function useProfileUpdate<T extends string>(user?: User) {
 		});
 	}, []);
 
+	const markProductAsFavourite = useCallback(
+		async (productId) => {
+			const productExist = favouriteProductIds?.includes(productId);
+			console.log({ productExist });
+			return updateFavouriteProduct.mutateAsync(
+				{ id: productId, method: productExist ? "DELETE" : "POST" },
+				{
+					onSuccess: (response) => {
+						console.log({ response });
+						if (response?.data) {
+							setUser(response.data);
+						}
+					},
+					onError: (error) => {
+						console.log({ error });
+					},
+				},
+			);
+		},
+		[favouriteProductIds],
+	);
+
 	const fetchUserInfo = useCallback(() => {
 		return fetchProfile.mutateAsync(userId, {
 			onSuccess: (response) => {
@@ -73,7 +97,7 @@ function useProfileUpdate<T extends string>(user?: User) {
 		});
 	}, []);
 
-	return { profile, joining_reasons, updateUserInfo, fetchUserInfo, isLoading, formik };
+	return { profile, joining_reasons, updateUserInfo, favouriteProductIds, fetchUserInfo, markProductAsFavourite, isLoading, formik };
 }
 
 export default useProfileUpdate;

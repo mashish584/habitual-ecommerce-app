@@ -1,26 +1,31 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useRef } from "react";
 import { TouchableOpacity, View, ViewStyle, Text, Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import LottieView from "lottie-react-native";
+
+import Pill from "../Pill/Pill";
 
 import { calculateOriginalPrice, generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
-import Pill from "../Pill/Pill";
 import { Product } from "../../utils/schema.types";
 
 type CardVariant = "large" | "small" | "wide";
+export type PressAction = "heart" | "card";
 interface ProductCard {
 	item: Partial<Product>;
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
 	contentStyle?: ViewStyle;
 	extraContent?: ReactNode;
-	onPress?: () => void;
+	isFavouriteProduct?: boolean;
+	onPress?: (action: PressAction) => void;
 }
 
 const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent, ...props }: ProductCard) => {
+	const heartRef = useRef<LottieView>();
 	const width = variant === "large" ? 284 : 156;
 	const height = variant === "large" ? 312 : 253;
 	const imageSectionHeight = variant === "large" ? 160 : 136;
@@ -30,6 +35,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	return (
 		<TouchableOpacity
 			{...props}
+			onPress={() => props.onPress("card")}
 			activeOpacity={0.9}
 			style={[
 				{
@@ -62,6 +68,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 					/>
 					{variant !== "wide" && (
 						<TouchableOpacity
+							onPress={() => props.onPress("heart")}
 							activeOpacity={0.9}
 							style={{
 								width: 32,
@@ -75,7 +82,11 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 								right: 8,
 								...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
 							}}>
-							<FontAwesomeIcon icon={faHeart as IconProp} />
+							{props.isFavouriteProduct ? (
+								<LottieView ref={heartRef} speed={2} source={require("../../assets/lottie/heart.json")} autoPlay loop={false} />
+							) : (
+								<FontAwesomeIcon icon={faHeart as IconProp} />
+							)}
 						</TouchableOpacity>
 					)}
 				</View>

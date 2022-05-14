@@ -44,12 +44,16 @@ export type Urls =
 	| "payment-success/"
 	| "user/address/"
 	| "cards/"
-	| "user/orders/";
+	| "user/orders/"
+	| "user/mark-favourite/"
+	| "user/favourites/";
 
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;
 };
+
+export type RequestMethods = "POST" | "GET" | "PATCH" | "DELETE" | "PUT";
 
 /* eslint-disable no-unused-vars */
 
