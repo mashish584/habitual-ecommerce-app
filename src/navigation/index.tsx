@@ -12,6 +12,7 @@ import Orders from "../screens/Orders/Orders";
 import { EditProfile, Profile, Addresses } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
 import { Wishlist } from "../screens/Wishlist";
+import { Search } from "../screens/Search";
 import GlobalUI from "../screens/GlobalUI";
 
 import { UserState } from "../utils/store";
@@ -59,7 +60,7 @@ const BottamTabScreen = () => {
 			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
-			<BottomTabStack.Screen name="Search" component={Home} />
+			<BottomTabStack.Screen name="Search" component={Search} />
 			<BottomTabStack.Screen name="Orders" component={Orders} />
 			<BottomTabStack.Screen name="Cart" component={Home} />
 		</BottomTabStack.Navigator>

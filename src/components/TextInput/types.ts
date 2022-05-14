@@ -1,4 +1,4 @@
-import { ViewStyle, KeyboardType } from "react-native";
+import { ViewStyle, KeyboardType, ImageStyle } from "react-native";
 
 export type MessageType = "success" | "error" | "null";
 export type InputType = KeyboardType | "text" | "search" | "password";
@@ -16,4 +16,5 @@ export interface TextInput extends Omit<Label, "label"> {
 	containerStyle?: ViewStyle;
 	label?: string;
 	isLoading?: boolean;
+	searchIconStyle?: ImageStyle;
 }

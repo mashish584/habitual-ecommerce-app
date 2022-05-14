@@ -67,7 +67,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 					secureTextEntry={props.type === "password" && !showPassword}
 					{...props}
 				/>
-				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={[styles.searchIcon, props.searchIconStyle]} />}
 				{props.type === "password" && (
 					<TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword((prev) => !prev)}>
 						<FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} color={theme.colors.shades.gray_80} />
