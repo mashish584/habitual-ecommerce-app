@@ -5,9 +5,15 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import theme from "../../utils/theme";
 
-const SearchItem = () => {
+interface SearchItem {
+	text: string;
+	onAction: () => void;
+}
+
+const SearchItem = ({ text, onAction }: SearchItem) => {
 	return (
 		<Pressable
+			onPress={onAction}
 			style={[
 				theme.rowStyle,
 				{
@@ -19,7 +25,7 @@ const SearchItem = () => {
 					borderBottomColor: theme.colors.shades.gray_20,
 				},
 			]}>
-			<Text>Music</Text>
+			<Text>{text}</Text>
 			<FontAwesomeIcon icon={faAngleRight as IconProp} color={theme.colors.shades.gray_40} />
 		</Pressable>
 	);

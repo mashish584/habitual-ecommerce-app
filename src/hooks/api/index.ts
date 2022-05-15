@@ -124,15 +124,14 @@ export const useCards = <T extends string, M>() => {
 	});
 };
 
-export const usePaginateAPI = <T extends string, M>(url: Urls) => {
-	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["orders", url], (params) => {
-		console.log({ params });
+export const usePaginateAPI = <T extends string, M>(url: Urls, query: string = "") => {
+	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["paginatedList", url], (params) => {
 		return appFetch(url, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			url: params?.pageParam?.url || url,
+			url: params?.pageParam?.url || `${url}${query}`,
 		});
 	});
 };

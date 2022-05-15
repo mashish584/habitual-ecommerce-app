@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, FlatListProps, View, ViewStyle } from "react-native";
 import { usePaginateAPI } from "../../hooks/api";
 import { Urls } from "../../utils/types";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	url: Urls;
-	skelton: () => JSX.Element;
+	query?: string;
+	skelton?: () => JSX.Element;
 	skeltonContainerStyle?: ViewStyle;
+	isRefresh?: boolean;
+	onLoadStart?: () => void;
+	onLoadEnd?: () => void;
 }
 
 const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
-	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url);
+	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url, props.query);
+	const extranProps = {} as FlatListProps<any>;
+
+	useEffect(() => {
+		if (props.onLoadStart && props.onLoadEnd) {
+			if (isLoading === true || isRefetching === true) {
+				props.onLoadStart();
+			}
+			if (isLoading === false && isRefetching === false) {
+				props.onLoadEnd();
+			}
+		}
+	}, [isLoading, isRefetching]);
+
+	useEffect(() => {
+		if (props.query !== undefined) {
+			refetch();
+		}
+	}, [props.query]);
+
+	if (props.isRefresh) {
+		extranProps.onRefresh = () => refetch();
+		extranProps.refreshing = isRefetching;
+	}
 
 	const info = data?.pages.reduce(
 		(prev, page) => {
@@ -26,7 +53,7 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 		{ data: [], next: null },
 	);
 
-	if (isLoading) {
+	if (isLoading && skelton) {
 		const Skelton = skelton;
 		return (
 			<View style={props.skeltonContainerStyle}>
@@ -40,9 +67,8 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 	return (
 		<FlatList
 			{...{ ...props }}
+			{...{ ...extranProps }}
 			data={info?.data}
-			onRefresh={() => refetch()}
-			refreshing={isRefetching}
 			onEndReached={() => {
 				if (info?.next) {
 					fetchNextPage({

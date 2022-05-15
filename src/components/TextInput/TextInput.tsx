@@ -2,6 +2,7 @@ import React from "react";
 import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, Image, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import Loader from "../Loader";
 
@@ -70,7 +71,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={[styles.searchIcon, props.searchIconStyle]} />}
 				{props.type === "password" && (
 					<TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword((prev) => !prev)}>
-						<FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} color={theme.colors.shades.gray_80} />
+						<FontAwesomeIcon icon={!showPassword ? (faEyeSlash as IconProp) : (faEye as IconProp)} color={theme.colors.shades.gray_80} />
 					</TouchableOpacity>
 				)}
 				{props.isLoading && <Loader style={{ alignItems: "flex-end", right: theme.spacing.medium }} />}

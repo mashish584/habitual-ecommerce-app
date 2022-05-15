@@ -56,6 +56,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 							) : (
 								<PaginatedFlatlist
 									url="user/favourites/"
+									query="?take=5"
 									contentContainerStyle={{ paddingBottom: bottom * 2, alignItems: "center" }}
 									showsVerticalScrollIndicator={false}
 									keyExtractor={(item) => item.id}

@@ -57,7 +57,8 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />

@@ -49,7 +49,8 @@ const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 										style={{ backgroundColor: theme.colors.shades.gray_20, borderWidth: 0 }}
 									/> */}
 									<PaginatedFlatlist
-										url="user/orders/?take=5"
+										url="user/orders/"
+										query="?take=5"
 										contentContainerStyle={{ paddingBottom: bottom * 2 }}
 										showsVerticalScrollIndicator={false}
 										keyExtractor={(item) => item.id}
