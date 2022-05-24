@@ -55,6 +55,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 								/>
 							) : (
 								<PaginatedFlatlist
+									queryName="Favourite Products"
 									url="user/favourites/"
 									query="?take=5"
 									contentContainerStyle={{ paddingBottom: bottom * 2, alignItems: "center" }}

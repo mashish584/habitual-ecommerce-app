@@ -53,8 +53,9 @@ const Search = () => {
 						</View>
 						<View style={{ height: "100%", backgroundColor: theme.colors.shades.white }}>
 							<PaginatedFlatlist
+								queryName="Search Products"
 								url={"products/"}
-								query={`?take=7&select=id&select=title&search=${searchQuery}`}
+								query={`?take=7&select=id&select=title&select=id&search=${searchQuery}`}
 								contentContainerStyle={{ paddingBottom: 0 }}
 								showsVerticalScrollIndicator={false}
 								keyExtractor={(item) => item.id}

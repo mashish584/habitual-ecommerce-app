@@ -124,8 +124,8 @@ export const useCards = <T extends string, M>() => {
 	});
 };
 
-export const usePaginateAPI = <T extends string, M>(url: Urls, query: string = "") => {
-	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["paginatedList", url], (params) => {
+export const usePaginateAPI = <T extends string, M>(url: Urls, query: string = "", queryName = "") => {
+	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["queryName", url], (params) => {
 		return appFetch(url, {
 			method: "GET",
 			headers: {

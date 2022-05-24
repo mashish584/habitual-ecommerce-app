@@ -5,6 +5,7 @@ import { Urls } from "../../utils/types";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	url: Urls;
+	queryName: string;
 	query?: string;
 	skelton?: () => JSX.Element;
 	skeltonContainerStyle?: ViewStyle;
@@ -14,7 +15,7 @@ interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 }
 
 const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
-	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url, props.query);
+	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url, props.query, props.queryName);
 	const extranProps = {} as FlatListProps<any>;
 
 	useEffect(() => {
