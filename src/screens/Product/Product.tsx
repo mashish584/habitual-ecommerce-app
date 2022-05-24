@@ -72,7 +72,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 
 	const productInfo = fetchProductInfo.data?.data || product;
 
-	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length);
+	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length || 2);
 
 	// → Slide Transitions
 	const slideBackgroundColor = interpolateColor(x, {

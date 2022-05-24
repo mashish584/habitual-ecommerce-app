@@ -20,8 +20,8 @@ const PaymentCards = () => {
 	return (
 		<>
 			<Animated.ScrollView horizontal={true} showsHorizontalScrollIndicator={false} decelerationRate="fast" snapToInterval={width} {...scrollHandler}>
-				{cards.data?.data.map((card) => (
-					<CreditCard card={card} />
+				{cards.data?.data.map((card, index) => (
+					<CreditCard key={index} card={card} />
 				))}
 			</Animated.ScrollView>
 			<View style={[theme.rowStyle, { marginTop: theme.spacing.medium, justifyContent: "center" }]}>
