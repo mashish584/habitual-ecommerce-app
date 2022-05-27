@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { TouchableOpacity, View, ViewStyle, Text, Image } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +31,20 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	const imageSectionHeight = variant === "large" ? 160 : 136;
 
 	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
+
+	const previousValue = React.useRef(null);
+
+	useEffect(() => {
+		console.log({ pre: previousValue.current, isFav: props.isFavouriteProduct });
+		if (previousValue.current !== props.isFavouriteProduct && heartRef.current) {
+			previousValue.current = props.isFavouriteProduct;
+			if (props.isFavouriteProduct) {
+				heartRef.current.play();
+			} else {
+				heartRef.current.reset();
+			}
+		}
+	}, [props.isFavouriteProduct]);
 
 	return (
 		<TouchableOpacity
@@ -82,11 +96,14 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 								right: 8,
 								...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
 							}}>
-							{props.isFavouriteProduct ? (
-								<LottieView ref={heartRef} speed={2} source={require("../../assets/lottie/heart.json")} autoPlay loop={false} />
-							) : (
-								<FontAwesomeIcon icon={faHeart as IconProp} />
-							)}
+							{!props.isFavouriteProduct && <FontAwesomeIcon icon={faHeart as IconProp} />}
+							<LottieView
+								ref={heartRef}
+								style={{ height: props.isFavouriteProduct ? 70 : 0 }}
+								speed={2}
+								source={require("../../assets/lottie/heart.json")}
+								loop={false}
+							/>
 						</TouchableOpacity>
 					)}
 				</View>
