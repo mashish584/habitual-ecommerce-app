@@ -52,6 +52,7 @@
 		"react-native-safe-area-context": "^3.3.2",
 		"react-native-screens": "^3.11.1",
 		"react-native-skeleton-placeholder": "^5.0.0",
+		"react-native-splash-screen": "^3.3.0",
 		"react-native-svg": "^12.1.1",
 		"react-native-toast-message": "^2.1.1",
 		"react-query": "^3.34.19",

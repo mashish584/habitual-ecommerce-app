@@ -16,7 +16,7 @@
 		6D5ABE6F386E54EAF339B7D7 /* libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 314A3CA7C7963D529DA5372B /* libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a */; };
 		73602A46281B852E005540EF /* Enable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73602A45281B852E005540EF /* Enable.swift */; };
 		7373248227CFA5F2002B802D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7373248127CFA5F2002B802D /* GoogleService-Info.plist */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		7390802E284EF2D1002A1EFF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7390802D284EF2D1002A1EFF /* Launch Screen.storyboard */; };
 		A66C19284E81B9533909CE3A /* libPods-habitual_ecommerce_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC6C9FDC433048E5980AED9 /* libPods-habitual_ecommerce_app.a */; };
 		AF4C749411AC4229BB10AE86 /* Lato-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A4BCCF27433454C8CD55DFF /* Lato-Semibold.ttf */; };
 		DB244FAF7DB9405D96895AFA /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F55C9F099C67460CB088C530 /* Lato-Medium.ttf */; };
@@ -51,7 +51,7 @@
 		73602A44281B852E005540EF /* habitual_ecommerce_app-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "habitual_ecommerce_app-Bridging-Header.h"; sourceTree = "<group>"; };
 		73602A45281B852E005540EF /* Enable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enable.swift; sourceTree = "<group>"; };
 		7373248127CFA5F2002B802D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = habitual_ecommerce_app/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7390802D284EF2D1002A1EFF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B905842065C34C18A3869CFD /* Lato-Heavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Heavy.ttf"; path = "../src/assets/fonts/Lato-Heavy.ttf"; sourceTree = "<group>"; };
 		BF59FE7FE8E49E5DA5F04A8B /* Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.release.xcconfig"; path = "Target Support Files/Pods-habitual_ecommerce_app-habitual_ecommerce_appTests/Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.release.xcconfig"; sourceTree = "<group>"; };
 		D222DA69B57F4AD78DC17C5D /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../src/assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -106,10 +106,10 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				7373248127CFA5F2002B802D /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				73602A45281B852E005540EF /* Enable.swift */,
 				73602A44281B852E005540EF /* habitual_ecommerce_app-Bridging-Header.h */,
+				7390802D284EF2D1002A1EFF /* Launch Screen.storyboard */,
 			);
 			name = habitual_ecommerce_app;
 			sourceTree = "<group>";
@@ -275,9 +275,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				7373248227CFA5F2002B802D /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				7390802E284EF2D1002A1EFF /* Launch Screen.storyboard in Resources */,
 				ECB4C52593BC4CCB9DAB3146 /* Lato-Bold.ttf in Resources */,
 				59F78EFB454544A19E277B2C /* Lato-Heavy.ttf in Resources */,
 				DB244FAF7DB9405D96895AFA /* Lato-Medium.ttf in Resources */,

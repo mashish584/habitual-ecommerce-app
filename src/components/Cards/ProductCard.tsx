@@ -35,7 +35,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	const previousValue = React.useRef(null);
 
 	useEffect(() => {
-		console.log({ pre: previousValue.current, isFav: props.isFavouriteProduct });
+		// console.log({ pre: previousValue.current, isFav: props.isFavouriteProduct });
 		if (previousValue.current !== props.isFavouriteProduct && heartRef.current) {
 			previousValue.current = props.isFavouriteProduct;
 			if (props.isFavouriteProduct) {
