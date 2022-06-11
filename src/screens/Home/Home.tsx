@@ -73,7 +73,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 								})}
 							</ScrollView>
 							{/* Hot Deals */}
-							<SectionHeading title="Hot Deals" actionText="See All" onPress={() => {}} />
+							<SectionHeading title="Hot Deals" />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
 								{isLoading && <HotDealListing />}
 								{hotDeals?.map((product, index) => {

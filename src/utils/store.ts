@@ -12,7 +12,10 @@ export type QuantityAction = "+" | "-";
 interface UIInterface {
 	showConfirmationModal: boolean;
 	message: string;
-	onAction: (action: "Yes" | "No") => void;
+	acceptText: string;
+	rejectText: string;
+	headerTitle: string;
+	onAction: ((action: "Yes" | "No") => void) | null;
 }
 
 export interface UIState extends UIInterface {
@@ -128,6 +131,9 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 export const useUI = create<UIState, SetState<Partial<UIInterface>>, GetState<UIState>, StoreApi<UIState>>((set) => ({
 	showConfirmationModal: false,
 	message: "",
+	headerTitle: "Confirmation",
+	acceptText: "Yes",
+	rejectText: "No",
 	onAction: null,
 	updateValue: (value) => set(value),
 }));

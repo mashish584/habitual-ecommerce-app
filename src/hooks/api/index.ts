@@ -13,11 +13,18 @@ type AddressData = {
 	default?: boolean;
 };
 
+async function handleAPIError(response, endpoint: string) {
+	response = await response.json();
+	console.log({ response });
+	const message = response.message || `Unable to fetch ${endpoint}`;
+	showToast("error", { title: "Error", message });
+}
+
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
 	try {
 		const userAsyncData = await AsyncStorage.getItem("user");
-		let token = null;
+		let token;
 
 		if (userAsyncData) {
 			let userStoreInfo = JSON.parse(userAsyncData) as { state: Pick<UserState, "token" | "user"> };
@@ -52,12 +59,12 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			options.headers["token"] = `Bearer ${token}`;
 		}
 
-		let response = await fetch(endpoint, { ...options });
+		const response = await fetch(endpoint, { ...options });
 
 		if (response.status === 200) {
 			return response.json();
 		} else {
-			throw new Error(`Unable to fetch ${endpoint}`);
+			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
 		showToast("error", { title: "Network Error", message: error?.message });

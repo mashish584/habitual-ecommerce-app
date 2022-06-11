@@ -8,7 +8,9 @@ import { BottomSheet, BottomSheetI } from "../BottomSheet";
 
 interface Confirmation extends BottomSheetI {
 	message: string;
-	onAction: (type: "Yes" | "No") => void;
+	acceptText: string;
+	rejectText: string;
+	onAction: ((type: "Yes" | "No") => void) | null;
 }
 
 const Confirmation = (props: Confirmation) => {
@@ -22,12 +24,24 @@ const Confirmation = (props: Confirmation) => {
 					alignItems: "center",
 				}}>
 				<Text style={[theme.textStyles.body_reg, { marginBottom: theme.spacing.small }]}>{props.message}</Text>
-				<TouchableOpacity style={styles.action} onPress={() => props.onAction("Yes")}>
-					<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.accents.teal }]}>Yes</Text>
+				<TouchableOpacity
+					style={styles.action}
+					onPress={() => {
+						if (props.onAction) {
+							props.onAction("Yes");
+						}
+					}}>
+					<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.accents.teal }]}>{props.acceptText}</Text>
 				</TouchableOpacity>
 				<Line />
-				<TouchableOpacity style={styles.action} onPress={() => props.onAction("No")}>
-					<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.accents.red }]}>No</Text>
+				<TouchableOpacity
+					style={styles.action}
+					onPress={() => {
+						if (props.onAction) {
+							props.onAction("No");
+						}
+					}}>
+					<Text style={[theme.textStyles.body_reg, theme.textStyles.center, { color: theme.colors.accents.red }]}>{props.rejectText}</Text>
 				</TouchableOpacity>
 			</View>
 		</BottomSheet>

@@ -16,7 +16,7 @@ const GlobalUI = () => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const insets = useSafeAreaInsets();
 	const { toggleCart, visible } = useCart();
-	const { showConfirmationModal, message, onAction, updateValue } = useUI();
+	const { showConfirmationModal, message, onAction, updateValue, acceptText, rejectText, headerTitle } = useUI();
 
 	return (
 		<>
@@ -35,9 +35,11 @@ const GlobalUI = () => {
 			<Confirmation
 				visible={showConfirmationModal}
 				message={message}
-				headerTitle="Confirmation"
+				headerTitle={headerTitle}
 				onClose={() => updateValue({ showConfirmationModal: false })}
 				onAction={onAction}
+				acceptText={acceptText}
+				rejectText={rejectText}
 			/>
 			<NoNetwork />
 			<Toast topOffset={insets.top + theme.spacing.xSmall} />
