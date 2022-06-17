@@ -160,6 +160,12 @@ const textStyles: Record<string, TextStyle> = {
 	center: {
 		textAlign: "center",
 	},
+	hightlightText: {
+		fontFamily: fonts.lato.heavy,
+		fontSize: fontSizes.sm,
+		lineHeight: fontSizes.sm + 8,
+		color: "#FE8668",
+	},
 };
 
 const containerStyle: ViewStyle = {

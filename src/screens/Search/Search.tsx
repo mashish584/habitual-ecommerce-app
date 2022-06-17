@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { View } from "react-native";
+import { Text, TextInput as RNTextInput, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
 import Container from "../../components/Container";
@@ -15,7 +15,7 @@ import SearchItem from "./SearchItem";
 const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const searchInputRef = React.useRef(null);
+	const searchInputRef = React.useRef<RNTextInput>(null);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -52,28 +52,43 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 								isLoading={isLoading}
 							/>
 						</View>
-						<View style={{ height: "100%", backgroundColor: theme.colors.shades.white }}>
-							<PaginatedFlatlist
-								queryName="Search Products"
-								url={"products/"}
-								query={`?take=7&select=id&select=title&select=id&search=${searchQuery}`}
-								contentContainerStyle={{ paddingBottom: 0 }}
-								showsVerticalScrollIndicator={false}
-								keyExtractor={(item) => item.id}
-								isRefresh={false}
-								renderItem={({ item }) => {
-									return (
-										<SearchItem
-											text={item.title}
-											onAction={() => {
-												navigation.navigate("Product", { product: { ...item } });
-											}}
-										/>
-									);
-								}}
-								onLoadStart={onLoadStart}
-								onLoadEnd={onLoadEnd}
-							/>
+						<View style={{ height: "100%", backgroundColor: theme.colors.shades.gray_20 }}>
+							{searchQuery !== "" && (
+								<PaginatedFlatlist
+									queryName="Search Products"
+									url={"products/"}
+									query={`?take=7&select=id&select=title&select=id&select=slideColors&search=${searchQuery}`}
+									contentContainerStyle={{
+										paddingBottom: 0,
+										backgroundColor: theme.colors.shades.white,
+										flex: 1,
+										borderTopColor: theme.colors.shades.gray_40,
+										borderTopWidth: 0.2,
+									}}
+									showsVerticalScrollIndicator={false}
+									keyExtractor={(item) => item.id}
+									isRefresh={false}
+									ListEmptyComponent={() => (
+										<View style={[theme.rowStyle, { alignItems: "center", marginTop: theme.spacing.medium, justifyContent: "center" }]}>
+											<Text style={{ textAlign: "center" }}>No product found for </Text>
+											<Text style={theme.textStyles.hightlightText}>{`"${searchQuery}"`}</Text>
+										</View>
+									)}
+									renderItem={({ item }) => {
+										return (
+											<SearchItem
+												query={searchQuery}
+												text={item.title}
+												onAction={() => {
+													navigation.navigate("Product", { product: { ...item } });
+												}}
+											/>
+										);
+									}}
+									onLoadStart={onLoadStart}
+									onLoadEnd={onLoadEnd}
+								/>
+							)}
 						</View>
 					</>
 				);
