@@ -57,7 +57,7 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 								<PaginatedFlatlist
 									queryName="Search Products"
 									url={"products/"}
-									query={`?take=7&select=id&select=title&select=id&select=slideColors&search=${searchQuery}`}
+									query={`?take=7&select=id&select=title&select=id&select=slideColors&select=images&search=${searchQuery}`}
 									contentContainerStyle={{
 										paddingBottom: 0,
 										backgroundColor: theme.colors.shades.white,
@@ -80,7 +80,10 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 												query={searchQuery}
 												text={item.title}
 												onAction={() => {
-													navigation.navigate("Product", { product: { ...item } });
+													const product = { ...item };
+													product.image = product.images[0].url;
+													delete product.images;
+													navigation.navigate("Product", { product });
 												}}
 											/>
 										);

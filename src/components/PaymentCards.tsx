@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, View, Text } from "react-native";
 import { useScrollHandler } from "react-native-redash";
 import Animated from "react-native-reanimated";
 
@@ -16,6 +16,14 @@ const width = Dimensions.get("screen").width;
 const PaymentCards = () => {
 	const { scrollHandler, x } = useScrollHandler();
 	const cards = useCards<"", Card[]>();
+
+	if (cards.data?.data.length === 0) {
+		return (
+			<Text style={[theme.textStyles.h6, { color: theme.colors.shades.gray_60, marginTop: theme.spacing.small, marginLeft: theme.spacing.medium }]}>
+				{'No cards available. Tap on "Pay Now" to add card.'}
+			</Text>
+		);
+	}
 
 	return (
 		<>

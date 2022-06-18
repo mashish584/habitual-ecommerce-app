@@ -5,7 +5,7 @@ import { interpolateColor, useScrollHandler, useValue } from "react-native-redas
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import crashlytics from "@react-native-firebase/crashlytics";
+// import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
@@ -28,8 +28,8 @@ import styles from "./styles";
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
 function getSlideColors(slideColors: SlideColors[], length: number) {
-	const slides = [];
-	const textColors = [];
+	const slides: Array<{ color: string }> = [];
+	const textColors: Array<{ color: string }> = [];
 
 	if (slideColors?.length) {
 		slideColors.map((slideColor) => {
@@ -99,7 +99,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const transitionProductInfo = (isSlide: boolean) => {
 		const config: Animated.TimingConfig = {
 			duration: 500,
-			toValue: null,
+			toValue: 0,
 			easing: Easing.linear,
 		};
 
@@ -204,9 +204,6 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								/>
 								<View>
 									<Animated.Text
-										onPress={() => {
-											crashlytics().crash();
-										}}
 										style={
 											[
 												theme.textStyles.h4,

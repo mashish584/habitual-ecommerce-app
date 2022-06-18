@@ -115,7 +115,6 @@ const CartItem = ({ item, onUpdate }: ShoppingCartItem) => {
 
 const Cart = ({ ...props }: Cart) => {
 	const { items, updateQuantity, total } = useCart();
-
 	return (
 		<BottomSheet {...{ ...props }}>
 			<ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 100, height: Dimensions.get("window").height * 0.3 }}>

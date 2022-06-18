@@ -5,8 +5,9 @@ import Container from "../../components/Container";
 import { Button } from "../../components/Button";
 import SectionHeading from "../../components/SectionHeading";
 import Header, { ActionType } from "../../components/Header/Header";
-import { TextInput } from "../../components/TextInput";
+// import { TextInput } from "../../components/TextInput";
 import { Back } from "../../components/Svg";
+import Line from "../../components/Line";
 import AddressText from "../../components/AddressText";
 import PaymentCards from "../../components/PaymentCards";
 
@@ -78,7 +79,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 										{addresses?.length === 0 ? (
 											<View style={theme.rowStyle}>
 												<Text style={{ color: theme.colors.shades.gray_80 }}>Please add address to continue.</Text>
-												<Pressable onPress={() => navigation.navigate("Address")} style={{ marginLeft: 5 }}>
+												<Pressable onPress={() => navigation.navigate("Address", {})} style={{ marginLeft: 5 }}>
 													<Text style={[theme.textStyles.link_sm]}>Add Address</Text>
 												</Pressable>
 											</View>
@@ -90,10 +91,11 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 									</View>
 								</View>
 								{/* Promo Code */}
-								<View style={[theme.rowStyle, { alignItems: "center", marginTop: theme.spacing.medium }]}>
+								{/* <View style={[theme.rowStyle, { alignItems: "center", marginTop: theme.spacing.medium }]}>
 									<TextInput type="text" placeholder="Promo Code" containerStyle={{ flex: 1, marginRight: theme.spacing.xxSmall, marginBottom: 0 }} />
 									<Button variant="primary" text="Apply" style={{ width: 100 }} onPress={() => {}} />
-								</View>
+								</View> */}
+								<Line style={{ marginTop: theme.spacing.medium, height: 0.5 }} />
 								{/* Checkout Meta Info */}
 								<View style={[theme.rowStyle, { justifyContent: "space-between", marginTop: theme.spacing.normal, alignItems: "center" }]}>
 									<Text style={[theme.textStyles.pill_sm, { textTransform: "uppercase", color: theme.colors.shades.gray_60 }]}>Delivery</Text>

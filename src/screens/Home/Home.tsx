@@ -94,7 +94,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							{isLoading && <InterestsSkelton />}
 							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
 								<>
-									<SectionHeading title="Your Interests" actionText="See All" onPress={() => {}} />
+									<SectionHeading title="Your Interests" />
 									<CategorySlider margin={theme.spacing.medium} data={userInterests} />
 								</>
 							)}
