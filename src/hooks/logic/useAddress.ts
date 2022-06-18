@@ -7,6 +7,7 @@ import { User } from "../../utils/schema.types";
 import { useUser } from "../../utils/store";
 
 import { useRemoveAddress, useUpdateAddress } from "../api";
+import { showToast } from "../../utils";
 
 type AddressT = Omit<Address, "id" | "default">;
 
@@ -24,13 +25,15 @@ function useAddress(address?: Address) {
 	const setUser = useUser((store) => store.setUser);
 	const { mutateAsync, ...updateAddress } = useUpdateAddress<"address" | "path" | "default" | "method", User>(address?.id);
 	const removeAddress = useRemoveAddress<"path", User>();
+
 	const formik: FormikProps<AddressT> = useFormik({
 		initialValues: values,
 		validationSchema: AddressSchema,
 		validateOnChange: true,
 		onSubmit: async (data: AddressT) => {
+			const updateValues = { ...data };
+
 			if (address?.id) {
-				const updateValues = { ...data };
 				for (let key in updateValues) {
 					if (updateValues[key] === address[key]) {
 						delete updateValues[key];
@@ -43,9 +46,12 @@ function useAddress(address?: Address) {
 			}
 
 			return mutateAsync(
-				{ address: data },
+				{ address: updateValues },
 				{
 					onSuccess: (response) => {
+						if (response.message) {
+							showToast("success", { title: "Habitual Ecommerce", message: response.message });
+						}
 						setUser(response.data);
 					},
 					onError: (err) => {
