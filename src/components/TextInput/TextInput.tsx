@@ -56,6 +56,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 							borderWidth: 1,
 							borderColor: theme.colors.shades.gray_40,
 							paddingHorizontal: theme.spacing.small,
+							color: theme.colors.shades.gray_80,
 							...textInputStyle,
 						},
 						isFocused && shadowStyle,

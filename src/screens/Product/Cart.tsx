@@ -3,7 +3,7 @@ import { View, Image, Text, Animated, TouchableOpacity, ScrollView, Dimensions }
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import Swipeable from "react-native-gesture-handler/Swipeable";
+import { Swipeable, GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { BottomSheet, BottomSheetI } from "../../components/BottomSheet";
 import { Button } from "../../components/Button";
@@ -88,28 +88,30 @@ const CartItem = ({ item, onUpdate }: ShoppingCartItem) => {
 	const product = item.product;
 
 	return (
-		<Swipeable renderRightActions={(progress, dragX) => <AddCartActions dragX={dragX} quantity={item.quantity} onUpdate={onUpdate} />}>
-			<View
-				style={[
-					theme.rowStyle,
-					{
-						height: 100,
-						borderBottomWidth: 1,
-						borderBottomColor: theme.colors.shades.gray_20,
-						alignItems: "center",
-						paddingHorizontal: theme.spacing.medium,
-					},
-				]}>
-				<View style={{ width: 70, height: 68, backgroundColor: theme.colors.shades.gray_20, borderRadius: 5 }}>
-					<Image source={{ uri: product.image }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
+		<GestureHandlerRootView>
+			<Swipeable renderRightActions={(progress, dragX) => <AddCartActions dragX={dragX} quantity={item.quantity} onUpdate={onUpdate} />}>
+				<View
+					style={[
+						theme.rowStyle,
+						{
+							height: 100,
+							borderBottomWidth: 1,
+							borderBottomColor: theme.colors.shades.gray_20,
+							alignItems: "center",
+							paddingHorizontal: theme.spacing.medium,
+						},
+					]}>
+					<View style={{ width: 70, height: 68, backgroundColor: theme.colors.shades.gray_20, borderRadius: 5 }}>
+						<Image source={{ uri: product.image }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
+					</View>
+					<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center", paddingLeft: theme.spacing.small }]}>
+						<Text style={[theme.textStyles.body_reg, { flex: 0.6 }]}>{product.title}</Text>
+						<Text style={theme.textStyles.h6}>x{item.quantity}</Text>
+						<Text style={theme.textStyles.h5}>${product.price}</Text>
+					</View>
 				</View>
-				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center", paddingLeft: theme.spacing.small }]}>
-					<Text style={[theme.textStyles.body_reg, { flex: 0.6 }]}>{product.title}</Text>
-					<Text style={theme.textStyles.h6}>x{item.quantity}</Text>
-					<Text style={theme.textStyles.h5}>${product.price}</Text>
-				</View>
-			</View>
-		</Swipeable>
+			</Swipeable>
+		</GestureHandlerRootView>
 	);
 };
 

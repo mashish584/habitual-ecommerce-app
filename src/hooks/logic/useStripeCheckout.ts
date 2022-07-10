@@ -33,11 +33,11 @@ export const useStripeCheckout = () => {
 						paymentIntentClientSecret: response.data.paymentIntent,
 						customerEphemeralKeySecret: response.data.ephemeralKey,
 						customerId: response.data.customer,
+						merchantDisplayName: "Habitual Ecommerce",
 					});
 
 					if (!error) {
 						const { error } = await presentPaymentSheet();
-
 						if (!error) {
 							const transactionData = {
 								transactionId: response.data.paymentId,

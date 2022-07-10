@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Pressable, ScrollView, View } from "react-native";
+import { StyleSheet, Pressable, ScrollView, View, Text } from "react-native";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -46,28 +46,35 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 							style={[styles.addBtn, { bottom: bottom + theme.spacing.small }]}
 							onPress={() => navigation.navigate("Address")}
 						/>
-						<ScrollView contentContainerStyle={styles.containerStyle}>
-							{addresses.map((address, index) => {
-								const activeCardStyle = address.default ? { borderWidth: 1, borderColor: theme.colors.accents.teal } : {};
-								return (
-									<Card key={address.id} cardStyle={{ ...styles.addressCard, ...activeCardStyle }}>
-										<AddressText address={{ ...address }} />
-										<Pressable
-											onPress={() => {
-												setOptions({ visible: true, index });
-											}}
-											style={[styles.action, styles.more]}>
-											{[...Array(3)].map((_, index) => (
-												<View key={index} style={styles.circle} />
-											))}
-										</Pressable>
-										<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.check]}>
-											{address.default && <FontAwesomeIcon icon={faCheckCircle as IconProp} color={theme.colors.accents.teal} />}
-										</Pressable>
-									</Card>
-								);
-							})}
-						</ScrollView>
+						{addresses.length > 0 && (
+							<ScrollView contentContainerStyle={styles.containerStyle}>
+								{addresses.map((address, index) => {
+									const activeCardStyle = address.default ? { borderWidth: 1, borderColor: theme.colors.accents.teal } : {};
+									return (
+										<Card key={address.id} cardStyle={{ ...styles.addressCard, ...activeCardStyle }}>
+											<AddressText address={{ ...address }} />
+											<Pressable
+												onPress={() => {
+													setOptions({ visible: true, index });
+												}}
+												style={[styles.action, styles.more]}>
+												{[...Array(3)].map((_, index) => (
+													<View key={index} style={styles.circle} />
+												))}
+											</Pressable>
+											<Pressable onPress={() => markAddressAsDefault(address.id)} style={[styles.action, styles.check]}>
+												{address.default && <FontAwesomeIcon icon={faCheckCircle as IconProp} color={theme.colors.accents.teal} />}
+											</Pressable>
+										</Card>
+									);
+								})}
+							</ScrollView>
+						)}
+						{addresses.length === 0 && (
+							<Text style={[theme.textStyles.h5, theme.textStyles.center, { color: theme.colors.shades.gray_60, marginTop: theme.spacing.medium }]}>
+								No address added.
+							</Text>
+						)}
 					</Curve>
 					<AddressOptions
 						visible={options.visible}

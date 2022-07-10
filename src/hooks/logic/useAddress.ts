@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { FormikProps, useFormik } from "formik";
+import { useNavigation } from "@react-navigation/native";
 
 import { Address } from "../../utils/types";
 import { AddressSchema } from "../../utils/validation";
@@ -8,6 +9,7 @@ import { useUser } from "../../utils/store";
 
 import { useRemoveAddress, useUpdateAddress } from "../api";
 import { showToast } from "../../utils";
+import { ScreenNavigationProp } from "../../navigation/types";
 
 type AddressT = Omit<Address, "id" | "default">;
 
@@ -22,6 +24,7 @@ const values: AddressT = {
 };
 
 function useAddress(address?: Address) {
+	const navigation = useNavigation<ScreenNavigationProp>();
 	const setUser = useUser((store) => store.setUser);
 	const { mutateAsync, ...updateAddress } = useUpdateAddress<"address" | "path" | "default" | "method", User>(address?.id);
 	const removeAddress = useRemoveAddress<"path", User>();
@@ -51,6 +54,7 @@ function useAddress(address?: Address) {
 					onSuccess: (response) => {
 						if (response.message) {
 							showToast("success", { title: "Habitual Ecommerce", message: response.message });
+							navigation.goBack();
 						}
 						setUser(response.data);
 					},
@@ -85,7 +89,6 @@ function useAddress(address?: Address) {
 			{
 				onSuccess: (response) => {
 					if (response?.data) {
-						console.log("Address removed.");
 						setUser(response.data);
 					}
 				},

@@ -37,6 +37,8 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			endpoint = `${API_URL}${endpoint}`;
 		}
 
+		// console.log({ endpoint, options });
+
 		if (options.path) {
 			delete options.path;
 		}
@@ -75,6 +77,10 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 
 export const useUserProfile = <T extends string, M>() => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((profileId) => {
+		if (!profileId) {
+			showToast("error", { title: "Error", message: "Please provide profile Id." });
+			return;
+		}
 		return appFetch("user/", {
 			method: "GET",
 			headers: {

@@ -16,6 +16,7 @@ import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { useCart, useUser } from "../../utils/store";
 
 import { useStripeCheckout } from "../../hooks/logic/useStripeCheckout";
+import { showToast } from "../../utils";
 
 // spacing of bot
 const footerTopPadding = theme.spacing.medium;
@@ -27,6 +28,11 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 	const total = useCart((store) => store.total);
 
 	const processCheckout = async () => {
+		if (!addresses.length) {
+			showToast("error", { title: "Habitual Ecommerce", message: "Please add address." });
+			return;
+		}
+
 		const response = await initiatePaymentSheet(addresses[0]);
 		if (response) {
 			navigation.replace("CheckoutSuccess");

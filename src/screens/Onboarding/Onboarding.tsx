@@ -80,6 +80,9 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 		const nextIndex = index ? index : activeSlideIndex.current + 1;
 		const x = nextIndex * width;
 
+		setIsLastSlide(nextIndex === 3);
+		activeSlideIndex.current = nextIndex;
+
 		scrollRef.current?.getNode().scrollTo({ x, animated: true });
 	};
 
