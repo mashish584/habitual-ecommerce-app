@@ -53,6 +53,7 @@ const Orders: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 										url="user/orders/"
 										query="?take=5"
 										contentContainerStyle={{ paddingBottom: bottom * 2 }}
+										isRefresh={true}
 										showsVerticalScrollIndicator={false}
 										keyExtractor={(item) => item.id}
 										renderItem={({ item, index }) => {

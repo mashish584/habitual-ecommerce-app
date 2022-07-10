@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { FlatList, FlatListProps, View, ViewStyle } from "react-native";
+import { ActivityIndicator, FlatList, FlatListProps, View, ViewStyle } from "react-native";
 import { usePaginateAPI } from "../../hooks/api";
+import theme from "../../utils/theme";
 import { Urls } from "../../utils/types";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
@@ -70,6 +71,13 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 			{...{ ...props }}
 			{...{ ...extranProps }}
 			data={info?.data}
+			ListFooterComponent={() => {
+				if (isRefetching) {
+					return <ActivityIndicator size="small" color={theme.colors.shades.gray_80} style={{ marginVertical: theme.spacing.small }} />;
+				} else {
+					return null;
+				}
+			}}
 			onEndReached={() => {
 				if (info?.next) {
 					fetchNextPage({

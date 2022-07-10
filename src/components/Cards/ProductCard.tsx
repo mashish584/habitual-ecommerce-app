@@ -30,11 +30,11 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 
 	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
 
-	const previousValue = React.useRef(null);
+	const previousValue = React.useRef<boolean | null>(null);
 
 	useEffect(() => {
 		// console.log({ pre: previousValue.current, isFav: props.isFavouriteProduct });
-		if (previousValue.current !== props.isFavouriteProduct && heartRef.current) {
+		if (previousValue.current !== props.isFavouriteProduct && heartRef.current && props.isFavouriteProduct !== undefined) {
 			previousValue.current = props.isFavouriteProduct;
 			if (props.isFavouriteProduct) {
 				heartRef.current.play();
@@ -144,7 +144,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		marginHorizontal: theme.spacing.xxSmall,
 		...generateBoxShadowStyle(0, 10, rgba.black(0.04), 1, 10, 10, rgba.black(1)),
 		overflow: "visible",
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		position: "absolute",
-		top: 8,
-		right: 8,
+		top: theme.spacing.small,
+		right: theme.spacing.small,
 		...generateBoxShadowStyle(0, 1, rgba.black(0.1), 1, 7, 10, rgba.black(1)),
 	},
 });

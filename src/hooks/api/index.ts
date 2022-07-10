@@ -15,7 +15,6 @@ type AddressData = {
 
 async function handleAPIError(response, endpoint: string) {
 	response = await response.json();
-	console.log({ response });
 	const message = response.message || `Unable to fetch ${endpoint}`;
 	showToast("error", { title: "Error", message });
 }
@@ -32,12 +31,10 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		}
 
 		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
-		console.log({ endpoint1: endpoint });
-		console.log(`URL includes http ${endpoint.includes("http")}`);
+
 		if (!endpoint.includes("http")) {
 			//for local -> API_URL else DEV_URL
 			endpoint = `${DEV_URL}${endpoint}`;
-			console.log({ endpoint });
 		}
 
 		if (options.path) {

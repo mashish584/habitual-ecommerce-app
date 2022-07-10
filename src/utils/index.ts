@@ -25,7 +25,7 @@ export const generateBoxShadowStyle = (
 		};
 	} else if (isAndroid) {
 		return {
-			elevation,
+			elevation: 1,
 			shadowColor: shadowColorAndroid,
 		};
 	}

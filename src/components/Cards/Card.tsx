@@ -19,7 +19,7 @@ const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {
 				backgroundColor: theme.colors.shades.white,
 				justifyContent: "center",
 				alignItems: "center",
-				...generateBoxShadowStyle(0, 4, rgba.black(0.1), 1, 10, 10, rgba.black(1)),
+				...generateBoxShadowStyle(0, 4, rgba.black(0.04), 1, 10, 10, rgba.black(1)),
 				...cardStyle,
 			}}>
 			{children}
