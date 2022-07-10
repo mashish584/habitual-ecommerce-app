@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { API_URL } from "@env";
+import { DEV_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Address, RequestMethods, Urls } from "../../utils/types";
@@ -32,12 +32,13 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		}
 
 		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
-
+		console.log({ endpoint1: endpoint });
+		console.log(`URL includes http ${endpoint.includes("http")}`);
 		if (!endpoint.includes("http")) {
-			endpoint = `${API_URL}${endpoint}`;
+			//for local -> API_URL else DEV_URL
+			endpoint = `${DEV_URL}${endpoint}`;
+			console.log({ endpoint });
 		}
-
-		// console.log({ endpoint, options });
 
 		if (options.path) {
 			delete options.path;
@@ -77,10 +78,6 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 
 export const useUserProfile = <T extends string, M>() => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((profileId) => {
-		if (!profileId) {
-			showToast("error", { title: "Error", message: "Please provide profile Id." });
-			return;
-		}
 		return appFetch("user/", {
 			method: "GET",
 			headers: {
