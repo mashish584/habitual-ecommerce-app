@@ -11,6 +11,7 @@ interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	skelton?: () => JSX.Element;
 	skeltonContainerStyle?: ViewStyle;
 	isRefresh?: boolean;
+	showPaginationLoader?: boolean;
 	onLoadStart?: () => void;
 	onLoadEnd?: () => void;
 }
@@ -72,12 +73,13 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 			{...{ ...extranProps }}
 			data={info?.data}
 			ListFooterComponent={() => {
-				if (isRefetching) {
+				if (isRefetching && info?.data?.length && props.showPaginationLoader) {
 					return <ActivityIndicator size="small" color={theme.colors.shades.gray_80} style={{ marginVertical: theme.spacing.small }} />;
 				} else {
 					return null;
 				}
 			}}
+			ListEmptyComponent={info?.data?.length && (!isLoading || !isRefetching) && props.ListEmptyComponent ? props.ListEmptyComponent : null}
 			onEndReached={() => {
 				if (info?.next) {
 					fetchNextPage({

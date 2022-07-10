@@ -8,7 +8,7 @@ import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import theme from "../../utils/theme";
-import { debounce } from "../../utils";
+import { debounce, isAndroid } from "../../utils";
 
 import SearchItem from "./SearchItem";
 
@@ -45,7 +45,8 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 								type="search"
 								ref={searchInputRef}
 								placeholder="Search by keyword"
-								style={{ borderWidth: 0, paddingBottom: 0 }}
+								style={{ borderWidth: 0, paddingBottom: 0, paddingTop: isAndroid ? 15 : 0 }}
+								placeholderTextColor={theme.colors.shades.gray_40}
 								containerStyle={{ marginBottom: 0 }}
 								searchIconStyle={{ left: 0 }}
 								onChangeText={searchProducts}
@@ -57,7 +58,7 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 								<PaginatedFlatlist
 									queryName="Search Products"
 									url={"products/"}
-									query={`?take=7&select=id&select=title&select=id&select=slideColors&select=images&search=${searchQuery}`}
+									query={`?take=50&select=id&select=title&select=id&select=slideColors&select=images&search=${searchQuery}`}
 									contentContainerStyle={{
 										paddingBottom: 0,
 										backgroundColor: theme.colors.shades.white,
@@ -68,9 +69,11 @@ const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = 
 									showsVerticalScrollIndicator={false}
 									keyExtractor={(item) => item.id}
 									isRefresh={false}
+									showPaginationLoader={false}
+									ListFooterComponent={null}
 									ListEmptyComponent={() => (
 										<View style={[theme.rowStyle, { alignItems: "center", marginTop: theme.spacing.medium, justifyContent: "center" }]}>
-											<Text style={{ textAlign: "center" }}>No product found for </Text>
+											<Text style={{ textAlign: "center", color: theme.colors.shades.gray_80 }}>No product found </Text>
 											<Text style={theme.textStyles.hightlightText}>{`"${searchQuery}"`}</Text>
 										</View>
 									)}

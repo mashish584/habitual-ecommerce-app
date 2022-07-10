@@ -57,6 +57,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 							borderColor: theme.colors.shades.gray_40,
 							paddingHorizontal: theme.spacing.small,
 							color: theme.colors.shades.gray_80,
+							textAlignVertical: "top",
 							...textInputStyle,
 						},
 						isFocused && shadowStyle,
@@ -69,7 +70,11 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 					secureTextEntry={props.type === "password" && !showPassword}
 					{...props}
 				/>
-				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={[styles.searchIcon, props.searchIconStyle]} />}
+				{props.type === "search" && (
+					<View style={[styles.searchIcon, props.searchIconStyle]}>
+						<Image source={require("../../assets/images/search.png")} />
+					</View>
+				)}
 				{props.type === "password" && (
 					<TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword((prev) => !prev)}>
 						<FontAwesomeIcon icon={!showPassword ? (faEyeSlash as IconProp) : (faEye as IconProp)} color={theme.colors.shades.gray_80} />
