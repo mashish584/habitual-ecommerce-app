@@ -19,10 +19,11 @@ const aspectRatios = [201 / 156, 156 / 156, 175 / 156, 152 / 156, 160 / 156, 176
 const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
-const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "PickInterest">> = ({ navigation }) => {
+const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "PickInterest">> = ({ navigation, route }) => {
 	const [interests, setInterests] = useState<Record<"string", CategoryInfo>>({} as Record<"string", CategoryInfo>);
 
 	const categoriesQuery = useCategories<"", Category[]>("?parent=true");
+	const hideSteps = route.params?.showSteps == false;
 
 	const selectedInterestIds = Object.keys(interests).filter((id) => {
 		if (interests[id].selected) {
@@ -67,7 +68,7 @@ const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pic
 	}, []);
 
 	return (
-		<ProfileContainer title="Step 3 of 4">
+		<ProfileContainer title={hideSteps ? null : "Step 3 of 4"}>
 			<View style={[containerStyle, { paddingHorizontal: 0 }]}>
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<View style={{ marginBottom: theme.spacing.medium, paddingHorizontal: theme.spacing.medium }}>
@@ -126,7 +127,7 @@ const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pic
 						variant: "transparent",
 						text: "Back",
 						style: { paddingRight: theme.spacing.medium },
-						onPress: () => {},
+						onPress: navigation.goBack,
 					}}
 					button2={{
 						variant: !selectedInterestIds.length ? "disabled" : "primary",

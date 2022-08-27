@@ -62,6 +62,10 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 		return data;
 	}, {} as Record<string, Pick<Category, "id" | "name" | "image">>);
 
+	const openInterestStack = () => {
+		navigation.navigate("AddInterest");
+	};
+
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: profile?.id ? theme.colors.primary.yellow : theme.colors.shades.white }}>
 			{(top) => (
@@ -133,7 +137,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 											title="Tell us what interests you!"
 											description="You don’t have any interests listed. Tell us what you love the most and we’ll recommend relevant products to you."
 											buttonText="Add my interests"
-											onAction={() => {}}
+											onAction={openInterestStack}
 										/>
 									)}
 									<View style={styles.interestsSection}>

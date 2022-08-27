@@ -23,6 +23,7 @@ import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
+import AddInterestStack from "./Stacks/AddInterestStack";
 
 /**
  * Where ot navigation user
@@ -57,8 +58,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
@@ -77,6 +77,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
 			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
+			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 			<RootStack.Screen name="Product" component={Product} />
 			<RootStack.Screen name="Checkout" component={Checkout} />

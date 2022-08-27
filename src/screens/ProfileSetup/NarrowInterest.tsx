@@ -5,7 +5,7 @@ import CheckBoxItem from "../../components/Checkbox/CheckBoxItem";
 import Pill from "../../components/Pill/Pill";
 import { TextInput } from "../../components/TextInput";
 
-import { debounce } from "../../utils";
+import { debounce, showToast } from "../../utils";
 import theme from "../../utils/theme";
 import { useCategories } from "../../hooks/api";
 import { Category, User } from "../../utils/schema.types";
@@ -29,6 +29,8 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 	const categoriesQuery = useCategories<"", Category[]>(`${query}&childLimit=3`);
 	const { updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "interests">>();
 	const excludeCategories = React.useRef([]);
+
+	const hideSteps = route.params?.showSteps == false;
 
 	const [interests, setInterests] = React.useState([]);
 	const [additionalInterests, setAdditionalInterests] = React.useState<SubCategory[]>([]);
@@ -84,7 +86,12 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 	const saveUserInterests = async () => {
 		if (selectedInterestsIds.length) {
 			await updateUserInfo({ interests: JSON.stringify(selectedInterestsIds) });
-			navigation.replace("ProfileSetupComplete");
+			if (hideSteps) {
+				showToast("success", { title: "Habitual Ecommerce", message: "Interest saved successfully." });
+				navigation.getParent()?.goBack();
+			} else {
+				navigation.replace("ProfileSetupComplete");
+			}
 		}
 	};
 
@@ -112,7 +119,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 	}, []);
 
 	return (
-		<ProfileContainer title="Step 4 of 4">
+		<ProfileContainer title={hideSteps ? null : "Step 4 of 4"}>
 			<View style={[containerStyle, { paddingHorizontal: 0 }]}>
 				<ScrollView contentContainerStyle={{ paddingHorizontal: theme.spacing.medium, paddingBottom: 50 }} showsVerticalScrollIndicator={false}>
 					<View style={{ marginBottom: theme.spacing.medium }}>
@@ -183,7 +190,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 						variant: "transparent",
 						text: "Back",
 						style: { paddingRight: theme.spacing.medium },
-						onPress: () => {},
+						onPress: navigation.goBack,
 					}}
 					button2={{
 						variant: selectedInterestsIds.length ? "primary" : "disabled",
