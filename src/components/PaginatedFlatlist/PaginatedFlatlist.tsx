@@ -16,6 +16,27 @@ interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	onLoadEnd?: () => void;
 }
 
+type InitialPageDataType = {
+	data: any[];
+	next: null | string;
+};
+
+const initialPageData: InitialPageDataType = {
+	data: [],
+	next: null,
+};
+
+function formatPaginationData(prev, page) {
+	const data = { ...prev };
+
+	if (page?.data) {
+		data.data = [...data.data, ...page.data];
+		data.next = page.next;
+	}
+
+	return data;
+}
+
 const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 	const { data, fetchNextPage, isLoading, refetch, isRefetching } = usePaginateAPI<"", any[]>(url, props.query, props.queryName);
 	const extranProps = {} as FlatListProps<any>;
@@ -32,6 +53,7 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 	}, [isLoading, isRefetching]);
 
 	useEffect(() => {
+		// eslint-disable-next-line no-undefined
 		if (props.query !== undefined) {
 			refetch();
 		}
@@ -42,19 +64,7 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 		extranProps.refreshing = isRefetching;
 	}
 
-	const info = data?.pages.reduce(
-		(prev, page) => {
-			const data = { ...prev };
-
-			if (page?.data) {
-				data.data = [...data.data, ...page.data];
-				data.next = page.next;
-			}
-
-			return data;
-		},
-		{ data: [], next: null },
-	);
+	const info = data?.pages.reduce(formatPaginationData, initialPageData);
 
 	if (isLoading && skelton) {
 		const Skelton = skelton;

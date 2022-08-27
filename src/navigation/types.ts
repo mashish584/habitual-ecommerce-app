@@ -13,6 +13,7 @@ export type RootStackScreens = {
 	UnauthStack: undefined;
 	OnboardingStack: undefined;
 	ProfileSetup: undefined;
+	AddInterest: undefined;
 	Product: {
 		product: Product;
 	};
@@ -47,9 +48,22 @@ export type UnauthStackScreens = {
 export type ProfileSetupStackScreens = {
 	ProfileImage: undefined;
 	JoiningReason: undefined;
-	PickInterest: undefined;
+	PickInterest: {
+		showSteps?: boolean;
+	};
 	NarrowInterest: {
 		query: string;
+		showSteps?: boolean;
+	};
+};
+
+export type AddInterestStackScreens = {
+	PickInterest: {
+		showSteps?: boolean;
+	};
+	NarrowInterest: {
+		query: string;
+		showSteps?: boolean;
 	};
 };
 

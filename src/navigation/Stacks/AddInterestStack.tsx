@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { ProfileSetupStackScreens } from "../types";
+import { AddInterestStackScreens } from "../types";
 import { NarrowInterest, PickInterest } from "../../screens/ProfileSetup";
 
-const AddInterestStack = createStackNavigator<ProfileSetupStackScreens>();
+const AddInterestStack = createStackNavigator<AddInterestStackScreens>();
 
 export default () => {
 	return (

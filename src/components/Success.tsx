@@ -11,10 +11,10 @@ import Container from "./Container";
 interface Success {
 	title: string;
 	description: string;
-	buttonVariant?: variant;
+	buttonVariant: variant;
 	buttonStyle?: ViewStyle;
 	buttonText?: string;
-	onAction?: () => void;
+	onAction: () => void;
 }
 
 const Success = ({ title, description, buttonVariant, ...props }: Success) => {

@@ -14,6 +14,19 @@ interface AddressOptions extends BottomSheetI {
 
 const AddressOptions = (props: AddressOptions) => {
 	const insets = useSafeAreaInsets();
+
+	const onEdit = () => {
+		if (props.onAction) {
+			props.onAction("edit");
+		}
+	};
+
+	const onDelete = () => {
+		if (props.onAction) {
+			props.onAction("delete");
+		}
+	};
+
 	return (
 		<BottomSheet {...{ ...props }}>
 			<View
@@ -25,13 +38,13 @@ const AddressOptions = (props: AddressOptions) => {
 					paddingBottom: insets.bottom,
 				}}>
 				<View>
-					<TouchableOpacity onPress={() => props.onAction("edit")} style={{ paddingVertical: theme.spacing.small }}>
+					<TouchableOpacity onPress={onEdit} style={{ paddingVertical: theme.spacing.small }}>
 						<Text style={[theme.textStyles.h5, { fontFamily: theme.fonts.lato.regular, textAlign: "center", color: theme.colors.shades.gray_80 }]}>
 							Update Address
 						</Text>
 					</TouchableOpacity>
 					<Line />
-					<TouchableOpacity onPress={() => props.onAction("delete")} style={{ paddingVertical: theme.spacing.small }}>
+					<TouchableOpacity onPress={onDelete} style={{ paddingVertical: theme.spacing.small }}>
 						<Text style={[theme.textStyles.h5, { fontFamily: theme.fonts.lato.regular, textAlign: "center", color: theme.colors.accents.red }]}>
 							Remove Address
 						</Text>
