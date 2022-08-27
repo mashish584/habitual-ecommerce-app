@@ -7,7 +7,7 @@ import { useUser } from "../../utils/store";
 import { ProfileSchema, UserProfile } from "../../utils/validation";
 
 import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
-import { breakFullName, isValidJSONString } from "../../utils";
+import { breakFullName, isValidJSONString, showToast } from "../../utils";
 import { ScreenNavigationProp } from "../../navigation/types";
 
 const userProfile = (user: User) => {
@@ -50,12 +50,11 @@ function useProfileUpdate<T extends string>(user?: User) {
 		return mutateAsync(data, {
 			onSuccess: (response) => {
 				if (response?.data) {
-					console.log("Profile detail updated", { profile: response.data });
 					setUser(response.data);
 				}
 			},
 			onError: (error) => {
-				console.log(error);
+				showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 			},
 		});
 	}, []);
@@ -63,18 +62,17 @@ function useProfileUpdate<T extends string>(user?: User) {
 	const markProductAsFavourite = useCallback(
 		async (productId) => {
 			const productExist = favouriteProductIds?.includes(productId);
-			console.log({ productExist });
+
 			return updateFavouriteProduct.mutateAsync(
 				{ id: productId, method: productExist ? "DELETE" : "POST" },
 				{
 					onSuccess: (response) => {
-						console.log({ response });
 						if (response?.data) {
 							setUser(response.data);
 						}
 					},
 					onError: (error) => {
-						console.log({ error });
+						showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 					},
 				},
 			);
@@ -86,12 +84,11 @@ function useProfileUpdate<T extends string>(user?: User) {
 		return fetchProfile.mutateAsync(userId, {
 			onSuccess: (response) => {
 				if (response?.data) {
-					console.log({ response });
 					setUser(response.data);
 				}
 			},
 			onError: (error) => {
-				console.log({ error });
+				showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 			},
 		});
 	}, []);

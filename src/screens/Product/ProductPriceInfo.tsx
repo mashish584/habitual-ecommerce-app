@@ -11,7 +11,7 @@ import { useCart } from "../../utils/store";
 import theme from "../../utils/theme";
 import { ProductFooterActions } from "../../utils/types";
 
-type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "discount"> & {
+type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "discount" | "quantity"> & {
 	buttonChild: JSX.Element;
 };
 
@@ -93,7 +93,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 					/>
 				</View>
 			) : (
-				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
+				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 					<View>
 						<Animated.Text
 							style={[theme.textStyles.hint, { textTransform: "uppercase", color: headingColor, marginBottom: theme.spacing.xxSmall } as ViewStyle]}>
@@ -117,29 +117,33 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 							/>
 						</View>
 					</View>
-					<TouchableOpacity
-						onPress={() => {
-							//add item to cart
-							const item = { ...priceInfo };
-							delete item.buttonChild;
-							delete item.discount;
-							addItem(item);
-							props.onPress("slideUp");
-						}}>
-						<Animated.View
-							style={
-								{
-									width: 48,
-									height: 48,
-									backgroundColor: buttonBackground,
-									borderRadius: 50,
-									justifyContent: "center",
-									alignItems: "center",
-								} as any
-							}>
-							{priceInfo.buttonChild}
-						</Animated.View>
-					</TouchableOpacity>
+					{priceInfo.quantity > 0 ? (
+						<TouchableOpacity
+							onPress={() => {
+								//add item to cart
+								const item = { ...priceInfo };
+								delete item.buttonChild;
+								delete item.discount;
+								addItem(item);
+								props.onPress("slideUp");
+							}}>
+							<Animated.View
+								style={
+									{
+										width: 48,
+										height: 48,
+										backgroundColor: buttonBackground,
+										borderRadius: 50,
+										justifyContent: "center",
+										alignItems: "center",
+									} as any
+								}>
+								{priceInfo.buttonChild}
+							</Animated.View>
+						</TouchableOpacity>
+					) : (
+						<Text style={{ color: theme.colors.accents.red, fontFamily: theme.fonts.lato.heavy }}>Out of Stock</Text>
+					)}
 				</View>
 			)}
 		</Animated.View>

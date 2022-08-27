@@ -58,7 +58,6 @@ export const useStripeCheckout = () => {
 				}
 			} catch (error) {
 				showToast("error", { title: "Habitual Ecommerce", message: "Error while initiating payment." });
-				console.log({ error });
 			}
 		},
 		[items],

@@ -31,8 +31,6 @@ const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Jo
 		}
 	}, [joining_reasons]);
 
-	console.log("Joining Reasons [Render]");
-
 	return (
 		<ProfileContainer title="Step 2 of 4">
 			<View style={containerStyle}>

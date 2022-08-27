@@ -29,8 +29,7 @@ const formatFiles = (files: ImageOrVideo[]) => {
 
 export const openCamera = async (options?: Options) => {
 	const config: Options = { ...ImageConfig, useFrontCamera: true, ...options };
-	const response = await ImagePicker.openCamera(config);
-	console.log({ response });
+	await ImagePicker.openCamera(config);
 };
 
 export const openGallery = async (options?: Options) => {

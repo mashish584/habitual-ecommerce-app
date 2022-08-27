@@ -26,14 +26,14 @@ interface ProductCard {
 }
 
 const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent, ...props }: ProductCard) => {
-	const heartRef = useRef<LottieView>();
+	const heartRef = useRef<LottieView>(null);
 
 	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
 
 	const previousValue = React.useRef<boolean | null>(null);
 
 	useEffect(() => {
-		// console.log({ pre: previousValue.current, isFav: props.isFavouriteProduct });
+		// eslint-disable-next-line no-undefined
 		if (previousValue.current !== props.isFavouriteProduct && heartRef.current && props.isFavouriteProduct !== undefined) {
 			previousValue.current = props.isFavouriteProduct;
 			if (props.isFavouriteProduct) {
@@ -60,8 +60,9 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 					variant === "large" && styles.largeContainerImage,
 					variant === "small" && styles.smallContainerImage,
 					variant === "wide" && styles.wideContainerImage,
+					{ justifyContent: "center", padding: theme.spacing.small },
 				]}>
-				<Image source={{ uri: item?.image }} resizeMode="contain" />
+				<Image source={{ uri: item?.image }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
 				{variant !== "wide" && (
 					<TouchableOpacity onPress={() => props?.onPress?.("heart")} activeOpacity={0.9} style={styles.heartContainer}>
 						{!props.isFavouriteProduct && <FontAwesomeIcon icon={faHeart as IconProp} />}
@@ -174,15 +175,15 @@ const styles = StyleSheet.create({
 	},
 	wideContainerImage: {
 		width: "30%",
-		minHeight: "100%",
+		height: "100%",
 		...generateBoxShadowStyle(0, 10, rgba.black(0.04), 1, 20, 10, rgba.black(1)),
 		borderRadius: 10,
 	},
 	largeContainerImage: {
-		minHeight: 160,
+		height: 160,
 	},
 	smallContainerImage: {
-		minHeight: 136,
+		height: 136,
 	},
 	image: {
 		width: "80%",

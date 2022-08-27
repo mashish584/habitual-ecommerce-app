@@ -34,9 +34,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 			} else {
 				await markProductAsFavourite(product?.id);
 			}
-		} catch (error) {
-			console.log({ error });
-		}
+		} catch (error) {}
 	};
 
 	return (

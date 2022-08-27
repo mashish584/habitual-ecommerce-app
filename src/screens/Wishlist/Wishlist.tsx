@@ -26,9 +26,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 			} else {
 				await markProductAsFavourite(product?.id);
 			}
-		} catch (error) {
-			console.log({ error });
-		}
+		} catch (error) {}
 	};
 
 	return (

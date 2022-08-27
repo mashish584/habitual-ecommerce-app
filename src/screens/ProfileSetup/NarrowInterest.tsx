@@ -111,8 +111,6 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		})();
 	}, []);
 
-	console.log({ selectedInterestsIds });
-
 	return (
 		<ProfileContainer title="Step 4 of 4">
 			<View style={[containerStyle, { paddingHorizontal: 0 }]}>

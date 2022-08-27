@@ -59,7 +59,7 @@ function useAddress(address?: Address) {
 						setUser(response.data);
 					},
 					onError: (err) => {
-						console.log(err);
+						showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 					},
 				},
 			);
@@ -72,12 +72,11 @@ function useAddress(address?: Address) {
 			{
 				onSuccess: (response) => {
 					if (response?.data) {
-						console.log("Address set as default.");
 						setUser(response.data);
 					}
 				},
 				onError: (error) => {
-					console.log({ error });
+					showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 				},
 			},
 		);
@@ -93,7 +92,7 @@ function useAddress(address?: Address) {
 					}
 				},
 				onError: (error) => {
-					console.log({ error });
+					showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 				},
 			},
 		);
@@ -104,7 +103,6 @@ function useAddress(address?: Address) {
 			const data = { ...address };
 			delete data.id;
 			delete data.default;
-			console.log({ data });
 			formik.setValues(data);
 		}
 	}, [address?.id]);

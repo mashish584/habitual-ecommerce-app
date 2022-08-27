@@ -36,6 +36,11 @@ function getSlideColors(slideColors: SlideColors[], length: number) {
 			slides.push({ color: slideColor.backgroundColor });
 			textColors.push({ color: slideColor.color });
 		});
+
+		if (slideColors.length < 2) {
+			slides.push({ color: theme.colors.shades.gray_20 });
+			textColors.push({ color: theme.colors.shades.gray_80 });
+		}
 	} else {
 		if (length < 2) {
 			length = 2;
@@ -252,6 +257,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								title: product.title,
 								price: productInfo.price,
 								discount: productInfo.discount,
+								quantity: productInfo.quantity,
 								buttonChild: !isSlideOn ? (
 									<FontAwesomeIcon icon={faArrowRight as IconProp} />
 								) : (
