@@ -29,7 +29,7 @@ function useProfileUpdate<T extends string>(user?: User) {
 	const updateFavouriteProduct = useFavouriteProduct<T, User>();
 
 	const formik = useFormik({
-		initialValues: userProfile(user),
+		initialValues: userProfile(user || ({} as User)),
 		validationSchema: ProfileSchema,
 		validateOnChange: true,
 		onSubmit: async (data: UserProfile & { profile: string }) => {

@@ -19,6 +19,13 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 type SubCategory = {
 	id: string;
 	name: string;
+	selected?: boolean;
+};
+
+type Interest = {
+	id: string;
+	category: string;
+	subCategory: SubCategory[];
 };
 
 const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & Pick<RootStackScreens, "ProfileSetupComplete">, "NarrowInterest">> = ({
@@ -28,14 +35,14 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 	const query = route.params.query;
 	const categoriesQuery = useCategories<"", Category[]>(`${query}&childLimit=3`);
 	const { updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "interests">>();
-	const excludeCategories = React.useRef([]);
+	const excludeCategories = React.useRef<string[]>([]);
 
 	const hideSteps = route.params?.showSteps == false;
 
-	const [interests, setInterests] = React.useState([]);
+	const [interests, setInterests] = React.useState<Interest[]>([]);
 	const [additionalInterests, setAdditionalInterests] = React.useState<SubCategory[]>([]);
 	const [searchResults, setSearchResults] = React.useState<SubCategory[]>([]);
-	const [selectedInterestsIds, setSelectedInterests] = React.useState([]);
+	const [selectedInterestsIds, setSelectedInterests] = React.useState<string[]>([]);
 
 	const searchInterests = debounce(async (text) => {
 		if (text?.trim() === "") {

@@ -4,7 +4,7 @@ export interface FetchConfig {
 	method: RequestMethods;
 	headers: FetchHeader;
 	body?: any;
-	path?: string;
+	path?: string | null;
 	query?: string;
 	url?: string;
 }

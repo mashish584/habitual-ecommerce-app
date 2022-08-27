@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { FormikProps, useFormik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 
-import { Address } from "../../utils/types";
+import { Address, PartialBy } from "../../utils/types";
 import { AddressSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
 import { useUser } from "../../utils/store";
@@ -23,7 +23,7 @@ const values: AddressT = {
 	mobileNumber: "",
 };
 
-function useAddress(address?: Address) {
+function useAddress(address?: PartialBy<Address, "id" | "default">) {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const setUser = useUser((store) => store.setUser);
 	const { mutateAsync, ...updateAddress } = useUpdateAddress<"address" | "path" | "default" | "method", User>(address?.id);

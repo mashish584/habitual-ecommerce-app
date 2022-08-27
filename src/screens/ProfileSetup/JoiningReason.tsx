@@ -14,14 +14,16 @@ import ProfileSetupHeader from "./ProfileSetupHeader";
 
 const reasons = ["Discover new products", "Make monthly shopping easier", "Relevant recommendations", "Get notified of deals"];
 
+const emptyObj = {};
+
 const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "JoiningReason">> = ({ navigation }) => {
 	const { updateUserInfo, joining_reasons, isLoading } = useProfileUpdate<keyof Pick<User, "joining_reasons">>();
-	const [selectedReasons, setSelectedReasons] = useState([]);
+	const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
 
 	const addJoiningReasons = async () => {
 		if (selectedReasons.length) {
 			await updateUserInfo({ joining_reasons: JSON.stringify(selectedReasons) });
-			navigation.navigate("PickInterest");
+			navigation.navigate("PickInterest", {});
 		}
 	};
 
@@ -62,9 +64,9 @@ const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Jo
 										width: "100%",
 										marginBottom: theme.spacing.small,
 									},
-									index !== -1 && { backgroundColor: theme.colors.shades.gray_80 },
+									index !== -1 ? { backgroundColor: theme.colors.shades.gray_80 } : emptyObj,
 								]}
-								buttonTextStyle={index !== -1 && { color: theme.colors.shades.white }}
+								buttonTextStyle={index !== -1 ? { color: theme.colors.shades.white } : emptyObj}
 							/>
 						);
 					})}
@@ -73,7 +75,7 @@ const JoiningReason: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Jo
 					button1={{
 						variant: "transparent",
 						text: "Back",
-						onPress: () => {},
+						onPress: navigation.goBack,
 					}}
 					button2={{
 						variant: selectedReasons.length === 0 ? "disabled" : "primary",

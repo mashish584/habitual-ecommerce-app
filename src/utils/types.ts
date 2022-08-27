@@ -67,3 +67,6 @@ export enum OrderStatus {
 }
 
 /* eslint-enable no-unused-vars */
+
+//@TS Utils
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

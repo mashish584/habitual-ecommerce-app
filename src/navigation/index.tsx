@@ -28,12 +28,17 @@ import AddInterestStack from "./Stacks/AddInterestStack";
 /**
  * Where ot navigation user
  */
-const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigation }) => {
+const Start: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
 	useEffect(() => {
 		(async () => {
 			try {
 				const user = await AsyncStorage.getItem("user");
-				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
+				let data;
+
+				if (user) {
+					data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
+				}
+
 				if (data.token && data.user) {
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
@@ -58,8 +63,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />

@@ -38,7 +38,7 @@ export const formatTimeStamp = (timestamp: string, format: DateFormats) => {
 export const formatToIso = (timestamp: string, format: DateFormats) => dayjs(timestamp, format).toISOString();
 
 export const debounce = (fn: (...args: any) => void, duration: number) => {
-	let timer = null;
+	let timer: NodeJS.Timer | null = null;
 
 	return (...args) => {
 		if (timer) {
@@ -57,11 +57,11 @@ export const defaultAvatar = "https://ik.imagekit.io/imashish/avatar_3x_1izETN4c
 
 export const COLOR_CARD_WIDTH = (Dimensions.get("screen").width - (theme.spacing.medium * 2 + theme.spacing.xxSmall * 2)) / 2;
 
-export const breakFullName = (fullName: string) => {
+export const breakFullName = (fullName: string | null) => {
 	if (!fullName) return ["", ""];
 	const name = fullName.split(" ");
-	const lastName = name.pop();
-	const firstName = name.join(" ");
+	const lastName = name.pop() || "";
+	const firstName = name.join(" ") || "";
 
 	return [firstName, lastName];
 };

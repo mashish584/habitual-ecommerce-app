@@ -67,4 +67,5 @@ export type AddInterestStackScreens = {
 	};
 };
 
-export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens & UnauthStackScreens>;
+export type MergedRoutes = RootStackScreens & BottomStackScreens & UnauthStackScreens;
+export type ScreenNavigationProp = StackNavigationProp<MergedRoutes>;

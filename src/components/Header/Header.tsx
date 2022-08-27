@@ -15,7 +15,7 @@ interface Header {
 	variant: "primary" | "secondary";
 	leftIcon?: ReactNode;
 	rightIcon?: ReactNode;
-	title?: string;
+	title?: string | null;
 	titleStyle?: TextStyle | TextStyle[];
 	headerStyle?: ViewStyle;
 	onAction?: (type: ActionType) => void;
