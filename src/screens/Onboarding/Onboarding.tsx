@@ -55,6 +55,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 	const { scrollHandler, x } = useScrollHandler();
 	const activeSlideIndex = useRef(0);
 	const scrollRef = useRef<Animated.ScrollView>(null);
+	let scrollBegin = useRef(false);
 
 	const [isLastSlide, setIsLastSlide] = useState(false);
 
@@ -152,10 +153,18 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							ref={scrollRef}
 							snapToInterval={width}
 							decelerationRate="fast"
+							onMomentumScrollBegin={() => {
+								console.log("Scroll Begin");
+								scrollBegin.current = true;
+							}}
 							onMomentumScrollEnd={(e) => {
-								const step = Math.floor(e.nativeEvent.contentOffset.x / width) + 1;
-								activeSlideIndex.current = step;
-								setIsLastSlide(step === 3);
+								if (scrollBegin.current) {
+									const step = Math.round(e.nativeEvent.contentOffset.x / width);
+									console.log(`Current step is ${step}`);
+									activeSlideIndex.current = step;
+									setIsLastSlide(step === 3);
+									scrollBegin.current = false;
+								}
 							}}
 							bounces={false}
 							showsHorizontalScrollIndicator={false}

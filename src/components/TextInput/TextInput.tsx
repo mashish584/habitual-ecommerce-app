@@ -16,7 +16,7 @@ import { MessageType, TextInput as ITextInput } from "./types";
 
 export type Ref = RNTextInput | null;
 
-type Input = ITextInput & TextInputProps & { ref: React.ForwardedRef<Ref> };
+type Input = ITextInput & TextInputProps;
 
 const getTextInputStyle = (type: MessageType) => {
 	const textInputStyle: TextStyle = {};
@@ -57,7 +57,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 							borderColor: theme.colors.shades.gray_40,
 							paddingHorizontal: theme.spacing.small,
 							color: theme.colors.shades.gray_80,
-							textAlignVertical: "top",
+							// textAlignVertical: "top",
 							...textInputStyle,
 						},
 						isFocused && shadowStyle,
