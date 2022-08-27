@@ -1,5 +1,5 @@
 import { Address, useStripe } from "@stripe/stripe-react-native";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { showToast } from "../../utils";
 import { useCart } from "../../utils/store";
 import { useCartCheckout, useUpdateTransaction } from "../api";
@@ -15,6 +15,7 @@ interface CheckoutResponse {
 }
 
 export const useStripeCheckout = () => {
+	const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 	const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
 	const cartCheckout = useCartCheckout<"cart", CheckoutResponse>();
@@ -26,6 +27,7 @@ export const useStripeCheckout = () => {
 	const initiatePaymentSheet = useCallback(
 		async (address: Address) => {
 			try {
+				setIsPaymentProcessing(true);
 				const response = await cartCheckout.mutateAsync({ cart: items });
 
 				if (response?.data) {
@@ -50,10 +52,11 @@ export const useStripeCheckout = () => {
 
 							const data = await updateTransaction.mutateAsync(transactionData);
 							resetCart();
+							setIsPaymentProcessing(false);
 							return data;
 						}
 					}
-
+					setIsPaymentProcessing(false);
 					return error;
 				}
 			} catch (error) {
@@ -63,5 +66,5 @@ export const useStripeCheckout = () => {
 		[items],
 	);
 
-	return { initiatePaymentSheet, isLoading: cartCheckout.isLoading };
+	return { initiatePaymentSheet, isLoading: cartCheckout.isLoading || isPaymentProcessing };
 };
