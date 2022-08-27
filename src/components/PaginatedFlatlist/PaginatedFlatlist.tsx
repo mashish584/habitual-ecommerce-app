@@ -89,7 +89,7 @@ const PaginatedFlatlist = ({ url, skelton, ...props }: PaginatedFlatlist) => {
 					return null;
 				}
 			}}
-			ListEmptyComponent={info?.data?.length && (!isLoading || !isRefetching) && props.ListEmptyComponent ? props.ListEmptyComponent : null}
+			ListEmptyComponent={info?.data?.length == 0 && (!isLoading || !isRefetching) && props.ListEmptyComponent ? props.ListEmptyComponent : null}
 			onEndReached={() => {
 				if (info?.next) {
 					fetchNextPage({
