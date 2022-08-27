@@ -31,7 +31,7 @@ function useAuth(isSignIn = false) {
 						showToast("success", { title: "Habitual Ecommerce", message: `Welcom back, ${response.data.fullname || response.data.email}.` });
 						onLoginSuccess({ token: response.token, user: response.data });
 						if (isSignIn) {
-							navigation.replace("Home");
+							navigation.replace("BottomStack");
 						} else {
 							navigation.replace("ProfileSetup");
 						}

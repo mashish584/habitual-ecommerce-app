@@ -28,7 +28,7 @@ export type RootStackScreens = {
 	};
 	Addresses: undefined;
 	ProfileSetupComplete: undefined;
-	BottomStack: BottomStackScreens;
+	BottomStack?: BottomStackScreens;
 };
 
 export type BottomStackScreens = {

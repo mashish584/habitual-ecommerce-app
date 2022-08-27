@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { API_URL } from "@env";
+import { DEV_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Address, RequestMethods, Urls } from "../../utils/types";
@@ -34,7 +34,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 
 		if (!endpoint.includes("http")) {
 			//for local -> API_URL else DEV_URL
-			endpoint = `${API_URL}${endpoint}`;
+			endpoint = `${DEV_URL}${endpoint}`;
 		}
 
 		if (options.path) {

@@ -49,7 +49,7 @@ const slides = [
 	},
 ];
 
-const ScrollViewHeight = height * 0.7;
+const ScrollViewHeight = height * 0.75;
 
 const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackScreens, "Onboarding">> = ({ navigation }) => {
 	const { scrollHandler, x } = useScrollHandler();
@@ -153,7 +153,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							snapToInterval={width}
 							decelerationRate="fast"
 							onMomentumScrollEnd={(e) => {
-								const step = e.nativeEvent.contentOffset.x / width;
+								const step = Math.floor(e.nativeEvent.contentOffset.x / width) + 1;
 								activeSlideIndex.current = step;
 								setIsLastSlide(step === 3);
 							}}
@@ -195,7 +195,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 								text="Ask me again later"
 								onPress={() => {
 									//will take user to home screen
-									navigation.navigate("BottomStack", {});
+									navigation.navigate("BottomStack");
 								}}
 								style={{ marginHorizontal: theme.spacing.medium }}
 							/>
