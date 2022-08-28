@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
 
 import CheckBoxItem from "../../components/Checkbox/CheckBoxItem";
 import Pill from "../../components/Pill/Pill";
@@ -41,7 +41,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 
 	const [interests, setInterests] = React.useState<Interest[]>([]);
 	const [additionalInterests, setAdditionalInterests] = React.useState<SubCategory[]>([]);
-	const [searchResults, setSearchResults] = React.useState<SubCategory[]>([]);
+	const [searchResults, setSearchResults] = React.useState<SubCategory[] | null>(null);
 	const [selectedInterestsIds, setSelectedInterests] = React.useState<string[]>([]);
 
 	const searchInterests = debounce(async (text) => {
@@ -60,7 +60,8 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		const response = await categoriesQuery.mutateAsync(`?${query}&search=${text}`);
 
 		//👀 for selected interests in searchResults
-		const selectedInterests: Record<string, SubCategory> = searchResults.reduce((prev, interest) => {
+		let results = searchResults || [];
+		const selectedInterests: Record<string, SubCategory> = results.reduce((prev, interest) => {
 			const data = { ...prev };
 			if (selectedInterestsIds.includes(interest.id)) {
 				excludeCategories.current.push(interest.id);
@@ -128,20 +129,13 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 	return (
 		<ProfileContainer title={hideSteps ? null : "Step 4 of 4"}>
 			<View style={[containerStyle, { paddingHorizontal: 0 }]}>
-				<ScrollView contentContainerStyle={{ paddingHorizontal: theme.spacing.medium, paddingBottom: 50 }} showsVerticalScrollIndicator={false}>
+				<ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
 					<View style={{ marginBottom: theme.spacing.medium }}>
 						<ProfileSetupHeader title="Now, narrow it down." description="We have some recommended options for the interests that you have chosen." />
 					</View>
-					{interests.map(({ id, category, subCategory }, cIndex) => {
+					{interests.map(({ id, category, subCategory }) => {
 						return (
-							<View
-								key={id}
-								style={{
-									paddingBottom: theme.spacing.small,
-									borderBottomWidth: 1,
-									borderBottomColor: theme.colors.shades.gray_40,
-									marginBottom: theme.spacing.medium,
-								}}>
+							<View key={id} style={styles.categoryContainer}>
 								<Text style={[theme.textStyles.h4, { marginBottom: theme.spacing.small }]}>{category}</Text>
 								{subCategory.map((subCategory) => {
 									return (
@@ -156,6 +150,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 							</View>
 						);
 					})}
+					{interests.length === 0 && <Text style={styles.noText}>No sub-interest found. Please search below to select sub-categories.</Text>}
 					<View>
 						<Text style={[theme.textStyles.h4, { marginBottom: theme.spacing.xSmall }]}>Did we miss something?</Text>
 						<Text style={theme.textStyles.body_reg}>Add other interests and sub-interests below if we missed something. </Text>
@@ -167,7 +162,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 							isLoading={categoriesQuery.isLoading}
 						/>
 						<View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: theme.spacing.medium }}>
-							{searchResults.map((result) => {
+							{searchResults?.map((result) => {
 								return (
 									<Pill
 										variant="default"
@@ -178,6 +173,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 									/>
 								);
 							})}
+							{searchResults?.length === 0 && <Text style={styles.noText}>No results found.</Text>}
 						</View>
 						{additionalInterests.map((interest) => {
 							return (
@@ -192,7 +188,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 					</View>
 				</ScrollView>
 				<ProfileSetupFooter
-					containerStyle={{ marginHorizontal: theme.spacing.medium, paddingTop: theme.spacing.xSmall }}
+					containerStyle={styles.footerContainer}
 					button1={{
 						variant: "transparent",
 						text: "Back",
@@ -210,5 +206,28 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		</ProfileContainer>
 	);
 };
+
+const styles = StyleSheet.create({
+	scrollView: {
+		paddingHorizontal: theme.spacing.medium,
+		paddingBottom: 50,
+	},
+	categoryContainer: {
+		paddingBottom: theme.spacing.small,
+		borderBottomWidth: 1,
+		borderBottomColor: theme.colors.shades.gray_40,
+		marginBottom: theme.spacing.medium,
+	},
+	noText: {
+		color: theme.colors.shades.gray_60,
+		marginBottom: theme.spacing.medium,
+		textAlign: "center",
+		flex: 1,
+	},
+	footerContainer: {
+		marginHorizontal: theme.spacing.medium,
+		paddingTop: theme.spacing.xSmall,
+	},
+});
 
 export default NarrowInterest;

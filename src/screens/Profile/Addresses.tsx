@@ -18,11 +18,12 @@ import { generateBoxShadowStyle } from "../../utils";
 import { useUser } from "../../utils/store";
 import useAddress from "../../hooks/logic/useAddress";
 import AddressOptions from "../../components/Sheet/AddressOptions";
+import Loader from "../../components/Loader";
 
-const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
-	const [options, setOptions] = React.useState({ visible: false, index: null });
+const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> = ({ navigation }) => {
+	const [options, setOptions] = React.useState<{ visible: boolean; index: number | null }>({ visible: false, index: null });
 	const addresses = useUser((store) => store.user.addresses);
-	const { markAddressAsDefault, deleteAddress } = useAddress();
+	const { markAddressAsDefault, deleteAddress, isLoading } = useAddress();
 
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: theme.colors.primary.yellow }}>
@@ -44,7 +45,7 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 							variant="primary"
 							text="+"
 							style={[styles.addBtn, { bottom: bottom + theme.spacing.small }]}
-							onPress={() => navigation.navigate("Address")}
+							onPress={() => navigation.navigate("Address", {})}
 						/>
 						{addresses.length > 0 && (
 							<ScrollView contentContainerStyle={styles.containerStyle}>
@@ -80,21 +81,24 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigatio
 						visible={options.visible}
 						headerTitle="Choose Option"
 						onAction={(type) => {
-							const address = addresses[options.index];
-							setOptions({ visible: false, index: null });
-							if (type === "edit") {
-								navigation.navigate("Address", {
-									address,
-								});
-							}
-							if (type === "delete") {
-								deleteAddress(address.id);
+							if (options.index) {
+								const address = addresses[options.index];
+								setOptions({ visible: false, index: null });
+								if (type === "edit") {
+									navigation.navigate("Address", {
+										address,
+									});
+								}
+								if (type === "delete") {
+									deleteAddress(address.id);
+								}
 							}
 						}}
 						onClose={() => {
 							setOptions({ visible: false, index: null });
 						}}
 					/>
+					{isLoading && <Loader style={{ backgroundColor: rgba.black(0.2) }} />}
 				</>
 			)}
 		</Container>

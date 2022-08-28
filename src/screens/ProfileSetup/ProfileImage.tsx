@@ -65,7 +65,7 @@ const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pro
 					}}
 					button2={{
 						variant: "primary",
-						text: "Uploda a photo",
+						text: "Upload a photo",
 						onPress: pickImage,
 						style: isLoading ? { backgroundColor: theme.colors.primary.yellow_20 } : {},
 					}}
