@@ -7,7 +7,7 @@ import NoNetwork from "../components/Sheet/NoNetwork";
 import Confirmation from "../components/Sheet/Confirmation";
 
 import { ScreenNavigationProp } from "../navigation/types";
-import { useCart, useUI } from "../utils/store";
+import { useCart, useUI, useUser } from "../utils/store";
 import theme from "../utils/theme";
 
 import Cart from "./Product/Cart";
@@ -16,6 +16,7 @@ const GlobalUI = () => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const insets = useSafeAreaInsets();
 	const { toggleCart, visible } = useCart();
+	const userId = useUser().user.id;
 	const { showConfirmationModal, message, onAction, updateValue, acceptText, rejectText, headerTitle } = useUI();
 
 	return (
@@ -26,7 +27,7 @@ const GlobalUI = () => {
 				headerTitle="My Cart"
 				onCheckout={() => {
 					toggleCart(false);
-					navigation.navigate("Checkout");
+					navigation.navigate(userId ? "Checkout" : "Profile");
 				}}
 				onClose={() => {
 					toggleCart(false);
