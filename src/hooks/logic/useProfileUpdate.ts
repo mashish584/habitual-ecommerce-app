@@ -3,12 +3,13 @@ import { useFormik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 
 import { User } from "../../utils/schema.types";
-import { useUser } from "../../utils/store";
+import { useUI, useUser } from "../../utils/store";
 import { ProfileSchema, UserProfile } from "../../utils/validation";
 
 import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
 import { breakFullName, isValidJSONString, showToast } from "../../utils";
 import { ScreenNavigationProp } from "../../navigation/types";
+import { getPasswordConfirmationModal } from "../../utils/media";
 
 const userProfile = (user: User) => {
 	const [firstName, lastName] = breakFullName(user?.fullname);
@@ -23,6 +24,7 @@ const userProfile = (user: User) => {
 
 function useProfileUpdate<T extends string>(user?: User) {
 	const [{ id: userId, profile, joining_reasons, favouriteProductIds }, setUser] = useUser((store) => [store.user, store.setUser]);
+	const updateValue = useUI((store) => store.updateValue);
 	const navigation = useNavigation<ScreenNavigationProp>();
 	const { mutateAsync, isLoading } = useUpdateUser<T, User>(userId);
 	const fetchProfile = useUserProfile<T, User>();
@@ -61,10 +63,26 @@ function useProfileUpdate<T extends string>(user?: User) {
 
 	const markProductAsFavourite = useCallback(
 		async (productId) => {
-			const productExist = favouriteProductIds?.includes(productId);
+			if (!userId) {
+				updateValue(getPasswordConfirmationModal(updateValue, navigation.navigate));
+				return;
+			}
+
+			const productIndex = favouriteProductIds?.indexOf(productId);
+
+			// → creating optimistic response
+			let favouriteProducts = [...favouriteProductIds];
+
+			if (productIndex != -1) {
+				favouriteProducts.splice(productIndex, 1);
+			} else {
+				favouriteProducts = [...favouriteProductIds, productId];
+			}
+
+			setUser({ favouriteProductIds: favouriteProducts });
 
 			return updateFavouriteProduct.mutateAsync(
-				{ id: productId, method: productExist ? "DELETE" : "POST" },
+				{ id: productId, method: productIndex !== -1 ? "DELETE" : "POST" },
 				{
 					onSuccess: (response) => {
 						if (response?.data) {

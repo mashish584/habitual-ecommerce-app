@@ -16,13 +16,13 @@ type CardVariant = "large" | "small" | "wide";
 export type PressAction = "heart" | "card";
 
 interface ProductCard {
-	item: Partial<Product>;
+	item: Product;
 	variant: CardVariant;
 	containerStyle?: ViewStyle;
 	contentStyle?: ViewStyle;
 	extraContent?: ReactNode;
 	isFavouriteProduct?: boolean;
-	onPress?: (action: PressAction) => void;
+	onPress?: (action: PressAction, product: Product) => void;
 }
 
 const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent, ...props }: ProductCard) => {
@@ -31,6 +31,14 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 	const fullPrice = item?.discount ? calculateOriginalPrice(item.price, item.discount) : null;
 
 	const previousValue = React.useRef<boolean | null>(null);
+
+	const onMarkFavourite = () => {
+		props?.onPress?.("heart", item);
+	};
+
+	const handleCardTap = () => {
+		props?.onPress?.("card", item);
+	};
 
 	useEffect(() => {
 		// eslint-disable-next-line no-undefined
@@ -46,7 +54,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 
 	return (
 		<Pressable
-			onPress={() => props?.onPress?.("card")}
+			onPress={handleCardTap}
 			style={[
 				variant === "wide" ? styles.wideContainer : styles.container,
 				variant === "large" && styles.largeContainer,
@@ -64,7 +72,7 @@ const ProductCard = ({ item, variant, containerStyle, contentStyle, extraContent
 				]}>
 				<Image source={{ uri: item?.image }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
 				{variant !== "wide" && (
-					<TouchableOpacity onPress={() => props?.onPress?.("heart")} activeOpacity={0.9} style={styles.heartContainer}>
+					<TouchableOpacity onPress={onMarkFavourite} activeOpacity={0.9} style={styles.heartContainer}>
 						{!props.isFavouriteProduct && <FontAwesomeIcon icon={faHeart as IconProp} />}
 						<LottieView
 							ref={heartRef}

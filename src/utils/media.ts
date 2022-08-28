@@ -43,3 +43,21 @@ export const openGallery = async (options?: Options) => {
 
 	return formatFiles(files as ImageOrVideo[]);
 };
+
+// password confirmation object
+
+export const getPasswordConfirmationModal = (updateValue, onNavigate) => ({
+	showConfirmationModal: true,
+	headerTitle: "Habitual Ecommerce",
+	message: "Please login to continue.",
+	acceptText: "Login",
+	rejectText: "Cancel",
+	onAction: (action) => {
+		if (action === "Yes") {
+			updateValue({ showConfirmationModal: false });
+			onNavigate("UnauthStack");
+		} else {
+			updateValue({ showConfirmationModal: false });
+		}
+	},
+});

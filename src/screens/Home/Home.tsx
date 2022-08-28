@@ -63,7 +63,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 											variant="large"
 											key={product.id}
 											isFavouriteProduct={favouriteProductIds?.includes(product.id)}
-											onPress={(action) => handleCardAction(action, product)}
+											onPress={handleCardAction}
 											item={product}
 											containerStyle={index === 0 ? { marginLeft: 0 } : {}}
 										/>

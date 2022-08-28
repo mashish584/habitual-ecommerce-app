@@ -154,13 +154,12 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							snapToInterval={width}
 							decelerationRate="fast"
 							onMomentumScrollBegin={() => {
-								console.log("Scroll Begin");
 								scrollBegin.current = true;
 							}}
 							onMomentumScrollEnd={(e) => {
+								// ⚠️ Prevent android multiple trigger
 								if (scrollBegin.current) {
 									const step = Math.round(e.nativeEvent.contentOffset.x / width);
-									console.log(`Current step is ${step}`);
 									activeSlideIndex.current = step;
 									setIsLastSlide(step === 3);
 									scrollBegin.current = false;

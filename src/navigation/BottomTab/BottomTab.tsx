@@ -7,6 +7,7 @@ import { BottomStackScreens, RootStackScreens } from "../types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { useCart, useUI, useUser } from "../../utils/store";
+import { getPasswordConfirmationModal } from "../../utils/media";
 
 type Screens = keyof RootStackScreens | keyof BottomStackScreens;
 
@@ -104,21 +105,7 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 							}
 
 							if (["Wishlist", "Orders"].includes(option.route) && !userId) {
-								updateValue({
-									showConfirmationModal: true,
-									headerTitle: "Habitual Ecommerce",
-									message: "Please login to continue.",
-									acceptText: "Login",
-									rejectText: "Cancel",
-									onAction: (action) => {
-										if (action === "Yes") {
-											updateValue({ showConfirmationModal: false });
-											onNavigate("UnauthStack");
-										} else {
-											updateValue({ showConfirmationModal: false });
-										}
-									},
-								});
+								updateValue(getPasswordConfirmationModal(updateValue, onNavigate));
 								return;
 							}
 
