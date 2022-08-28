@@ -4,6 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import SplashScreen from "react-native-splash-screen";
+import analytics from "@react-native-firebase/analytics";
 
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
@@ -21,7 +22,12 @@ LogBox.ignoreLogs([
 const queryClient = new QueryClient();
 
 const App = () => {
+	const appInit = async () => {
+		await analytics().logAppOpen();
+	};
+
 	useEffect(() => {
+		appInit();
 		if (Platform.OS === "ios") {
 			KeyboardManager.setEnable(true);
 		}
