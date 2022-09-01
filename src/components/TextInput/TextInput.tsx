@@ -68,6 +68,7 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 					onBlur={() => setIsFocused(false)}
 					autoCapitalize={"none"}
 					secureTextEntry={props.type === "password" && !showPassword}
+					allowFontScaling={false}
 					{...props}
 				/>
 				{props.type === "search" && (
