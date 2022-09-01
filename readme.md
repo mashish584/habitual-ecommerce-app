@@ -1,7 +1,9 @@
 # Habitual E-commerce App
 
 Mobile application to search & buy products easily. This whole application divided in 3 phases.
-Currently I've completed phase-1 which involve MVP of the platform which include below mentioned features ([Watch Video](https://www.linkedin.com/posts/mehraas_design-ecommerce-reactnative-activity-6943989872491659264-o6kc?utm_source=share&utm_medium=member_desktop)):
+Currently I've completed phase-1 which involve MVP of the platform which include below mentioned features.
+
+#### Demo: [Application Video](https://www.linkedin.com/posts/mehraas_design-ecommerce-reactnative-activity-6943989872491659264-o6kc?utm_source=share&utm_medium=member_desktop)
 
 #### Figma Designs: [View](https://www.figma.com/file/QNX7J2J2gX7yDn40i0Wboa/Habitual-Ecommerce?node-id=579%3A7978)
 
