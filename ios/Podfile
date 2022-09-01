@@ -20,6 +20,8 @@ target 'habitual_ecommerce_app' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'habitual_ecommerce_appTests' do
     inherit! :complete
     # Pods for testing

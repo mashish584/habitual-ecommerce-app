@@ -32,7 +32,9 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 		if (isLoading) return;
 
 		const images = await openGallery({ cropping: true });
-		setFieldValue("profile", JSON.stringify(images[0]));
+		if (images?.length) {
+			setFieldValue("profile", JSON.stringify(images[0]));
+		}
 	};
 
 	const selectedImage = isValidJSONString(values.profile) ? JSON.parse(values.profile).uri : null;

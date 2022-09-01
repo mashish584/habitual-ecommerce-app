@@ -27,7 +27,6 @@ function useAuth(isSignIn = false) {
 		onSubmit: async (data: Auth) =>
 			authenticate.mutate(data, {
 				onSuccess: (response) => {
-					console.log({ response });
 					if (response?.data) {
 						showToast("success", { title: "Habitual Ecommerce", message: `Welcom back, ${response.data.fullname || response.data.email}.` });
 						onLoginSuccess({ token: response.token, user: response.data });

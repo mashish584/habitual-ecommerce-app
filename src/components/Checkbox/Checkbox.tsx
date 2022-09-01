@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, View, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import theme from "../../utils/theme";
 
@@ -26,7 +27,7 @@ const Checkbox = ({ checked, checkBoxStyle, onPress }: CheckboxI) => {
 					backgroundColor: checked ? theme.colors.shades.gray_60 : "transparent",
 					...checkBoxStyle,
 				}}>
-				{checked && <FontAwesomeIcon icon={faCheck} color={theme.colors.shades.white} />}
+				{checked && <FontAwesomeIcon icon={faCheck as IconProp} color={theme.colors.shades.white} />}
 			</View>
 		</TouchableOpacity>
 	);

@@ -11,6 +11,8 @@ import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
 import Orders from "../screens/Orders/Orders";
 import { EditProfile, Profile, Addresses } from "../screens/Profile";
 import { ProfileSetupComplete } from "../screens/ProfileSetup";
+import { Wishlist } from "../screens/Wishlist";
+import { Search } from "../screens/Search";
 import GlobalUI from "../screens/GlobalUI";
 
 import { UserState } from "../utils/store";
@@ -21,16 +23,22 @@ import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
+import AddInterestStack from "./Stacks/AddInterestStack";
 
 /**
  * Where ot navigation user
  */
-const Start: React.FC<StackNavigationProps<RootStackScreens, null>> = ({ navigation }) => {
+const Start: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
 	useEffect(() => {
 		(async () => {
 			try {
 				const user = await AsyncStorage.getItem("user");
-				const data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
+				let data;
+
+				if (user) {
+					data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
+				}
+
 				if (data.token && data.user) {
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
@@ -58,8 +66,8 @@ const BottamTabScreen = () => {
 			}}
 		>
 			<BottomTabStack.Screen name="Home" component={Home} />
-			<BottomTabStack.Screen name="Wishlist" component={Home} />
-			<BottomTabStack.Screen name="Search" component={Home} />
+			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
+			<BottomTabStack.Screen name="Search" component={Search} />
 			<BottomTabStack.Screen name="Orders" component={Orders} />
 			<BottomTabStack.Screen name="Cart" component={Home} />
 		</BottomTabStack.Navigator>
@@ -75,6 +83,7 @@ const RootStackScreen = () => {
 			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
 			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
+			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
 			<RootStack.Screen name="Product" component={Product} />
 			<RootStack.Screen name="Checkout" component={Checkout} />

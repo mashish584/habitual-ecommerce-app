@@ -15,7 +15,7 @@ interface Header {
 	variant: "primary" | "secondary";
 	leftIcon?: ReactNode;
 	rightIcon?: ReactNode;
-	title?: string;
+	title?: string | null;
 	titleStyle?: TextStyle | TextStyle[];
 	headerStyle?: ViewStyle;
 	onAction?: (type: ActionType) => void;
@@ -25,6 +25,18 @@ const { shades } = theme.colors;
 
 const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) => {
 	const isPrimary = variant === "primary";
+
+	const onLeftIconPress = () => {
+		if (props.onAction) {
+			props.onAction("left");
+		}
+	};
+
+	const onRightIconPress = () => {
+		if (props.onAction) {
+			props.onAction("right");
+		}
+	};
 
 	return (
 		<View
@@ -42,9 +54,7 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 				headerStyle,
 			]}>
 			{props.leftIcon && (
-				<TouchableOpacity
-					onPress={() => props.onAction("left")}
-					style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
+				<TouchableOpacity onPress={onLeftIconPress} style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
 					{props.leftIcon}
 				</TouchableOpacity>
 			)}
@@ -56,9 +66,7 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 			)}
 
 			{props.rightIcon && (
-				<TouchableOpacity
-					onPress={() => props.onAction("right")}
-					style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
+				<TouchableOpacity onPress={onRightIconPress} style={[theme.iconButtonStyle, { position: "absolute", right: theme.spacing.medium }]}>
 					{props.rightIcon}
 				</TouchableOpacity>
 			)}

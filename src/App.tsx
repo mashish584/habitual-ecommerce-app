@@ -3,6 +3,8 @@ import { LogBox, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
+import SplashScreen from "react-native-splash-screen";
+import analytics from "@react-native-firebase/analytics";
 
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
@@ -12,6 +14,7 @@ import { STRIPE_PUBLIC_KEY } from "@env";
 import Navigation from "./navigation";
 
 LogBox.ignoreLogs([
+	"Sending `onAnimatedValueUpdate` with no listeners registered.",
 	"[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 	"Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).",
 ]);
@@ -19,10 +22,16 @@ LogBox.ignoreLogs([
 const queryClient = new QueryClient();
 
 const App = () => {
+	const appInit = async () => {
+		await analytics().logAppOpen();
+	};
+
 	useEffect(() => {
+		appInit();
 		if (Platform.OS === "ios") {
 			KeyboardManager.setEnable(true);
 		}
+		SplashScreen.hide();
 	}, []);
 
 	return (

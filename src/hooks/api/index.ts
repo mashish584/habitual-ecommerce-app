@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { API_URL } from "@env";
+import { DEV_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Address, Urls } from "../../utils/types";
+import { Address, RequestMethods, Urls } from "../../utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
 import { UserState } from "../../utils/store";
 import { showToast } from "../../utils";
@@ -13,11 +13,17 @@ type AddressData = {
 	default?: boolean;
 };
 
+async function handleAPIError(response, endpoint: string) {
+	response = await response.json();
+	const message = response.message || `Unable to fetch ${endpoint}`;
+	showToast("error", { title: "Error", message });
+}
+
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
 	try {
 		const userAsyncData = await AsyncStorage.getItem("user");
-		let token = null;
+		let token;
 
 		if (userAsyncData) {
 			let userStoreInfo = JSON.parse(userAsyncData) as { state: Pick<UserState, "token" | "user"> };
@@ -27,7 +33,8 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
 
 		if (!endpoint.includes("http")) {
-			endpoint = `${API_URL}${endpoint}`;
+			//for local -> API_URL else DEV_URL
+			endpoint = `${DEV_URL}${endpoint}`;
 		}
 
 		if (options.path) {
@@ -52,12 +59,12 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			options.headers["token"] = `Bearer ${token}`;
 		}
 
-		let response = await fetch(endpoint, { ...options });
+		const response = await fetch(endpoint, { ...options });
 
 		if (response.status === 200) {
 			return response.json();
 		} else {
-			throw new Error(`Unable to fetch ${endpoint}`);
+			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
 		showToast("error", { title: "Network Error", message: error?.message });
@@ -124,15 +131,14 @@ export const useCards = <T extends string, M>() => {
 	});
 };
 
-export const useOrders = <T extends string, M>(url = "user/orders/") => {
-	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>(["orders", url], (params) => {
-		console.log({ params });
-		return appFetch("user/orders/", {
+export const usePaginateAPI = <T extends string, M>(url: Urls, query: string = "", queryName = "") => {
+	return useInfiniteQuery<SuccessResponse<M>, ErrorResponse<T>>([queryName, url], (params) => {
+		return appFetch(url, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			url: params?.pageParam?.url || url,
+			url: params?.pageParam?.url || `${url}${query}`,
 		});
 	});
 };
@@ -215,6 +221,18 @@ export const useUpdateTransaction = <T extends string, M>() => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(data),
+		});
+	});
+};
+
+export const useFavouriteProduct = <T extends string, M>() => {
+	return useMutation<SuccessResponse<M>, ErrorResponse<T>, { id: string; method: RequestMethods }>((data) => {
+		return appFetch("user/mark-favourite/", {
+			method: data.method,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			query: `?id=${data.id}`,
 		});
 	});
 };

@@ -14,7 +14,6 @@ const NoNetwork = () => {
 
 	const checkStatus = async () => {
 		const response = await NetInfo.fetch();
-		console.log(response);
 		if (response.isConnected === true && response.isInternetReachable === true) {
 			setIsNetworkAvailable(true);
 		}

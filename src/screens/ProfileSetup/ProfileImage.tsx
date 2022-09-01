@@ -13,26 +13,29 @@ import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
 
-const timeoutIds = [];
+const timeoutIds: NodeJS.Timeout[] = [];
 
 const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "ProfileImage">> = ({ navigation }) => {
 	const { profile, updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "profile">>();
-
-	console.log("Profile Image [Rerender]", { profile });
 
 	const pickImage = async () => {
 		if (isLoading) return;
 
 		const images = await openGallery({ cropping: true });
-		const response = await updateUserInfo({ profile: images[0] });
 
-		if (response.data) {
-			const id = setTimeout(() => {
-				navigation.navigate("JoiningReason");
-			}, 1500);
-			timeoutIds.push(id);
+		if (images?.length) {
+			const response = await updateUserInfo({ profile: images[0] });
+
+			if (response.data) {
+				const id = setTimeout(() => {
+					navigation.navigate("JoiningReason");
+				}, 1500);
+				timeoutIds.push(id);
+			}
 		}
 	};
+
+	const goToJoiningReason = () => navigation.navigate("JoiningReason");
 
 	const userProfileImage = profile ? { uri: profile } : require("../../assets/images/avatar.png");
 
@@ -58,13 +61,13 @@ const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pro
 					button1={{
 						variant: "transparent",
 						text: "Skip for now",
-						onPress: () => navigation.navigate("JoiningReason"),
+						onPress: goToJoiningReason,
 					}}
 					button2={{
 						variant: "primary",
-						text: "Uploda a photo",
+						text: "Upload a photo",
 						onPress: pickImage,
-						style: isLoading && { backgroundColor: theme.colors.primary.yellow_20 },
+						style: isLoading ? { backgroundColor: theme.colors.primary.yellow_20 } : {},
 					}}
 				/>
 			</View>

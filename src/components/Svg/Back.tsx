@@ -3,7 +3,7 @@ import { SVG } from "./types";
 import { AnimatedPath, AnimatedSVG } from "./index";
 
 const Back = (props: SVG) => (
-	<AnimatedSVG width={14} height={14} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+	<AnimatedSVG width={14} height={14} xmlns="http://www.w3.org/2000/svg" {...props}>
 		<AnimatedPath
 			fillRule="evenodd"
 			clipRule="evenodd"

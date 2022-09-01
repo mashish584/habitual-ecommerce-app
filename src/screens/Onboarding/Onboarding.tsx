@@ -5,7 +5,7 @@ import { useScrollHandler } from "react-native-redash";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
-import { StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import { RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
 
 import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -49,12 +49,13 @@ const slides = [
 	},
 ];
 
-const ScrollViewHeight = height * 0.7;
+const ScrollViewHeight = height * 0.75;
 
-const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding">> = ({ navigation }) => {
+const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackScreens, "Onboarding">> = ({ navigation }) => {
 	const { scrollHandler, x } = useScrollHandler();
 	const activeSlideIndex = useRef(0);
 	const scrollRef = useRef<Animated.ScrollView>(null);
+	let scrollBegin = useRef(false);
 
 	const [isLastSlide, setIsLastSlide] = useState(false);
 
@@ -79,6 +80,9 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding"
 	const moveToSlide = (index?: number) => {
 		const nextIndex = index ? index : activeSlideIndex.current + 1;
 		const x = nextIndex * width;
+
+		setIsLastSlide(nextIndex === 3);
+		activeSlideIndex.current = nextIndex;
 
 		scrollRef.current?.getNode().scrollTo({ x, animated: true });
 	};
@@ -149,10 +153,17 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding"
 							ref={scrollRef}
 							snapToInterval={width}
 							decelerationRate="fast"
+							onMomentumScrollBegin={() => {
+								scrollBegin.current = true;
+							}}
 							onMomentumScrollEnd={(e) => {
-								const step = e.nativeEvent.contentOffset.x / width;
-								activeSlideIndex.current = step;
-								setIsLastSlide(step === 3);
+								// ⚠️ Prevent android multiple trigger
+								if (scrollBegin.current) {
+									const step = Math.round(e.nativeEvent.contentOffset.x / width);
+									activeSlideIndex.current = step;
+									setIsLastSlide(step === 3);
+									scrollBegin.current = false;
+								}
 							}}
 							bounces={false}
 							showsHorizontalScrollIndicator={false}
@@ -192,6 +203,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens, "Onboarding"
 								text="Ask me again later"
 								onPress={() => {
 									//will take user to home screen
+									navigation.navigate("BottomStack");
 								}}
 								style={{ marginHorizontal: theme.spacing.medium }}
 							/>

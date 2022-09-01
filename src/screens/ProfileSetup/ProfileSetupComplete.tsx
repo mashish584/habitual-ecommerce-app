@@ -1,6 +1,6 @@
 import React from "react";
 import Success from "../../components/Success";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { StackNavigationProps, RootStackScreens } from "../../navigation/types";
 
 const ProfileSetupComplete: React.FC<StackNavigationProps<RootStackScreens, "ProfileSetupComplete">> = ({ navigation }) => {
 	return (

@@ -1,11 +1,11 @@
 import React from "react";
 import Success from "../../components/Success";
 
-import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 
-const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens & BottomStackScreens, "CheckoutSuccess">> = ({ navigation }) => {
+const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens, "CheckoutSuccess">> = ({ navigation }) => {
 	return (
 		<Success
 			title="Woohoo!"
@@ -13,7 +13,7 @@ const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens & BottomSt
 			buttonVariant="primary"
 			buttonText="Continue"
 			buttonStyle={{ backgroundColor: theme.colors.shades.white, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(1)) }}
-			onAction={() => navigation.navigate("Home")}
+			onAction={() => navigation.navigate("BottomStack")}
 		/>
 	);
 };

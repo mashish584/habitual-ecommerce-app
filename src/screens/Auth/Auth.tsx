@@ -62,7 +62,7 @@ const Auth = ({ type }: Auth) => {
 								}
 							}}
 						/>
-						<ScrollView style={{ paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }}>
+						<ScrollView style={{ paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }} keyboardShouldPersistTaps="always">
 							<Image source={require("../../assets/images/full-logo.png")} style={styles.logo} resizeMode="contain" />
 							<TextInput
 								label="Email"

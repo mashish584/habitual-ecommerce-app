@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { FormikProps, useFormik } from "formik";
+import { useNavigation } from "@react-navigation/native";
 
-import { Address } from "../../utils/types";
+import { Address, PartialBy } from "../../utils/types";
 import { AddressSchema } from "../../utils/validation";
 import { User } from "../../utils/schema.types";
 import { useUser } from "../../utils/store";
 
 import { useRemoveAddress, useUpdateAddress } from "../api";
+import { showToast } from "../../utils";
+import { ScreenNavigationProp } from "../../navigation/types";
 
 type AddressT = Omit<Address, "id" | "default">;
 
@@ -20,17 +23,20 @@ const values: AddressT = {
 	mobileNumber: "",
 };
 
-function useAddress(address?: Address) {
+function useAddress(address?: PartialBy<Address, "id" | "default">) {
+	const navigation = useNavigation<ScreenNavigationProp>();
 	const setUser = useUser((store) => store.setUser);
 	const { mutateAsync, ...updateAddress } = useUpdateAddress<"address" | "path" | "default" | "method", User>(address?.id);
 	const removeAddress = useRemoveAddress<"path", User>();
+
 	const formik: FormikProps<AddressT> = useFormik({
 		initialValues: values,
 		validationSchema: AddressSchema,
 		validateOnChange: true,
 		onSubmit: async (data: AddressT) => {
+			const updateValues = { ...data };
+
 			if (address?.id) {
-				const updateValues = { ...data };
 				for (let key in updateValues) {
 					if (updateValues[key] === address[key]) {
 						delete updateValues[key];
@@ -43,13 +49,17 @@ function useAddress(address?: Address) {
 			}
 
 			return mutateAsync(
-				{ address: data },
+				{ address: updateValues },
 				{
 					onSuccess: (response) => {
+						if (response.message) {
+							showToast("success", { title: "Habitual Ecommerce", message: response.message });
+							navigation.goBack();
+						}
 						setUser(response.data);
 					},
 					onError: (err) => {
-						console.log(err);
+						showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 					},
 				},
 			);
@@ -62,12 +72,11 @@ function useAddress(address?: Address) {
 			{
 				onSuccess: (response) => {
 					if (response?.data) {
-						console.log("Address set as default.");
 						setUser(response.data);
 					}
 				},
 				onError: (error) => {
-					console.log({ error });
+					showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 				},
 			},
 		);
@@ -79,12 +88,11 @@ function useAddress(address?: Address) {
 			{
 				onSuccess: (response) => {
 					if (response?.data) {
-						console.log("Address removed.");
 						setUser(response.data);
 					}
 				},
 				onError: (error) => {
-					console.log({ error });
+					showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 				},
 			},
 		);
@@ -95,7 +103,6 @@ function useAddress(address?: Address) {
 			const data = { ...address };
 			delete data.id;
 			delete data.default;
-			console.log({ data });
 			formik.setValues(data);
 		}
 	}, [address?.id]);

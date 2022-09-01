@@ -5,7 +5,7 @@ import { AnimatedG, AnimatedPath, AnimatedSVG } from "./index";
 
 const Bag = (props: SVG) => {
 	return (
-		<AnimatedSVG width={32} height={33} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+		<AnimatedSVG width={32} height={33} xmlns="http://www.w3.org/2000/svg" {...props}>
 			<AnimatedPath
 				fillRule="evenodd"
 				clipRule="evenodd"
@@ -18,7 +18,7 @@ const Bag = (props: SVG) => {
 
 export const SmallBag = (props: SVG) => {
 	return (
-		<AnimatedSVG width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+		<AnimatedSVG width={20} height={20} xmlns="http://www.w3.org/2000/svg" {...props}>
 			<AnimatedG clipPath="url(#a)">
 				<AnimatedPath
 					fillRule="evenodd"

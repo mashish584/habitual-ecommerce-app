@@ -13,6 +13,7 @@ export type RootStackScreens = {
 	UnauthStack: undefined;
 	OnboardingStack: undefined;
 	ProfileSetup: undefined;
+	AddInterest: undefined;
 	Product: {
 		product: Product;
 	};
@@ -27,7 +28,7 @@ export type RootStackScreens = {
 	};
 	Addresses: undefined;
 	ProfileSetupComplete: undefined;
-	BottomStack: BottomStackScreens;
+	BottomStack?: BottomStackScreens;
 };
 
 export type BottomStackScreens = {
@@ -47,10 +48,24 @@ export type UnauthStackScreens = {
 export type ProfileSetupStackScreens = {
 	ProfileImage: undefined;
 	JoiningReason: undefined;
-	PickInterest: undefined;
+	PickInterest: {
+		showSteps?: boolean;
+	};
 	NarrowInterest: {
 		query: string;
+		showSteps?: boolean;
 	};
 };
 
-export type ScreenNavigationProp = StackNavigationProp<RootStackScreens & BottomStackScreens & UnauthStackScreens>;
+export type AddInterestStackScreens = {
+	PickInterest: {
+		showSteps?: boolean;
+	};
+	NarrowInterest: {
+		query: string;
+		showSteps?: boolean;
+	};
+};
+
+export type MergedRoutes = RootStackScreens & BottomStackScreens & UnauthStackScreens;
+export type ScreenNavigationProp = StackNavigationProp<MergedRoutes>;

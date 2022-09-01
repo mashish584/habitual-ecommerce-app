@@ -28,6 +28,7 @@ export type User = {
 	defaultAddress?: Address;
 	interests: Category[];
 	interestIds: string[];
+	favouriteProductIds: string[];
 	createdAt: Date;
 	updatedAt: Date;
 };

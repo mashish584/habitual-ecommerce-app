@@ -44,12 +44,19 @@ export type Urls =
 	| "payment-success/"
 	| "user/address/"
 	| "cards/"
-	| "user/orders/";
+	| "user/orders/"
+	| "user/orders/?take=5"
+	| "user/mark-favourite/"
+	| "user/favourites/"
+	| "user/favourites/"
+	| "products/";
 
 export type FetchHeader = {
 	"Content-Type": "application/json" | "multipart/form-data";
 	Authorization?: string;
 };
+
+export type RequestMethods = "POST" | "GET" | "PATCH" | "DELETE" | "PUT";
 
 /* eslint-disable no-unused-vars */
 
@@ -60,3 +67,6 @@ export enum OrderStatus {
 }
 
 /* eslint-enable no-unused-vars */
+
+//@TS Utils
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

@@ -12,7 +12,10 @@ export type QuantityAction = "+" | "-";
 interface UIInterface {
 	showConfirmationModal: boolean;
 	message: string;
-	onAction: (action: "Yes" | "No") => void;
+	acceptText: string;
+	rejectText: string;
+	headerTitle: string;
+	onAction: ((action: "Yes" | "No") => void) | null;
 }
 
 export interface UIState extends UIInterface {
@@ -24,7 +27,7 @@ export interface UserState {
 	user: User;
 	onLoginSuccess: ({ token: string, user: User }) => void;
 	setToken: (token: string) => void;
-	setUser: (user: User) => void;
+	setUser: (user: Partial<User>) => void;
 	removeToken: () => void;
 }
 
@@ -54,10 +57,12 @@ export const useUser = create<UserState, SetState<UserState>, GetState<UserState
 			user: {} as User,
 			onLoginSuccess: (data) => set(data),
 			setToken: (token: string) => set({ token }),
-			setUser: (user: User) => {
+			setUser: (user: Partial<User>) => {
 				const prevState = { ...get().user };
-				const defaultAddress = user.addresses.filter((address) => address.default)[0];
-				set({ user: { ...prevState, ...user, defaultAddress } });
+				if (user.addresses) {
+					user.defaultAddress = user.addresses.filter((address) => address.default)[0];
+				}
+				set({ user: { ...prevState, ...user } });
 			},
 			removeToken: () => set({ token: "", user: {} as User }),
 		}),
@@ -128,6 +133,9 @@ export const useCart = create<CartState, SetState<CartState>, GetState<CartState
 export const useUI = create<UIState, SetState<Partial<UIInterface>>, GetState<UIState>, StoreApi<UIState>>((set) => ({
 	showConfirmationModal: false,
 	message: "",
+	headerTitle: "Confirmation",
+	acceptText: "Yes",
+	rejectText: "No",
 	onAction: null,
 	updateValue: (value) => set(value),
 }));

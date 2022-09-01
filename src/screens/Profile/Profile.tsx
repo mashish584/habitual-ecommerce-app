@@ -16,7 +16,7 @@ import { Card, ColorCard } from "../../components/Cards";
 import theme, { rgba } from "../../utils/theme";
 import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "../../utils";
 import { useUI, useUser } from "../../utils/store";
-import { RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
 
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
 import { Category } from "../../utils/schema.types";
@@ -42,7 +42,7 @@ const AccountSettingOptions = [
 	// },
 ];
 
-const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens, "Profile">> = ({ navigation }) => {
+const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens & BottomStackScreens, "Profile">> = ({ navigation }) => {
 	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
 	const { fetchUserInfo } = useProfileUpdate(profile);
 	const updateValue = useUI((store) => store.updateValue);
@@ -61,6 +61,10 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 		}
 		return data;
 	}, {} as Record<string, Pick<Category, "id" | "name" | "image">>);
+
+	const openInterestStack = () => {
+		navigation.navigate("AddInterest");
+	};
 
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: profile?.id ? theme.colors.primary.yellow : theme.colors.shades.white }}>
@@ -133,7 +137,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 											title="Tell us what interests you!"
 											description="You don’t have any interests listed. Tell us what you love the most and we’ll recommend relevant products to you."
 											buttonText="Add my interests"
-											onAction={() => {}}
+											onAction={openInterestStack}
 										/>
 									)}
 									<View style={styles.interestsSection}>
@@ -152,7 +156,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 														key={categoryId}
 														variant="fixed"
 														text={category.name}
-														image={{ uri: category.image }}
+														image={category.image ? { uri: category.image } : null}
 														width={COLOR_CARD_WIDTH}
 														cardColor={colors[index]}
 														cardStyle={{ marginBottom: theme.spacing.small, aspectRatio: 0.78 }}
@@ -163,7 +167,8 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 									{/* Account settings */}
 									<SectionHeading title="My Account" containerStyle={{ marginTop: theme.spacing.large }} />
 									<ScrollView
-										style={{ paddingVertical: theme.spacing.medium, marginBottom: theme.spacing.medium }}
+										style={{ minHeight: 140, marginBottom: theme.spacing.medium }}
+										contentContainerStyle={{ alignItems: "center" }}
 										horizontal={true}
 										showsHorizontalScrollIndicator={false}>
 										{AccountSettingOptions.map(({ label, Icon, type }, index) => (
@@ -196,6 +201,8 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 													backgroundColor: theme.colors.shades.white,
 													marginRight: theme.spacing.small,
 													marginLeft: index === 0 ? theme.spacing.medium : 0,
+													borderWidth: 1,
+													borderColor: theme.colors.shades.gray_20,
 												}}>
 												<Icon />
 												<Text style={[theme.textStyles.h6, { marginTop: theme.spacing.small }]}>{label}</Text>
@@ -212,12 +219,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 								Log in to start and explore your personalized shopping experience.
 							</Text>
 							<Button variant="primary" text={"Login"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.replace("UnauthStack")} />
-							<Button
-								variant="transparent"
-								text={"Go to Home"}
-								style={{ marginTop: theme.spacing.small }}
-								onPress={() => navigation.navigate("BottomStack")}
-							/>
+							<Button variant="transparent" text={"Go to Home"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.goBack()} />
 						</View>
 					)}
 				</>

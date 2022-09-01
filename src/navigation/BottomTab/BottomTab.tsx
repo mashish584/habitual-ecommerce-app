@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomStackScreens, RootStackScreens } from "../types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
-import { useCart } from "../../utils/store";
+import { useCart, useUI, useUser } from "../../utils/store";
+import { getPasswordConfirmationModal } from "../../utils/media";
 
 type Screens = keyof RootStackScreens | keyof BottomStackScreens;
 
@@ -52,6 +53,8 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 
 	const { bottom } = useSafeAreaInsets();
 	const toggleCart = useCart((store) => store.toggleCart);
+	const userId = useUser((store) => store.user.id);
+	const updateValue = useUI((store) => store.updateValue);
 	const { index: routeIndex } = props.state;
 
 	const searchBackgroundColor = routeIndex === 2 ? theme.colors.shades.gray : theme.colors.primary.yellow;
@@ -98,6 +101,11 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 						onPress={() => {
 							if (option.route === "Cart") {
 								toggleCart(true);
+								return;
+							}
+
+							if (["Wishlist", "Orders"].includes(option.route) && !userId) {
+								updateValue(getPasswordConfirmationModal(updateValue, onNavigate));
 								return;
 							}
 

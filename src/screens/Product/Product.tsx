@@ -5,7 +5,7 @@ import { interpolateColor, useScrollHandler, useValue } from "react-native-redas
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import crashlytics from "@react-native-firebase/crashlytics";
+// import crashlytics from "@react-native-firebase/crashlytics";
 
 import Container from "../../components/Container";
 import { Review } from "../../components/Product";
@@ -28,14 +28,19 @@ import styles from "./styles";
 const SLIDER_WIDTH = Dimensions.get("screen").width;
 
 function getSlideColors(slideColors: SlideColors[], length: number) {
-	const slides = [];
-	const textColors = [];
+	const slides: Array<{ color: string }> = [];
+	const textColors: Array<{ color: string }> = [];
 
 	if (slideColors?.length) {
 		slideColors.map((slideColor) => {
 			slides.push({ color: slideColor.backgroundColor });
 			textColors.push({ color: slideColor.color });
 		});
+
+		if (slideColors.length < 2) {
+			slides.push({ color: theme.colors.shades.gray_20 });
+			textColors.push({ color: theme.colors.shades.gray_80 });
+		}
 	} else {
 		if (length < 2) {
 			length = 2;
@@ -72,7 +77,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 
 	const productInfo = fetchProductInfo.data?.data || product;
 
-	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length);
+	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length || 2);
 
 	// → Slide Transitions
 	const slideBackgroundColor = interpolateColor(x, {
@@ -99,7 +104,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const transitionProductInfo = (isSlide: boolean) => {
 		const config: Animated.TimingConfig = {
 			duration: 500,
-			toValue: null,
+			toValue: 0,
 			easing: Easing.linear,
 		};
 
@@ -204,9 +209,6 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								/>
 								<View>
 									<Animated.Text
-										onPress={() => {
-											crashlytics().crash();
-										}}
 										style={
 											[
 												theme.textStyles.h4,
@@ -255,6 +257,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								title: product.title,
 								price: productInfo.price,
 								discount: productInfo.discount,
+								quantity: productInfo.quantity,
 								buttonChild: !isSlideOn ? (
 									<FontAwesomeIcon icon={faArrowRight as IconProp} />
 								) : (

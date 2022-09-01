@@ -2,6 +2,7 @@ import React from "react";
 import { View, TextInput as RNTextInput, TextInputProps, StyleSheet, TextStyle, Image, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import Loader from "../Loader";
 
@@ -15,7 +16,7 @@ import { MessageType, TextInput as ITextInput } from "./types";
 
 export type Ref = RNTextInput | null;
 
-type Input = ITextInput & TextInputProps & { ref: React.ForwardedRef<Ref> };
+type Input = ITextInput & TextInputProps;
 
 const getTextInputStyle = (type: MessageType) => {
 	const textInputStyle: TextStyle = {};
@@ -55,6 +56,8 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 							borderWidth: 1,
 							borderColor: theme.colors.shades.gray_40,
 							paddingHorizontal: theme.spacing.small,
+							color: theme.colors.shades.gray_80,
+							// textAlignVertical: "top",
 							...textInputStyle,
 						},
 						isFocused && shadowStyle,
@@ -65,12 +68,17 @@ export default React.forwardRef<Ref, Input>(({ label, isOptional, messageType, m
 					onBlur={() => setIsFocused(false)}
 					autoCapitalize={"none"}
 					secureTextEntry={props.type === "password" && !showPassword}
+					allowFontScaling={false}
 					{...props}
 				/>
-				{props.type === "search" && <Image source={require("../../assets/images/search.png")} style={styles.searchIcon} />}
+				{props.type === "search" && (
+					<View style={[styles.searchIcon, props.searchIconStyle]}>
+						<Image source={require("../../assets/images/search.png")} />
+					</View>
+				)}
 				{props.type === "password" && (
 					<TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword((prev) => !prev)}>
-						<FontAwesomeIcon icon={!showPassword ? faEyeSlash : faEye} color={theme.colors.shades.gray_80} />
+						<FontAwesomeIcon icon={!showPassword ? (faEyeSlash as IconProp) : (faEye as IconProp)} color={theme.colors.shades.gray_80} />
 					</TouchableOpacity>
 				)}
 				{props.isLoading && <Loader style={{ alignItems: "flex-end", right: theme.spacing.medium }} />}

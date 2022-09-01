@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, View, Image, Text, Pressable } from "react-native";
+import { Dimensions, View, Image, Text, Pressable, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -56,37 +56,16 @@ const OrderCard = (props: OrderCard) => {
 	});
 
 	return (
-		<View
-			style={{
-				width: ORDER_CARD_WIDTH,
-				marginHorizontal: theme.spacing.medium,
-				padding: theme.spacing.small,
-				backgroundColor: theme.colors.shades.white,
-				minHeight: 120,
-				borderRadius: 10,
-				marginVertical: theme.spacing.xxSmall,
-				flexDirection: "row",
-				alignItems: "center",
-				...generateBoxShadowStyle(0, 10, rgba.black(0.06), 1, 10, 10, rgba.black(1)),
-			}}>
-			<View
-				style={{
-					width: "30%",
-					height: 88,
-					borderRadius: 10,
-					backgroundColor: theme.colors.shades.gray_20,
-					justifyContent: "center",
-					alignItems: "center",
-					...generateBoxShadowStyle(0, 10, rgba.black(0.09), 1, 20, 10, rgba.black(1)),
-				}}>
+		<View style={styles.container}>
+			<View style={styles.imageContainer}>
 				<Image source={{ uri: order.product.image }} style={{ width: "80%", height: "80%" }} resizeMode="contain" />
 			</View>
 			<View style={{ width: "70%", marginLeft: theme.spacing.small }}>
 				<View style={[theme.rowStyle, { alignItems: "center", position: "relative" }]}>
 					<Text style={theme.textStyles.body_reg}>{title}</Text>
 					{totalCartItems > 1 && (
-						<Animated.View style={{ position: "absolute", right: theme.spacing.medium, transform: [{ rotate }] }}>
-							<Pressable onPress={toggleDetails}>
+						<Animated.View style={{ position: "absolute", right: theme.spacing.small, transform: [{ rotate }] }}>
+							<Pressable style={{ padding: theme.spacing.xSmall }} onPress={toggleDetails}>
 								<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
 							</Pressable>
 						</Animated.View>
@@ -118,5 +97,29 @@ const OrderCard = (props: OrderCard) => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		width: ORDER_CARD_WIDTH,
+		marginHorizontal: theme.spacing.medium,
+		padding: theme.spacing.small,
+		backgroundColor: theme.colors.shades.white,
+		minHeight: 120,
+		borderRadius: 10,
+		marginVertical: theme.spacing.xxSmall,
+		flexDirection: "row",
+		alignItems: "center",
+		...generateBoxShadowStyle(0, 10, rgba.black(0.06), 1, 10, 10, rgba.black(1)),
+	},
+	imageContainer: {
+		width: "30%",
+		height: 88,
+		borderRadius: 10,
+		backgroundColor: theme.colors.shades.gray_20,
+		justifyContent: "center",
+		alignItems: "center",
+		...generateBoxShadowStyle(0, 10, rgba.black(0.09), 1, 20, 10, rgba.black(1)),
+	},
+});
 
 export default OrderCard;
