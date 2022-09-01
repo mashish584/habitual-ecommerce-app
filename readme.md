@@ -8,10 +8,10 @@ Currently we've completed phase-1 which involve MVP of the platform which includ
 - Onboarding
 - User registration with smooth onboarding process where we ask user to tell the products they are interested in.
 - Home screen which show product listing divided in 3 categories:
-  | Category          | Description                                                                                                                       | Max                     |
+  | Category | Description | Max |
   | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-  | Feature Products  | Horizontal list of products which is marked as featured in system.                                                                | 10                      |
-  | Hot Deals         | Horizontal list of products which show                                                                                            | 10                      |
+  | Feature Products | Horizontal list of products which is marked as featured in system. | 10 |
+  | Hot Deals | Horizontal list of products which show | 10 |
   | Interest Products | A tab slide carousel where we show all categories which is selected as interest by user with max 3 products inside each category. | Number of Cateogry \* 3 |
 - Product Detail screen which can include maximum 4 slide or single slide.
 - Cart Modal for managing user cart.
@@ -41,4 +41,4 @@ Core package versions info.
 
 ## Feedback
 
-If you found any issues or have any suggestions. Feel free to open a ticket.
+If you find any issues or have any suggestions. Feel free to open a ticket.
