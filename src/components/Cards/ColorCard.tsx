@@ -14,7 +14,7 @@ interface ColorCard {
 	text: string;
 	cardStyle?: ViewStyle;
 	cardColor?: string;
-	image?: ImageURISource;
+	image?: ImageURISource | null;
 	hideButtton?: boolean;
 }
 
@@ -45,6 +45,7 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 			)}
 			{!props.hideButtton && (
 				<TouchableOpacity
+					onPress={() => alert("To be implemented.")}
 					activeOpacity={0.9}
 					style={{
 						width: 32,

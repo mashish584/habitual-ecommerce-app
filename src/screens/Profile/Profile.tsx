@@ -156,7 +156,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 														key={categoryId}
 														variant="fixed"
 														text={category.name}
-														image={{ uri: category.image }}
+														image={category.image ? { uri: category.image } : null}
 														width={COLOR_CARD_WIDTH}
 														cardColor={colors[index]}
 														cardStyle={{ marginBottom: theme.spacing.small, aspectRatio: 0.78 }}

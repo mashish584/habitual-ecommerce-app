@@ -51,7 +51,7 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 	};
 };
 
-export const calculateOriginalPrice = (currentPrice, discount) => (currentPrice + currentPrice * (discount / 100)).toFixed(2);
+export const calculateOriginalPrice = (currentPrice, discount) => ((currentPrice / (100 - discount)) * 100).toFixed(2);
 
 export const defaultAvatar = "https://ik.imagekit.io/imashish/avatar_3x_1izETN4cA.png";
 
