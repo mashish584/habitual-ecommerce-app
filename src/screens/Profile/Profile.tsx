@@ -86,7 +86,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 							<Curve isCurve={false}>
 								<ScrollView showsVerticalScrollIndicator={false}>
 									{/* User Info */}
-									<View>
+									<View style={{ paddingHorizontal: theme.spacing.medium }}>
 										<View style={styles.profile}>
 											<Image source={{ uri: profile.profile || defaultAvatar }} style={{ width: "100%", height: "100%" }} />
 										</View>
@@ -104,7 +104,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 													theme.textStyles.center,
 													{ color: theme.colors.shades.gray_60, marginTop: theme.spacing.xxSmall },
 												]}>
-												Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia.
+												{profile.bio}
 											</Text>
 										)}
 										<Button
