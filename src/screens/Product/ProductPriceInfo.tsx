@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ViewStyle } from "react-native";
-import Animated, { interpolate } from "react-native-reanimated";
-import { interpolateColor } from "react-native-redash";
+import Animated, { SharedValue, interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
 import Button from "../../components/Button/Button";
 
 import Pill from "../../components/Pill/Pill";
@@ -17,44 +16,52 @@ type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "discount" |
 
 interface ProductPriceInfo {
 	priceInfo: PriceInfo;
-	slideAnimate: Animated.Value<any>;
-	translateY: Animated.Value<any>;
-	borderRadius: Animated.Node<Number>;
+	slideAnimate: SharedValue<number>;
+	translateY: SharedValue<number>;
 	showCartAction: boolean;
 	onPress: (actions: ProductFooterActions) => any;
 }
 
-const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, ...props }: ProductPriceInfo) => {
+const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: ProductPriceInfo) => {
 	const { addItem, removeItem } = useCart();
 
-	const productInfoBackground = interpolateColor(slideAnimate, {
-		inputRange: [0, 1],
-		outputRange: [theme.colors.shades.white, theme.colors.primary.yellow],
+	const pillContainerStyle = useAnimatedStyle(() => {
+		const pillContainerColor = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.secondary.green_20, theme.colors.primary.yellow_20]);
+		return {
+			backgroundColor: pillContainerColor,
+		};
 	});
 
-	const headingColor = interpolateColor(slideAnimate, {
-		inputRange: [0, 1],
-		outputRange: [theme.colors.shades.gray_60, theme.colors.shades.gray],
+	const pillTextStyle = useAnimatedStyle(() => {
+		const pillTextColor = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.secondary.green, theme.colors.shades.gray_80]);
+		return {
+			color: pillTextColor,
+		};
 	});
 
-	const pillContainerColor = interpolateColor(slideAnimate, {
-		inputRange: [0, 1],
-		outputRange: [theme.colors.secondary.green_20, theme.colors.primary.yellow_20],
+	const rButtonBackgroundStyle = useAnimatedStyle(() => {
+		const backgroundColor = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.shades.gray_80, theme.colors.shades.white]);
+		return {
+			backgroundColor,
+		};
 	});
 
-	const buttonBackground = interpolateColor(slideAnimate, {
-		inputRange: [0, 1],
-		outputRange: [theme.colors.shades.gray_80, theme.colors.shades.white],
+	const rHeadingStyle = useAnimatedStyle(() => {
+		const color = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.shades.gray_60, theme.colors.shades.gray]);
+		return { color };
 	});
 
-	const pillTextColor = interpolateColor(slideAnimate, {
-		inputRange: [0, 1],
-		outputRange: [theme.colors.secondary.green, theme.colors.shades.gray_80],
-	});
-
-	const opacity = interpolate(translateY, {
-		inputRange: [0, 1],
-		outputRange: [1, 0],
+	const rProductPriceContainerStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(translateY.value, [0, 1], [1, 0]);
+		const borderRadius = interpolate(slideAnimate.value, [0, 1], [15, 0]);
+		const backgroundColor = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.shades.white, theme.colors.primary.yellow]);
+		return {
+			opacity,
+			backgroundColor,
+			borderTopLeftRadius: borderRadius,
+			borderTopRightRadius: borderRadius,
+			transform: [{ translateY: translateY.value }],
+		};
 	});
 
 	return (
@@ -63,15 +70,11 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 				[
 					{
 						flex: 0.15,
-						backgroundColor: productInfoBackground,
-						borderTopLeftRadius: borderRadius,
-						borderTopRightRadius: borderRadius,
 						justifyContent: "center",
 						paddingHorizontal: theme.spacing.medium,
-						transform: [{ translateY: translateY }],
 						marginTop: -15,
-						opacity,
 					},
+					rProductPriceContainerStyle,
 				] as any
 			}>
 			{props.showCartAction ? (
@@ -96,7 +99,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 					<View>
 						<Animated.Text
-							style={[theme.textStyles.hint, { textTransform: "uppercase", color: headingColor, marginBottom: theme.spacing.xxSmall } as ViewStyle]}>
+							style={[theme.textStyles.hint, { textTransform: "uppercase", marginBottom: theme.spacing.xxSmall } as ViewStyle, rHeadingStyle]}>
 							Starting At
 						</Animated.Text>
 						<View style={[theme.rowStyle, { alignItems: "center" }]}>
@@ -107,14 +110,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 								}>
 								${calculateOriginalPrice(priceInfo.price, priceInfo.discount)}
 							</Animated.Text>
-							<Pill
-								variant="saved"
-								text={`${priceInfo?.discount}% OFF`}
-								colors={{
-									textColor: pillTextColor,
-									pillColor: pillContainerColor,
-								}}
-							/>
+							<Pill variant="saved" text={`${priceInfo?.discount}% OFF`} pillContainerStyle={pillContainerStyle} pillTextStyle={pillTextStyle} />
 						</View>
 					</View>
 					{priceInfo.quantity > 0 ? (
@@ -128,16 +124,16 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, borderRadius, .
 								props.onPress("slideUp");
 							}}>
 							<Animated.View
-								style={
+								style={[
 									{
 										width: 48,
 										height: 48,
-										backgroundColor: buttonBackground,
 										borderRadius: 50,
 										justifyContent: "center",
 										alignItems: "center",
-									} as any
-								}>
+									} as any,
+									rButtonBackgroundStyle,
+								]}>
 								{priceInfo.buttonChild}
 							</Animated.View>
 						</TouchableOpacity>

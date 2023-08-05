@@ -4,7 +4,6 @@ import Animated from "react-native-reanimated";
 import theme from "../../utils/theme";
 
 type PillVariant = "saved" | "default";
-type PillColors = { textColor?: string | Animated.Node<Number>; pillColor?: string | Animated.Node<Number> };
 type PillValue = {
 	containerStyle: ViewStyle;
 	textStyle: TextStyle;
@@ -13,11 +12,12 @@ interface Pill {
 	variant: PillVariant;
 	text: string;
 	selected?: boolean;
-	colors?: PillColors;
+	pillContainerStyle?: ViewStyle;
+	pillTextStyle?: TextStyle;
 	onPress?: () => void;
 }
 
-const getPillStyle = (variant: PillVariant, colors?: PillColors, selected?: boolean): PillValue => {
+const getPillStyle = (variant: PillVariant, selected?: boolean): PillValue => {
 	const styles = {
 		containerStyle: {},
 		textStyle: {},
@@ -28,12 +28,12 @@ const getPillStyle = (variant: PillVariant, colors?: PillColors, selected?: bool
 			styles.containerStyle = {
 				minWidth: 60,
 				height: 20,
-				backgroundColor: colors?.pillColor || theme.colors.secondary.green_20,
+				backgroundColor: theme.colors.secondary.green_20,
 				borderRadius: 10,
 				paddingHorizontal: theme.spacing.xSmall,
 			};
 
-			styles.textStyle = [theme.textStyles.pill_sm, { color: colors?.textColor || theme.colors.secondary.green }];
+			styles.textStyle = [theme.textStyles.pill_sm, { color: theme.colors.secondary.green }];
 			break;
 		default:
 			styles.containerStyle = {
@@ -59,13 +59,13 @@ const getPillStyle = (variant: PillVariant, colors?: PillColors, selected?: bool
 	return styles;
 };
 
-const Pill = ({ text, selected, variant, colors, onPress }: Pill) => {
-	const pillStyle = getPillStyle(variant, colors, selected);
+const Pill = ({ text, selected, variant, pillContainerStyle, pillTextStyle, onPress }: Pill) => {
+	const pillStyle = getPillStyle(variant, selected);
 
 	return (
 		<TouchableOpacity onPress={onPress}>
-			<Animated.View style={[pillStyle.containerStyle, { justifyContent: "center", alignItems: "center" }]}>
-				<Animated.Text style={pillStyle.textStyle}>{text}</Animated.Text>
+			<Animated.View style={[pillStyle.containerStyle, { justifyContent: "center", alignItems: "center" }, pillContainerStyle]}>
+				<Animated.Text style={[pillStyle.textStyle, pillTextStyle]}>{text}</Animated.Text>
 			</Animated.View>
 		</TouchableOpacity>
 	);

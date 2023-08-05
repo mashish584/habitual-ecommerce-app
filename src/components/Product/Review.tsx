@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, TextStyle } from "react-native";
 import Animated from "react-native-reanimated";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -9,10 +9,10 @@ import theme from "../../utils/theme";
 
 interface Rating {
 	stars: number;
-	color: Animated.Node<number>;
+	transitionTextStyle: TextStyle;
 }
 
-const Review = ({ stars, color }: Rating) => {
+const Review = ({ stars, transitionTextStyle }: Rating) => {
 	return (
 		<View style={theme.rowStyle}>
 			<View style={theme.rowStyle}>
@@ -25,15 +25,16 @@ const Review = ({ stars, color }: Rating) => {
 						/>
 					);
 				})}
+				<Animated.Text style={[theme.textStyles.h6, { marginLeft: theme.spacing.xxSmall / 2 }, transitionTextStyle] as any}>0</Animated.Text>
 			</View>
-			<Animated.Text style={[theme.textStyles.h6, { marginLeft: theme.spacing.xxSmall / 2, color }] as any}>0</Animated.Text>
-			<Text
+			<Animated.Text
 				style={[
 					theme.textStyles.body_sm_alt,
-					{ color: theme.colors.shades.gray_60, marginLeft: theme.spacing.xxSmall / 2, textDecorationLine: "underline" },
+					{ color: theme.colors.shades.gray_60, marginLeft: theme.spacing.xxSmall, textDecorationLine: "underline" },
+					transitionTextStyle,
 				]}>
 				0 Reviews
-			</Text>
+			</Animated.Text>
 		</View>
 	);
 };

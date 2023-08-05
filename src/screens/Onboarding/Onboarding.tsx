@@ -101,8 +101,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 
 		setIsLastSlide(nextIndex === 3);
 		activeSlideIndex.current = nextIndex;
-
-		scrollRef.current?.getNode().scrollTo({ x, animated: true });
+		scrollRef.current?.scrollTo({ x, animated: true });
 	};
 
 	return (
