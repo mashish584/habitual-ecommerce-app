@@ -1,7 +1,13 @@
 import React, { useRef, useState } from "react";
 import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Animated, { interpolate, Extrapolate } from "react-native-reanimated";
-import { useScrollHandler } from "react-native-redash";
+import Animated, {
+	interpolate,
+	Extrapolate,
+	useAnimatedScrollHandler,
+	useSharedValue,
+	useAnimatedStyle,
+	useDerivedValue,
+} from "react-native-reanimated";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
@@ -52,29 +58,41 @@ const slides = [
 const ScrollViewHeight = height * 0.75;
 
 const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackScreens, "Onboarding">> = ({ navigation }) => {
-	const { scrollHandler, x } = useScrollHandler();
+	const translateX = useSharedValue(0);
+	const progress = useSharedValue(0);
+	const ctaText = useDerivedValue(() => {
+		return progress.value ? "Sign me up!" : "Next";
+	});
+	const scrollHandler = useAnimatedScrollHandler((e) => {
+		translateX.value = e.contentOffset.x;
+		progress.value = e.contentOffset.x > e.layoutMeasurement.width * 2.5 ? 1 : 0;
+	});
+
 	const activeSlideIndex = useRef(0);
 	const scrollRef = useRef<Animated.ScrollView>(null);
 	let scrollBegin = useRef(false);
 
 	const [isLastSlide, setIsLastSlide] = useState(false);
 
-	const dotOpacity = interpolate(x, {
-		inputRange: [0, width, width * 2, width * 3],
-		outputRange: [1, 1, 1, 0],
-		extrapolate: Extrapolate.CLAMP,
+	const rDotStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(translateX.value, [0, width, width * 2, width * 3], [1, 1, 1, 0], Extrapolate.CLAMP);
+		return {
+			opacity,
+		};
 	});
 
-	const transparentButtonOpacity = interpolate(x, {
-		inputRange: [0, width, width * 2, width * 3],
-		outputRange: [0, 0, 0, 1],
-		extrapolate: Extrapolate.CLAMP,
+	const rTransparentButtonStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(translateX.value, [0, width, width * 2, width * 3], [0, 0, 0, 1], Extrapolate.CLAMP);
+		return {
+			opacity,
+		};
 	});
 
-	const primaryButtonPosition = interpolate(x, {
-		inputRange: [0, width, width * 2, width * 3],
-		outputRange: [48, 48, 48, 0],
-		extrapolate: Extrapolate.CLAMP,
+	const rPrimaryButtonStyle = useAnimatedStyle(() => {
+		const position = interpolate(translateX.value, [0, width, width * 2, width * 3], [48, 48, 48, 0], Extrapolate.CLAMP);
+		return {
+			top: position,
+		};
 	});
 
 	const moveToSlide = (index?: number) => {
@@ -97,22 +115,26 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							{slides.map(({ illustration, ovalColor }, index) => {
 								const translateXPosition = (index + 1) % 2 === 0 ? width * 0.3 * -1 : width * 0.3;
 
-								const opacity = x.interpolate({
-									inputRange: [(index - 0.5) * width, index * width, (index + 0.5) * width],
-									outputRange: [0, 1, 0],
+								const rIllustrationStyle = useAnimatedStyle(() => {
+									const opacity = interpolate(translateX.value, [(index - 0.5) * width, index * width, (index + 0.5) * width], [0, 1, 0]);
+									return {
+										opacity,
+									};
 								});
 
 								return (
 									<Animated.View
 										key={index}
-										style={{
-											...StyleSheet.absoluteFillObject,
-											justifyContent: "flex-end",
-											alignItems: "center",
-											height: height * 0.5,
-											paddingBottom: index === 2 ? 50 : 0,
-											opacity,
-										}}>
+										style={[
+											{
+												...StyleSheet.absoluteFillObject,
+												justifyContent: "flex-end",
+												alignItems: "center",
+												height: height * 0.5,
+												paddingBottom: index === 2 ? 50 : 0,
+											},
+											rIllustrationStyle,
+										]}>
 										<View
 											style={[styles.circle, { backgroundColor: ovalColor, transform: [{ translateX: translateXPosition }], position: "absolute" }]}
 										/>
@@ -123,23 +145,25 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 
 							{/* Onboarding footer dots */}
 							<Animated.View
-								style={{
-									width,
-									alignItems: "center",
-									justifyContent: "center",
-									flexDirection: "row",
-									position: "absolute",
-									top: height * (isIOS ? 0.83 : 0.78),
-									height: 20,
-									opacity: dotOpacity,
-								}}>
+								style={[
+									{
+										width,
+										alignItems: "center",
+										justifyContent: "center",
+										flexDirection: "row",
+										position: "absolute",
+										top: height * (isIOS ? 0.83 : 0.78),
+										height: 20,
+									},
+									rDotStyle,
+								]}>
 								{new Array(3).fill(1).map((_, index) => {
 									return (
 										<Dot
 											key={index}
 											currentIndex={index}
 											width={width}
-											scrollX={x}
+											scrollX={translateX}
 											mh={index === 1 ? 6 : 0}
 											activeColor={theme.colors.primary.yellow}
 										/>
@@ -151,6 +175,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 						{/* Slide Text Content  */}
 						<Animated.ScrollView
 							ref={scrollRef}
+							onScroll={scrollHandler}
 							snapToInterval={width}
 							decelerationRate="fast"
 							onMomentumScrollBegin={() => {
@@ -165,11 +190,11 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 									scrollBegin.current = false;
 								}
 							}}
+							scrollEventThrottle={16}
 							bounces={false}
 							showsHorizontalScrollIndicator={false}
 							horizontal
-							contentContainerStyle={styles.scrollView}
-							{...scrollHandler}>
+							contentContainerStyle={styles.scrollView}>
 							{slides.map(({ title, description, textStyle }, index) => {
 								return (
 									<View key={index} style={{ width, paddingHorizontal: theme.spacing.medium }}>
@@ -181,10 +206,10 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 						</Animated.ScrollView>
 
 						{/* Next Button */}
-						<Animated.View style={{ top: primaryButtonPosition, zIndex: 1 }}>
+						<Animated.View style={[{ zIndex: 1 }, rPrimaryButtonStyle]}>
 							<Button
 								variant="primary"
-								text={isLastSlide ? "Sign me up!" : "Next"}
+								animatedText={ctaText}
 								onPress={() => {
 									if (isLastSlide) {
 										navigation.navigate("SignUp");
@@ -197,7 +222,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 						</Animated.View>
 
 						{/* Ask me agin 4th slide */}
-						<Animated.View style={{ opacity: transparentButtonOpacity }}>
+						<Animated.View style={rTransparentButtonStyle}>
 							<Button
 								variant="transparent"
 								text="Ask me again later"
@@ -210,7 +235,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 						</Animated.View>
 
 						{/* Header Components */}
-						<Animated.View style={[{ opacity: dotOpacity, alignSelf: "flex-end", top }, styles.headerContent]}>
+						<Animated.View style={[{ alignSelf: "flex-end", top }, styles.headerContent, rDotStyle]}>
 							<TouchableOpacity
 								onPress={() => {
 									navigation.navigate("SignIn");
@@ -220,8 +245,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							</TouchableOpacity>
 						</Animated.View>
 
-						<Animated.View
-							style={[{ opacity: transparentButtonOpacity, alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo]}>
+						<Animated.View style={[{ alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo, rTransparentButtonStyle]}>
 							<Image source={require("../../assets/images/full-logo.png")} style={{ width: "100%", height: "100%" }} />
 						</Animated.View>
 					</>

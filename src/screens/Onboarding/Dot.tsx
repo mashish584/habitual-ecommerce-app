@@ -1,40 +1,44 @@
 import React from "react";
-import Animated, { interpolate, Extrapolate } from "react-native-reanimated";
-import { interpolateColor } from "react-native-redash";
-
+import Animated, { interpolate, Extrapolate, interpolateColor, useAnimatedStyle, SharedValue } from "react-native-reanimated";
 import theme from "../../utils/theme";
 
 interface Dot {
 	currentIndex: number;
-	scrollX: Animated.Value<number>;
+	scrollX: SharedValue<number>;
 	width: number;
 	mh: number;
 	activeColor?: string;
 }
 
 const Dot = ({ currentIndex, scrollX, mh, width, activeColor = theme.colors.shades.gray_60 }: Dot) => {
-	const interpolateWidth = interpolate(scrollX, {
-		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
-		outputRange: [6, 16, 6],
-		extrapolate: Extrapolate.CLAMP,
-	});
-
-	const color = interpolateColor(scrollX, {
-		inputRange: [(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
-		outputRange: [theme.colors.shades.gray_40, activeColor, theme.colors.shades.gray_40],
+	const rDotStyle = useAnimatedStyle(() => {
+		const interpolateWidth = interpolate(
+			scrollX.value,
+			[(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
+			[6, 16, 6],
+			Extrapolate.CLAMP,
+		);
+		const color = interpolateColor(
+			scrollX.value,
+			[(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
+			[theme.colors.shades.gray_40, activeColor, theme.colors.shades.gray_40],
+		);
+		return {
+			width: interpolateWidth,
+			backgroundColor: color,
+		};
 	});
 
 	return (
 		<Animated.View
-			style={
+			style={[
 				{
-					width: interpolateWidth,
 					height: 6,
 					borderRadius: 6 / 2,
-					backgroundColor: color,
 					marginHorizontal: mh,
-				} as any
-			}
+				},
+				rDotStyle,
+			]}
 		/>
 	);
 };
