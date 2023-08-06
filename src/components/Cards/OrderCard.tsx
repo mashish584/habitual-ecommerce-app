@@ -3,8 +3,8 @@ import { Dimensions, View, Image, Text, Pressable, StyleSheet } from "react-nati
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import Animated, { Easing } from "react-native-reanimated";
-import { useValue } from "react-native-redash";
+import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+
 import dayjs from "dayjs";
 
 import { generateBoxShadowStyle } from "../../utils";
@@ -33,7 +33,7 @@ const getStatusText = (status: OrderStatus) => {
 };
 
 const OrderCard = (props: OrderCard) => {
-	const rotateAnimate = useValue(0);
+	const rotateAnimate = useSharedValue(0);
 	const [showCompleteDetail, setShowCompleteDetail] = React.useState(false);
 
 	const { text, color } = getStatusText(props.status);
@@ -43,16 +43,14 @@ const OrderCard = (props: OrderCard) => {
 
 	const toggleDetails = () => {
 		setShowCompleteDetail(!showCompleteDetail);
-		Animated.timing(rotateAnimate, {
-			duration: 100,
-			toValue: showCompleteDetail ? 0 : 1,
-			easing: Easing.ease,
-		}).start();
+		rotateAnimate.value = withTiming(showCompleteDetail ? 0 : 1, { duration: 100, easing: Easing.ease });
 	};
 
-	const rotate = rotateAnimate.interpolate({
-		inputRange: [0, 1],
-		outputRange: ["0 deg", "180 deg"],
+	const rRotateStyle = useAnimatedStyle(() => {
+		const rotate = interpolate(rotateAnimate.value, [0, 1], [0, 180]);
+		return {
+			transform: [{ rotate: `${rotate} deg` }],
+		};
 	});
 
 	return (
@@ -64,7 +62,7 @@ const OrderCard = (props: OrderCard) => {
 				<View style={[theme.rowStyle, { alignItems: "center", position: "relative" }]}>
 					<Text style={theme.textStyles.body_reg}>{title}</Text>
 					{totalCartItems > 1 && (
-						<Animated.View style={{ position: "absolute", right: theme.spacing.small, transform: [{ rotate }] }}>
+						<Animated.View style={[{ position: "absolute", right: theme.spacing.small }, rRotateStyle]}>
 							<Pressable style={{ padding: theme.spacing.xSmall }} onPress={toggleDetails}>
 								<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
 							</Pressable>

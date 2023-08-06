@@ -1,7 +1,6 @@
 import React from "react";
 import { Dimensions, View, Text } from "react-native";
-import { useScrollHandler } from "react-native-redash";
-import Animated from "react-native-reanimated";
+import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 
 import Dot from "../screens/Onboarding/Dot";
 
@@ -14,7 +13,10 @@ import CreditCard from "./Cards/CreditCard";
 const width = Dimensions.get("screen").width;
 
 const PaymentCards = () => {
-	const { scrollHandler, x } = useScrollHandler();
+	const translateX = useSharedValue(0);
+	const scrollHandler = useAnimatedScrollHandler((e) => {
+		translateX.value = e.contentOffset.x;
+	});
 	const { data, isLoading } = useCards<"", Card[]>();
 
 	if (isLoading) {
@@ -39,7 +41,14 @@ const PaymentCards = () => {
 			<View style={[theme.rowStyle, { marginTop: theme.spacing.medium, justifyContent: "center" }]}>
 				{new Array(data?.data?.length).fill(1).map((_, index) => {
 					return (
-						<Dot key={index} currentIndex={index} width={width} scrollX={x} mh={index === 1 ? 6 : 0} activeColor={theme.colors.shades.gray_80} />
+						<Dot
+							key={index}
+							currentIndex={index}
+							width={width}
+							scrollX={translateX}
+							mh={index === 1 ? 6 : 0}
+							activeColor={theme.colors.shades.gray_80}
+						/>
 					);
 				})}
 			</View>
