@@ -1,5 +1,6 @@
+import { Platform } from "react-native";
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { DEV_URL } from "@env";
+import { DEV_URL, DEV_HOST } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Address, RequestMethods, Urls } from "../../utils/types";
@@ -33,8 +34,8 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
 
 		if (!endpoint.includes("http")) {
-			//for local -> API_URL else DEV_URL
-			endpoint = `${DEV_URL}${endpoint}`;
+			const isHostUrl = Platform.OS === "android" && __DEV__;
+			endpoint = `${isHostUrl ? DEV_HOST : DEV_URL}${endpoint}`;
 		}
 
 		if (options.path) {

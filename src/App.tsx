@@ -11,8 +11,8 @@ import "react-native-gesture-handler";
 
 import { STRIPE_PUBLIC_KEY } from "@env";
 
-import Navigation from "./navigation";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Navigation from "./navigation";
 
 LogBox.ignoreLogs([
 	"Sending `onAnimatedValueUpdate` with no listeners registered.",
