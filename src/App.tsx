@@ -12,6 +12,7 @@ import "react-native-gesture-handler";
 import { STRIPE_PUBLIC_KEY } from "@env";
 
 import Navigation from "./navigation";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 LogBox.ignoreLogs([
 	"Sending `onAnimatedValueUpdate` with no listeners registered.",
@@ -40,7 +41,9 @@ const App = () => {
 		<SafeAreaProvider>
 			<StripeProvider publishableKey={STRIPE_PUBLIC_KEY} merchantIdentifier="merchant.identifier">
 				<QueryClientProvider client={queryClient}>
-					<Navigation />
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<Navigation />
+					</GestureHandlerRootView>
 				</QueryClientProvider>
 			</StripeProvider>
 		</SafeAreaProvider>
