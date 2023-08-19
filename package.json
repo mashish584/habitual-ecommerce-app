@@ -21,7 +21,7 @@
 		"@fortawesome/free-regular-svg-icons": "^6.0.0",
 		"@fortawesome/free-solid-svg-icons": "^6.0.0",
 		"@fortawesome/react-native-fontawesome": "^0.2.7",
-		"@gorhom/bottom-sheet": "2.2.0",
+		"@gorhom/bottom-sheet": "^4.4.7",
 		"@react-native-async-storage/async-storage": "^1.17.3",
 		"@react-native-community/netinfo": "^8.3.0",
 		"@react-native-firebase/analytics": "14.7.0",
@@ -37,19 +37,18 @@
 		"dayjs": "^1.10.7",
 		"formik": "^2.2.9",
 		"lodash.debounce": "^4.0.8",
-		"lottie-ios": "3.2.3",
-		"lottie-react-native": "^5.0.1",
+		"lottie-react-native": "^6.2.0",
 		"patch-package": "^6.4.7",
 		"postinstall-postinstall": "^2.1.0",
-		"react": "17.0.2",
-		"react-native": "0.66.4",
+		"react": "18.2.0",
+		"react-native": "0.72.4",
 		"react-native-dotenv": "^3.3.1",
 		"react-native-gesture-handler": "^2.12.1",
 		"react-native-image-crop-picker": "^0.37.3",
 		"react-native-keyboard-manager": "^6.5.4-4",
 		"react-native-linear-gradient": "^2.5.6",
 		"react-native-permissions": "^3.2.0",
-		"react-native-reanimated": "2.17.0",
+		"react-native-reanimated": "^3.4.2",
 		"react-native-redash": "18.0.0",
 		"react-native-safe-area-context": "^3.3.2",
 		"react-native-screens": "^3.24.0",
@@ -62,26 +61,27 @@
 		"zustand": "^3.7.1"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.12.9",
-		"@babel/runtime": "^7.12.5",
+		"@babel/core": "^7.20.0",
+		"@babel/preset-env": "^7.20.0",
+		"@babel/runtime": "^7.20.0",
 		"@react-native-community/eslint-config": "^2.0.0",
+		"@react-native/eslint-config": "^0.72.2",
+		"@react-native/metro-config": "^0.72.11",
+		"@tsconfig/react-native": "^3.0.0",
 		"@types/jest": "^26.0.23",
-		"@types/react-native": "^0.66.4",
-		"@types/react-test-renderer": "^17.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.7.0",
-		"@typescript-eslint/parser": "^5.7.0",
-		"babel-jest": "^26.6.3",
-		"eslint": "^7.14.0",
+		"@types/react": "^18.0.24",
+		"@types/react-test-renderer": "^18.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.37.0",
+		"@typescript-eslint/parser": "^5.37.0",
+		"babel-jest": "^29.6.2",
+		"eslint": "^8.19.0",
 		"eslint-plugin-import": "^2.25.4",
 		"husky": "^7.0.4",
-		"jest": "^26.6.3",
-		"metro-react-native-babel-preset": "^0.66.2",
+		"jest": "^29.2.1",
+		"metro-react-native-babel-preset": "^0.76.8",
 		"prettier": "^2.5.1",
-		"react-test-renderer": "17.0.2",
-		"typescript": "^4.4.4"
-	},
-	"resolutions": {
-		"@types/react": "^17"
+		"react-test-renderer": "18.2.0",
+		"typescript": "4.8.4"
 	},
 	"jest": {
 		"preset": "react-native",
@@ -93,5 +93,8 @@
 			"json",
 			"node"
 		]
+	},
+	"engines": {
+		"node": ">=16"
 	}
 }
