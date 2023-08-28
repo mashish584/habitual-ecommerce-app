@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, View, Pressable } from "react-native";
+import { ScrollView, Text, View, Pressable, StyleProp, ViewStyle } from "react-native";
 
 import Container from "../../components/Container";
 import { Button } from "../../components/Button";
@@ -48,7 +48,7 @@ const Checkout: React.FC<StackNavigationProps<RootStackScreens, "Checkout">> = (
 					<>
 						<Header
 							variant="primary"
-							leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+							leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 							title="Checkout"
 							onAction={(type: ActionType) => {
 								if (type === "left") {

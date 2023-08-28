@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { ScrollView, View, StyleSheet, TextInput as RNTextInput, Keyboard } from "react-native";
+import { ScrollView, View, StyleSheet, TextInput as RNTextInput, Keyboard, StyleProp, ViewStyle } from "react-native";
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
@@ -32,7 +32,7 @@ const Address: React.FC<StackNavigationProps<RootStackScreens, "Address">> = ({ 
 				<>
 					<Header
 						variant="primary"
-						leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+						leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 						title="Address"
 						onAction={(type: ActionType) => {
 							if (type === "left") {

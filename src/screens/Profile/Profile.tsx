@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, Text, View, ScrollView, StyleSheet } from "react-native";
+import { Image, Text, View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -75,7 +75,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 							<Header
 								variant="primary"
 								title="Profile"
-								leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+								leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 								headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
 								onAction={(type) => {
 									if (type === "left") {

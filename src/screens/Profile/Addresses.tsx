@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Pressable, ScrollView, View, Text } from "react-native";
+import { StyleSheet, Pressable, ScrollView, View, Text, StyleProp, ViewStyle } from "react-native";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -32,7 +32,7 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> =
 					<Header
 						variant="primary"
 						title="Addresses"
-						leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+						leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 						headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
 						onAction={(type) => {
 							if (type === "left") {

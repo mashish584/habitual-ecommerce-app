@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Image, Pressable } from "react-native";
+import { ScrollView, StyleSheet, View, Image, Pressable, StyleProp, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -46,7 +46,7 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 					<Header
 						variant="primary"
 						title="Edit Profile"
-						leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+						leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 						headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
 						onAction={(type) => {
 							if (type === "left") {
