@@ -10,7 +10,7 @@ import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../
 
 import { useHome } from "../../hooks/api";
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
 import { Product } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 

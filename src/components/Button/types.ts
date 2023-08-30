@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { TextStyle, ViewStyle } from "react-native";
-import Animated, { SharedValue } from "react-native-reanimated";
+import { SharedValue } from "react-native-reanimated";
 
 export type variant = "primary" | "secondary" | "transparent" | "disabled" | "bordered";
 

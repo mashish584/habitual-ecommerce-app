@@ -11,7 +11,7 @@ import ProfileImage from "../../components/ProfileImage";
 import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
 import theme from "../../utils/theme";
-import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
 import { CartItem } from "../../utils/store";
 
 const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ navigation }) => {

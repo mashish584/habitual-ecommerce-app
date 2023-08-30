@@ -3,13 +3,11 @@ import { Animated, Dimensions, Image, ImageURISource, StyleSheet, TouchableOpaci
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { BottomStackScreens, MergedRoutes, RootStackScreens } from "../types";
+import { BottomStackScreens, MergedRoutes } from "../types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { useCart, useUI, useUser } from "../../utils/store";
 import { getPasswordConfirmationModal } from "../../utils/media";
-
-type Screens = keyof RootStackScreens | keyof BottomStackScreens;
 
 type MenuOption = {
 	label: String;

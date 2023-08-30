@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Path, Defs, ClipPath } from "react-native-svg";
-import { AnimatedG, AnimatedSVG } from ".";
+
 import { SVG } from "./types";
+import { AnimatedG, AnimatedSVG } from "./index";
 
 const Payment = (props: SVG) => (
 	<AnimatedSVG width={33} height={32} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>

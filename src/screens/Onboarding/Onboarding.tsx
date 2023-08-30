@@ -11,7 +11,7 @@ import Animated, {
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
-import { MergedRoutes, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
 
 import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";

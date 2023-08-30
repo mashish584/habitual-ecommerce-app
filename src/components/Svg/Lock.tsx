@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { AnimatedPath, AnimatedSVG } from "./index";
 import { SVG } from "./types";
+import { AnimatedPath, AnimatedSVG } from "./index";
 
 const Lock = (props: SVG) => (
 	<AnimatedSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={33} height={33} {...props}>

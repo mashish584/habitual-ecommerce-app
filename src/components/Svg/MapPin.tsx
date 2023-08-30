@@ -1,6 +1,7 @@
 import * as React from "react";
-import { AnimatedPath, AnimatedSVG } from "./index";
+
 import { SVG } from "./types";
+import { AnimatedPath, AnimatedSVG } from "./index";
 
 const MapPin = (props: SVG) => (
 	<AnimatedSVG width={33} height={32} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { AnimatedPath, AnimatedSVG } from "./index";
 import { SVG } from "./types";
+import { AnimatedPath, AnimatedSVG } from "./index";
 
 const Chip = (props: SVG) => (
 	<AnimatedSVG width={26} height={20} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>

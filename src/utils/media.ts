@@ -1,6 +1,7 @@
 import ImagePicker, { ImageOrVideo, Options } from "react-native-image-crop-picker";
-import { checkGalleryPermission } from "./permissions";
+
 import { MergedRoutes } from "../navigation/types";
+import { checkGalleryPermission } from "./permissions";
 import { UIInterface } from "./store";
 
 const ImageConfig: Options = {
