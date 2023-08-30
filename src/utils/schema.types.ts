@@ -11,7 +11,7 @@ export type Category = {
 	};
 	interestedUserIds: string[];
 	productIds: string[];
-	image: string | null;
+	image: string;
 	createdAt: Date;
 	updatedAt: Date;
 };

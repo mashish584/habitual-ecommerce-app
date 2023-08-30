@@ -194,7 +194,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								showsHorizontalScrollIndicator={false}
 								decelerationRate="fast"
 								snapToInterval={SLIDER_WIDTH}>
-								{productInfo.images?.map((image) => {
+								{productInfo.images?.map((image: any) => {
 									return (
 										<View key={image.fileId} style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
 											<Animated.Image
@@ -211,7 +211,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							{/* Slide Indicator */}
 							{productInfo?.images?.length > 1 && (
 								<View style={[theme.rowStyle, styles.slideIndicators]}>
-									{productInfo.images.map((file, index) => {
+									{productInfo.images.map((file: any, index: number) => {
 										return <Dot key={file.fileId} currentIndex={index} width={SLIDER_WIDTH} scrollX={translateX} mh={index === 1 ? 6 : 0} />;
 									})}
 								</View>

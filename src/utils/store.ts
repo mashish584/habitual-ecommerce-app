@@ -8,8 +8,12 @@ export type CartProduct = Pick<Product, "id" | "image" | "title" | "price">;
 export type CartItem = { quantity: number; product: Omit<CartProduct, "id"> };
 export type CartItems = Record<string, CartItem>;
 export type QuantityAction = "+" | "-";
+export type LoginSuccessPayload = {
+	token: string;
+	user: User;
+};
 
-interface UIInterface {
+export interface UIInterface {
 	showConfirmationModal: boolean;
 	message: string;
 	acceptText: string;
@@ -25,7 +29,7 @@ export interface UIState extends UIInterface {
 export interface UserState {
 	token: string;
 	user: User;
-	onLoginSuccess: ({ token: string, user: User }) => void;
+	onLoginSuccess: ({ token, user }: LoginSuccessPayload) => void;
 	setToken: (token: string) => void;
 	setUser: (user: Partial<User>) => void;
 	removeToken: () => void;

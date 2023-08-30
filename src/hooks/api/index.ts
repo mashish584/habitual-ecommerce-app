@@ -14,7 +14,7 @@ type AddressData = {
 	default?: boolean;
 };
 
-async function handleAPIError(response, endpoint: string) {
+async function handleAPIError(response: any, endpoint: string) {
 	response = await response.json();
 	const message = response.message || `Unable to fetch ${endpoint}`;
 	showToast("error", { title: "Error", message });
@@ -69,7 +69,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
-		showToast("error", { title: "Network Error", message: error?.message });
+		showToast("error", { title: "Network Error", message: (error as Error)?.message });
 	}
 };
 
@@ -87,7 +87,7 @@ export const useUserProfile = <T extends string, M>() => {
 	});
 };
 
-export const useCategories = <T extends string, M>(query) => {
+export const useCategories = <T extends string, M>(query: string) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((mutateQuery) => {
 		return appFetch("category/", {
 			method: "GET",

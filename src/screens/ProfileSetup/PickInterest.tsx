@@ -20,7 +20,7 @@ const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
 const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "PickInterest">> = ({ navigation, route }) => {
-	const [interests, setInterests] = useState<Record<"string", CategoryInfo>>({} as Record<"string", CategoryInfo>);
+	const [interests, setInterests] = useState<Record<string, CategoryInfo>>({} as Record<"string", CategoryInfo>);
 
 	const categoriesQuery = useCategories<"", Category[]>("?parent=true");
 	const hideSteps = route.params?.showSteps == false;

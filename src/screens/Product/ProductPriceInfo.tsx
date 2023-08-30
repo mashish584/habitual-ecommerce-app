@@ -10,8 +10,9 @@ import { useCart } from "../../utils/store";
 import theme from "../../utils/theme";
 import { ProductFooterActions } from "../../utils/types";
 
-type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "discount" | "quantity"> & {
-	buttonChild: JSX.Element;
+type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "quantity"> & {
+	buttonChild?: JSX.Element;
+	discount?: number | null;
 };
 
 interface ProductPriceInfo {
@@ -105,10 +106,8 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 						<View style={[theme.rowStyle, { alignItems: "center" }]}>
 							<Text style={[theme.textStyles.h4, { fontFamily: theme.fonts.lato.heavy }]}>${priceInfo?.price}</Text>
 							<Animated.Text
-								style={
-									[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_60, marginHorizontal: theme.spacing.xxSmall }] as ViewStyle
-								}>
-								${calculateOriginalPrice(priceInfo.price, priceInfo.discount)}
+								style={[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_60, marginHorizontal: theme.spacing.xxSmall }]}>
+								${calculateOriginalPrice(priceInfo.price, priceInfo.discount || 0)}
 							</Animated.Text>
 							<Pill variant="saved" text={`${priceInfo?.discount}% OFF`} pillContainerStyle={pillContainerStyle} pillTextStyle={pillTextStyle} />
 						</View>
@@ -131,7 +130,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 										borderRadius: 50,
 										justifyContent: "center",
 										alignItems: "center",
-									} as any,
+									},
 									rButtonBackgroundStyle,
 								]}>
 								{priceInfo.buttonChild}

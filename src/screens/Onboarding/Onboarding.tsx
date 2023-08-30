@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import Animated, {
 	interpolate,
 	Extrapolate,
@@ -11,7 +11,7 @@ import Animated, {
 
 import { Button } from "../../components/Button";
 import Container from "../../components/Container";
-import { RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import { MergedRoutes, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
 
 import { isIOS } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -57,11 +57,11 @@ const slides = [
 
 const ScrollViewHeight = height * 0.75;
 
-const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackScreens, "Onboarding">> = ({ navigation }) => {
+const Onboarding: React.FC<StackNavigationProps<MergedRoutes, "Onboarding">> = ({ navigation }) => {
 	const translateX = useSharedValue(0);
 	const progress = useSharedValue(0);
 	const ctaText = useDerivedValue(() => {
-		return progress.value ? "Sign me up!" : "Next";
+		return (progress.value ? "Sign me up!" : "Next") as string;
 	});
 	const scrollHandler = useAnimatedScrollHandler((e) => {
 		translateX.value = e.contentOffset.x;
@@ -180,7 +180,7 @@ const Onboarding: React.FC<StackNavigationProps<UnauthStackScreens & RootStackSc
 							onMomentumScrollBegin={() => {
 								scrollBegin.current = true;
 							}}
-							onMomentumScrollEnd={(e) => {
+							onMomentumScrollEnd={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
 								// ⚠️ Prevent android multiple trigger
 								if (scrollBegin.current) {
 									const step = Math.round(e.nativeEvent.contentOffset.x / width);

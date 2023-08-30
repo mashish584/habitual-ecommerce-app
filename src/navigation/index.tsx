@@ -21,14 +21,14 @@ import { navigationRef } from "./service";
 import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
+import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
 
 /**
  * Where ot navigation user
  */
-const Start: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
+const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigation }) => {
 	useEffect(() => {
 		(async () => {
 			try {
@@ -39,7 +39,7 @@ const Start: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation })
 					data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
 				}
 
-				if (data.token && data.user) {
+				if (data && data.token && data.user) {
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
 					navigation.replace(route);
 				} else {
@@ -63,13 +63,12 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
 			<BottomTabStack.Screen name="Orders" component={Orders} />
-			<BottomTabStack.Screen name="Cart" component={Home} />
+			<BottomTabStack.Screen name="Cart" component={() => null} />
 		</BottomTabStack.Navigator>
 	);
 };

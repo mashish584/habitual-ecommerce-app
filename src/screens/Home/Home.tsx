@@ -10,7 +10,7 @@ import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../
 
 import { useHome } from "../../hooks/api";
 import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { Product } from "../../utils/schema.types";
 import theme from "../../utils/theme";
 
@@ -22,7 +22,7 @@ interface HomeInfo {
 	userInterests: Record<string, Product[]>;
 }
 
-const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
+const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation }) => {
 	const { data, isLoading } = useHome<"", HomeInfo>();
 	const { markProductAsFavourite, favouriteProductIds } = useProfileUpdate();
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);

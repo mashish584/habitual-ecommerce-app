@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Pressable, ViewStyle } from "react-native";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
@@ -8,7 +8,7 @@ interface Card {
 	onPress?: () => void;
 }
 
-const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {
+const Card = ({ cardStyle, onPress, children }: PropsWithChildren<Card>) => {
 	return (
 		<Pressable
 			onPress={onPress}

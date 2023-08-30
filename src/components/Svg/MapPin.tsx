@@ -1,8 +1,9 @@
 import * as React from "react";
 import { AnimatedPath, AnimatedSVG } from "./index";
+import { SVG } from "./types";
 
-const MapPin = () => (
-	<AnimatedSVG width={33} height={32} fill="none" xmlns="http://www.w3.org/2000/svg">
+const MapPin = (props: SVG) => (
+	<AnimatedSVG width={33} height={32} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 		<AnimatedPath d="m15.76 31.776.74-1.11.74 1.11a1.335 1.335 0 0 1-1.48 0Z" fill="#A6A6AA" />
 		<AnimatedPath
 			fillRule="evenodd"

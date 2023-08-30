@@ -38,8 +38,9 @@ function useAddress(address?: PartialBy<Address, "id" | "default">) {
 
 			if (address?.id) {
 				for (let key in updateValues) {
-					if (updateValues[key] === address[key]) {
-						delete updateValues[key];
+					const currentKey = key as keyof AddressT;
+					if (updateValues[currentKey] === address[currentKey]) {
+						delete updateValues[currentKey];
 					}
 				}
 

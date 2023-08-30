@@ -3,7 +3,7 @@ import { Animated, Dimensions, Image, ImageURISource, StyleSheet, TouchableOpaci
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { BottomStackScreens, RootStackScreens } from "../types";
+import { BottomStackScreens, MergedRoutes, RootStackScreens } from "../types";
 import { generateBoxShadowStyle } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { useCart, useUI, useUser } from "../../utils/store";
@@ -67,7 +67,7 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 			: theme.colors.shades.gray_40;
 	};
 
-	const onNavigate = (route: Screens) => {
+	const onNavigate = (route: keyof MergedRoutes) => {
 		props.navigation.navigate(route);
 	};
 

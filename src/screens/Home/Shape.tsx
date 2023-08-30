@@ -4,10 +4,6 @@ import theme from "../../utils/theme";
 
 export const WIDTH = Dimensions.get("screen").width * 2;
 
-interface Shape {
-	top: Animated.AnimatedInterpolation;
-}
-
 const Shape = () => {
 	return (
 		<Animated.View

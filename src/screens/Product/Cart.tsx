@@ -21,7 +21,7 @@ interface ShoppingCartItem {
 }
 
 interface AddCartActions {
-	dragX: Animated.AnimatedInterpolation;
+	dragX: Animated.AnimatedInterpolation<string | number>;
 	quantity: number;
 	onUpdate: (type: QuantityAction) => void;
 }

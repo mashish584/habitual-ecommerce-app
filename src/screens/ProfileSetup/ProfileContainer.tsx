@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Image, ViewStyle } from "react-native";
 
 import Container from "../../components/Container";
@@ -9,9 +9,13 @@ type HeaderTitle = Pick<Header, "title">;
 
 interface ProfileContainer extends HeaderTitle {}
 
-export const containerStyle: ViewStyle = { paddingHorizontal: theme.spacing.medium, justifyContent: "space-between", flex: 1 };
+export const containerStyle: ViewStyle = {
+	paddingHorizontal: theme.spacing.medium,
+	justifyContent: "space-between",
+	flex: 1,
+};
 
-const ProfileContainer: React.FC<ProfileContainer> = ({ title, children }) => {
+const ProfileContainer = ({ title, children }: PropsWithChildren<ProfileContainer>) => {
 	return (
 		<Container>
 			{() => {

@@ -35,7 +35,7 @@ function useProfileUpdate<T extends string>(user?: User) {
 		validationSchema: ProfileSchema,
 		validateOnChange: true,
 		onSubmit: async (data: UserProfile & { profile: string }) => {
-			const body = {} as Record<T, any>;
+			const body = {} as Record<keyof User, any>;
 
 			if (isValidJSONString(data.profile)) {
 				body["profile"] = JSON.parse(data.profile);
@@ -43,7 +43,7 @@ function useProfileUpdate<T extends string>(user?: User) {
 
 			body["fullname"] = `${data.firstName} ${data.lastName}`;
 			body["bio"] = data.bio;
-			await updateUserInfo(body);
+			await updateUserInfo(body as Record<T, any>);
 			navigation.goBack();
 		},
 	});
@@ -55,14 +55,14 @@ function useProfileUpdate<T extends string>(user?: User) {
 					setUser(response.data);
 				}
 			},
-			onError: (error) => {
+			onError: () => {
 				showToast("error", { title: "Habitual Ecommerce", message: "Oops! Something went wrong." });
 			},
 		});
 	}, []);
 
 	const markProductAsFavourite = useCallback(
-		async (productId) => {
+		async (productId: string) => {
 			if (!userId) {
 				updateValue(getPasswordConfirmationModal(updateValue, navigation.navigate));
 				return;

@@ -2,7 +2,7 @@ import { ErrorMessage, FetchHeader, RequestMethods } from "./types";
 
 export interface FetchConfig {
 	method: RequestMethods;
-	headers: FetchHeader;
+	headers: FetchHeader & { token?: string };
 	body?: any;
 	path?: string | null;
 	query?: string;

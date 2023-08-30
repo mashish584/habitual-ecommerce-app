@@ -102,7 +102,7 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: WIDTH - margin * 2, paddingHorizontal: theme.spacing.small }}>
-							{item.map((product: Product, index) => {
+							{item.map((product: Product, index: number) => {
 								product.image = product.images[0].url;
 								return (
 									<ProductCard

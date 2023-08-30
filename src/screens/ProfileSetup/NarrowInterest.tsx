@@ -62,7 +62,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		//👀 for selected interests in searchResults
 		let results = searchResults || [];
 		const selectedInterests: Record<string, SubCategory> = results.reduce((prev, interest) => {
-			const data = { ...prev };
+			const data = { ...prev } as Record<string, SubCategory>;
 			if (selectedInterestsIds.includes(interest.id)) {
 				excludeCategories.current.push(interest.id);
 				data[interest.id] = interest;
@@ -80,7 +80,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		setSearchResults(filterResults.map((category) => ({ ...category, selected: false })));
 	}, 1000);
 
-	const updateInterestSelection = (value) => {
+	const updateInterestSelection = (value: string) => {
 		const selectedIds = [...selectedInterestsIds];
 		const index = selectedIds.indexOf(value);
 		if (index !== -1) {
@@ -107,7 +107,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		(async () => {
 			const response = await categoriesQuery.mutateAsync(null);
 			if (response.data.length) {
-				const categories = {};
+				const categories = {} as Record<string, Interest>;
 				response.data.map((category) => {
 					const { id, name } = category.parentCategory;
 					excludeCategories.current.push(category.id);

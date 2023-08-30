@@ -5,14 +5,14 @@ import { useFocusEffect } from "@react-navigation/native";
 import Container from "../../components/Container";
 import { TextInput } from "../../components/TextInput";
 import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { MergedRoutes, RootStackScreens, StackNavigationProps } from "../../navigation/types";
 
 import theme from "../../utils/theme";
 import { debounce, isAndroid } from "../../utils";
 
 import SearchItem from "./SearchItem";
 
-const Search: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
+const Search: React.FC<StackNavigationProps<MergedRoutes, "Search">> = ({ navigation }) => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const searchInputRef = React.useRef<RNTextInput>(null);

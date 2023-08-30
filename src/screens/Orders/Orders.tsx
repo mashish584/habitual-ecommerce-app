@@ -11,10 +11,10 @@ import ProfileImage from "../../components/ProfileImage";
 import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
 
 import theme from "../../utils/theme";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
+import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "../../navigation/types";
 import { CartItem } from "../../utils/store";
 
-const Orders: React.FC<StackNavigationProps<RootStackScreens & BottomStackScreens, "BottomStack">> = ({ navigation }) => {
+const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ navigation }) => {
 	const isEmptyCard = false;
 
 	return (

@@ -26,7 +26,7 @@ const initialPageData: InitialPageDataType = {
 	next: null,
 };
 
-function formatPaginationData(prev, page) {
+function formatPaginationData(prev: any, page: any) {
 	const data = { ...prev };
 
 	if (page?.data) {

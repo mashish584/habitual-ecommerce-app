@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { View } from "react-native";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
@@ -10,10 +10,9 @@ interface ProductCardSkelton {
 	height: number;
 	mh?: number;
 	mb?: number;
-	children?: JSX.Element;
 }
 
-const ProductCardSkelton = (props: ProductCardSkelton) => {
+const ProductCardSkelton = (props: PropsWithChildren<ProductCardSkelton>) => {
 	return (
 		<SkeletonPlaceholder>
 			<SkeletonPlaceholder.Item
@@ -52,11 +51,12 @@ const InterestsSkelton = () => {
 	return (
 		<View style={CategoryContainerStyle}>
 			<SkeletonPlaceholder>
-				<SkeletonPlaceholder.Item flexDirection="row" marginLeft={theme.spacing.normal}>
-					<SkeletonPlaceholder.Item width={100} height={20} borderRadius={10} marginTop={theme.spacing.xSmall} />
-					<SkeletonPlaceholder.Item width={100} height={20} borderRadius={10} marginTop={theme.spacing.xSmall} marginLeft={theme.spacing.normal} />
-				</SkeletonPlaceholder.Item>
 				<>
+					<SkeletonPlaceholder.Item flexDirection="row" marginLeft={theme.spacing.normal}>
+						<SkeletonPlaceholder.Item width={100} height={20} borderRadius={10} marginTop={theme.spacing.xSmall} />
+						<SkeletonPlaceholder.Item width={100} height={20} borderRadius={10} marginTop={theme.spacing.xSmall} marginLeft={theme.spacing.normal} />
+					</SkeletonPlaceholder.Item>
+
 					{new Array(2).fill(1).map((_, index) => (
 						<SkeletonPlaceholder.Item key={index} marginTop={theme.spacing.medium} flexDirection={"row"} marginHorizontal={theme.spacing.normal}>
 							<SkeletonPlaceholder.Item width={100} height={88} borderRadius={10} />
