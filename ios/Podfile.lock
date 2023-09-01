@@ -169,9 +169,9 @@ PODS:
   - hermes-engine/Pre-built (0.72.4)
   - IQKeyboardManagerSwift (6.5.4)
   - libevent (2.1.12)
-  - lottie-ios (4.2.0)
-  - lottie-react-native (6.2.0):
-    - lottie-ios (~> 4.2.0)
+  - lottie-ios (3.4.0)
+  - lottie-react-native (5.1.6):
+    - lottie-ios (~> 3.4.0)
     - React-Core
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -739,6 +739,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
@@ -819,7 +820,6 @@ SPEC REPOS:
     - GoogleUtilities
     - IQKeyboardManagerSwift
     - libevent
-    - lottie-ios
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
@@ -851,6 +851,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-08-07-RNv0.72.4-813b2def12bc9df02654b3e3653ae4a68d0572e0
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   Permission-Camera:
@@ -987,8 +989,8 @@ SPEC CHECKSUMS:
   hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
   IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  lottie-ios: 809ecf2d460ed650a6aed7aa88b2ec45fab4779c
-  lottie-react-native: b04640d81bfc87915cd5c9058caa1112374691ff
+  lottie-ios: 69495122151a378fdc7d1bb4c5930347e37baf1f
+  lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   Permission-Camera: 7ec9ee99704766ff9b90198183387a7f5d82b0c1

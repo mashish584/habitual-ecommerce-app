@@ -37,7 +37,7 @@ function Container(
 			{props.children(top, bottom)}
 		</ImageBackground>
 	) : (
-		<View style={[styles.container, props.viewContainerStyle] as ViewStyle}>{props.children(top, bottom)}</View>
+		<View style={[styles.container, props.viewContainerStyle, safeAreaStyle] as ViewStyle}>{props.children(top, bottom)}</View>
 	);
 }
 
