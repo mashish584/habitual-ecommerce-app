@@ -11,6 +11,10 @@ import { breakFullName, isValidJSONString, showToast } from "../../utils";
 import { ScreenNavigationProp } from "../../navigation/types";
 import { getPasswordConfirmationModal } from "../../utils/media";
 
+export type UserFormKeys = keyof Pick<UserProfile, "firstName" | "lastName" | "email" | "bio"> & "| profile";
+export type UserFormPayload = UserProfile & { profile: string };
+export type UserRequestPayload = Pick<User, "profile" | "fullname" | "bio">;
+
 const userProfile = (user: User) => {
 	const [firstName, lastName] = breakFullName(user?.fullname);
 	return {
@@ -22,20 +26,24 @@ const userProfile = (user: User) => {
 	};
 };
 
-function useProfileUpdate<T extends string>(user?: User) {
-	const [{ id: userId, profile, joining_reasons, favouriteProductIds }, setUser] = useUser((store) => [store.user, store.setUser]);
-	const updateValue = useUI((store) => store.updateValue);
+function useProfileUpdate<T extends string>() {
 	const navigation = useNavigation<ScreenNavigationProp>();
-	const { mutateAsync, isLoading } = useUpdateUser<T, User>(userId);
+
+	const [user, setUser] = useUser((store) => [store.user, store.setUser]);
+	const updateValue = useUI((store) => store.updateValue);
+
 	const fetchProfile = useUserProfile<T, User>();
 	const updateFavouriteProduct = useFavouriteProduct<T, User>();
+	const { mutateAsync, isLoading } = useUpdateUser<T, User>(user.id);
+
+	const { id: userId, profile, joining_reasons, favouriteProductIds } = user || {};
 
 	const formik = useFormik({
 		initialValues: userProfile(user || ({} as User)),
 		validationSchema: ProfileSchema,
 		validateOnChange: true,
-		onSubmit: async (data: UserProfile & { profile: string }) => {
-			const body = {} as Record<keyof User, any>;
+		onSubmit: async (data: UserFormPayload) => {
+			const body = {} as UserRequestPayload;
 
 			if (isValidJSONString(data.profile)) {
 				body["profile"] = JSON.parse(data.profile);
@@ -43,7 +51,16 @@ function useProfileUpdate<T extends string>(user?: User) {
 
 			body["fullname"] = `${data.firstName} ${data.lastName}`;
 			body["bio"] = data.bio;
-			await updateUserInfo(body as Record<T, any>);
+
+			const isValueChanged = Object.keys(body).some((key) => {
+				const field = key as keyof UserRequestPayload;
+				return body[field] !== user?.[field];
+			});
+
+			if (isValueChanged) {
+				await updateUserInfo(body as Record<T, any>);
+			}
+
 			navigation.goBack();
 		},
 	});

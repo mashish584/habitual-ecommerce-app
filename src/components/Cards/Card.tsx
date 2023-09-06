@@ -5,15 +5,15 @@ import theme, { rgba } from "../../utils/theme";
 
 interface Card {
 	cardStyle?: ViewStyle;
-	onPress?: () => void;
+	index: number;
+	onPress?: (index: number) => void;
 }
 
-const Card = ({ cardStyle, onPress, children }: PropsWithChildren<Card>) => {
+const Card = ({ cardStyle, index, onPress, children }: PropsWithChildren<Card>) => {
 	return (
 		<Pressable
-			onPress={onPress}
+			onPress={() => onPress?.(index)}
 			style={{
-				// height: "100%",
 				aspectRatio: 1,
 				borderRadius: 10,
 				backgroundColor: theme.colors.shades.white,

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useEffect, useMemo, useRef } from "react";
 import { StyleSheet, Pressable } from "react-native";
 import { SharedValue } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import GBottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
 
 import { Header } from "../Header";
@@ -12,6 +13,7 @@ import BottomSheetI from "./types";
 const BottomSheet = ({ visible, headerTitle, onClose, children }: PropsWithChildren<BottomSheetI>) => {
 	const bottomSheetRef = useRef<GBottomSheet>(null);
 	const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
+	const { bottom } = useSafeAreaInsets();
 
 	const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
@@ -56,7 +58,9 @@ const BottomSheet = ({ visible, headerTitle, onClose, children }: PropsWithChild
 					onClose();
 				}
 			}}>
-			<BottomSheetView onLayout={handleContentLayout}>{children}</BottomSheetView>
+			<BottomSheetView style={{ paddingBottom: bottom }} onLayout={handleContentLayout}>
+				{children}
+			</BottomSheetView>
 		</GBottomSheet>
 	);
 };

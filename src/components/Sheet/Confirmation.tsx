@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import theme from "../../utils/theme";
 import { BottomSheet, BottomSheetI } from "../BottomSheet";
@@ -17,7 +17,6 @@ const Confirmation = (props: Confirmation) => {
 		<BottomSheet {...{ ...props }}>
 			<View
 				style={{
-					height: Dimensions.get("window").height * 0.23,
 					backgroundColor: theme.colors.shades.white,
 					paddingHorizontal: theme.spacing.medium,
 					alignItems: "center",

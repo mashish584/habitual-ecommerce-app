@@ -1,7 +1,7 @@
-import { ViewStyle, KeyboardType, ImageStyle } from "react-native";
+import { ViewStyle, ImageStyle } from "react-native";
 
 export type MessageType = "success" | "error" | "null";
-export type InputType = KeyboardType | "text" | "search" | "password";
+export type InputType = "text" | "search" | "password" | "phone";
 
 export interface Label {
 	label: string;

@@ -14,16 +14,15 @@ import { Button } from "../../components/Button";
 import { defaultAvatar, generateBoxShadowStyle, isValidJSONString } from "../../utils";
 import theme, { rgba } from "../../utils/theme";
 import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import useProfileUpdate, { UserFormKeys } from "../../hooks/logic/useProfileUpdate";
 
 import { openGallery } from "../../utils/media";
-import { UserProfile } from "../../utils/validation";
 
 import { styles as profileStyles } from "./Profile";
 
 const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile">> = ({ navigation, route }) => {
 	const profile = route.params?.profile;
-	const { formik, isLoading } = useProfileUpdate<keyof Pick<UserProfile, "firstName" | "lastName" | "email" | "bio"> & "| profile">(profile);
+	const { formik, isLoading } = useProfileUpdate<UserFormKeys>();
 	const { values, handleChange, handleSubmit, submitCount, errors, setFieldValue } = formik;
 
 	const isFormSubmit = submitCount > 0;
@@ -55,15 +54,12 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 						}}
 					/>
 					<Curve isCurve={false}>
-						<ScrollView showsVerticalScrollIndicator={false} style={{ paddingHorizontal: theme.spacing.medium }}>
+						<ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
 							<View style={[profileStyles.profile, styles.profile]}>
 								<Pressable onPress={pickImage} style={styles.uploadAction}>
 									<FontAwesomeIcon icon={faCamera as IconProp} color={theme.colors.shades.gray_80} />
 								</Pressable>
-								<Image
-									source={{ uri: selectedImage || profile?.profile || defaultAvatar }}
-									style={{ width: "100%", height: "100%", borderRadius: 50 }}
-								/>
+								<Image source={{ uri: selectedImage || profile?.profile || defaultAvatar }} style={styles.avatar} />
 							</View>
 							<View style={styles.formGroup}>
 								<TextInput
@@ -72,8 +68,8 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 									onChangeText={handleChange("firstName")}
 									value={values.firstName}
 									messageType={isFormSubmit && errors.firstName ? "error" : "null"}
-									returnKeyType="next"
-									onSubmitEditing={() => {}}
+									returnKeyType="done"
+									maxLength={50}
 									message={isFormSubmit && errors.firstName ? errors.firstName : ""}
 									containerStyle={{ flex: 0.48 }}
 								/>
@@ -83,8 +79,8 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 									onChangeText={handleChange("lastName")}
 									value={values.lastName}
 									messageType={isFormSubmit && errors.lastName ? "error" : "null"}
-									returnKeyType="next"
-									onSubmitEditing={() => {}}
+									returnKeyType="done"
+									maxLength={50}
 									message={isFormSubmit && errors.lastName ? errors.lastName : ""}
 									containerStyle={{ flex: 0.48 }}
 								/>
@@ -95,10 +91,8 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 								onChangeText={handleChange("email")}
 								value={values.email}
 								messageType={isFormSubmit && errors.email ? "error" : "null"}
-								returnKeyType="next"
-								onSubmitEditing={() => {}}
+								returnKeyType="done"
 								message={isFormSubmit && errors.email ? errors.email : ""}
-								containerStyle={{ flex: 0.48 }}
 								editable={false}
 							/>
 							<TextInput
@@ -107,13 +101,11 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 								onChangeText={handleChange("bio")}
 								value={values.bio}
 								messageType={isFormSubmit && errors.bio ? "error" : "null"}
-								returnKeyType="next"
-								onSubmitEditing={() => {}}
+								returnKeyType="done"
 								message={isFormSubmit && errors.bio ? errors.bio : ""}
-								containerStyle={{ flex: 0.48 }}
 								numberOfLines={3}
 								multiline={true}
-								style={{ minHeight: 100, paddingBottom: theme.spacing.small, paddingTop: theme.spacing.small, textAlignVertical: "center" }}
+								style={styles.bioInput}
 							/>
 						</ScrollView>
 						<Button
@@ -131,6 +123,14 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 };
 
 const styles = StyleSheet.create({
+	scrollView: {
+		paddingHorizontal: theme.spacing.medium,
+	},
+	avatar: {
+		width: "100%",
+		height: "100%",
+		borderRadius: 50,
+	},
 	profile: {
 		width: 120,
 		height: 120,
@@ -155,6 +155,12 @@ const styles = StyleSheet.create({
 	formGroup: {
 		...theme.rowStyle,
 		justifyContent: "space-between",
+	},
+	bioInput: {
+		height: 100,
+		paddingBottom: theme.spacing.small,
+		paddingTop: theme.spacing.small,
+		textAlignVertical: "center",
 	},
 });
 

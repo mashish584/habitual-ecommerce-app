@@ -81,7 +81,7 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> =
 						visible={options.visible}
 						headerTitle="Choose Option"
 						onAction={(type) => {
-							if (options.index) {
+							if (options.index !== null) {
 								const address = addresses[options.index];
 								setOptions({ visible: false, index: null });
 								if (type === "edit") {

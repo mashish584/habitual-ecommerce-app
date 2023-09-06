@@ -36,6 +36,7 @@
 		"axios": "^0.26.1",
 		"dayjs": "^1.10.7",
 		"formik": "^2.2.9",
+		"libphonenumber-js": "^1.10.44",
 		"lodash.debounce": "^4.0.8",
 		"lottie-ios": "3.4.0",
 		"lottie-react-native": "5.1.6",
