@@ -36,8 +36,15 @@
 
 		/* Module Resolution Options */
 		"moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
-		// "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
-		// "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+		"baseUrl": "." /* Base directory to resolve non-absolute module names. */,
+		"paths": {
+			"@assets/*": ["src/assets/*"],
+			"@components/*": ["src/components/*"],
+			"@screens/*": ["src/screens/*"],
+			"@utils/*": ["src/utils/*"],
+			"@hooks/*": ["src/hooks/*"],
+			"@nav/*": ["src/navigation/*"]
+		} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
 		// "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
 		// "typeRoots": ["./src"] /* List of folders to include type definitions from. */,
 		// "types": [] /* Type declaration files to be included in compilation. */,
@@ -58,5 +65,5 @@
 		// "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 	},
 	"exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
-	// "include": ["node_modules/react-native-redash/lib/typescript/v1/index.d.ts"]
+	// "include": ["src/**/*.{ts,js,tsx,jsx}"]
 }
