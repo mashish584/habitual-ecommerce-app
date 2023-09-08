@@ -2,12 +2,15 @@ import React, { useCallback } from "react";
 import { View, Image, Text, ScrollView } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { BottomSheet, BottomSheetI } from "../../components/BottomSheet";
-import { Button } from "../../components/Button";
 
-import theme from "../../utils/theme";
-import { useCart } from "../../utils/store";
-import { deviceHeight } from "../../utils";
+import { BottomSheet, BottomSheetI } from "@components/BottomSheet";
+import { Button } from "@components/Button";
+
+import theme from "@utils/theme";
+import { useCart } from "@utils/store";
+import { deviceHeight } from "@utils/index";
+import images from "@assets/images";
+
 import styles, { CART_FOOTER_HEIGHT } from "./styles";
 import CartItem from "./CartItem";
 
@@ -65,7 +68,7 @@ const Cart = (props: Cart) => {
 
 				{isCartEmpty && (
 					<View style={styles.emptyView}>
-						<Image source={require("../../assets/images/empty-illustration.png")} />
+						<Image source={images.emptyCart} />
 						<Text style={[theme.textStyles.body_sm, styles.emptyViewText]}>Hey you! There is no items in your cart.</Text>
 					</View>
 				)}

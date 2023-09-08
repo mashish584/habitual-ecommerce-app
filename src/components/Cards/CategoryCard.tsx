@@ -1,7 +1,8 @@
 import React from "react";
 import { Image, ImageURISource, Text, TouchableOpacity, View } from "react-native";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
 
 export type CategoryInfo = {
 	label: string;

@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import theme, { rgba } from "../../utils/theme";
-import { COLOR_CARD_WIDTH, generateBoxShadowStyle } from "../../utils";
+import theme, { rgba } from "@utils/theme";
+import { COLOR_CARD_WIDTH, generateBoxShadowStyle } from "@utils/index";
+
 import Card from "./Card";
 
 interface ColorCard {

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, View, ActivityIndicator } from "react-native";
 import { ReText } from "react-native-redash";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 import { ButtonI, variant } from "./types";
 
 const getButtonStyles = (variant: variant) => {

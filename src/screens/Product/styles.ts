@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 const styles = StyleSheet.create({
 	slideIndicators: {

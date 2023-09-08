@@ -2,8 +2,8 @@ import React from "react";
 import { View, Image, Text } from "react-native";
 import { Swipeable, GestureHandlerRootView } from "react-native-gesture-handler";
 
-import theme from "../../../utils/theme";
-import { CartItem as CartItemT, QuantityAction } from "../../../utils/store";
+import theme from "@utils/theme";
+import { CartItem as CartItemT, QuantityAction } from "@utils/store";
 
 import AddCartActions from "../AddCartAction";
 import styles from "./styles";

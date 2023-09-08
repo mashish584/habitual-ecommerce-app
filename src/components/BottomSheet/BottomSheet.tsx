@@ -4,10 +4,10 @@ import { SharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import GBottomSheet, { BottomSheetFooter, BottomSheetFooterProps, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
 
-import { Header } from "../Header";
+import { isIOS } from "@utils/index";
+import { rgba } from "@utils/theme";
 
-import { isIOS } from "../../utils";
-import { rgba } from "../../utils/theme";
+import { Header } from "../Header";
 import BottomSheetI from "./types";
 
 const SCREEN_HEIGHT = Dimensions.get("screen").height;

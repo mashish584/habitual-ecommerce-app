@@ -2,14 +2,14 @@ import { useCallback } from "react";
 import { useFormik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 
-import { User } from "../../utils/schema.types";
-import { useUI, useUser } from "../../utils/store";
-import { ProfileSchema, UserProfile } from "../../utils/validation";
+import { User } from "@utils/schema.types";
+import { useUI, useUser } from "@utils/store";
+import { ProfileSchema, UserProfile } from "@utils/validation";
+import { breakFullName, isValidJSONString, showToast } from "@utils/index";
+import { getPasswordConfirmationModal } from "@utils/media";
 
+import { ScreenNavigationProp } from "@nav/types";
 import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
-import { breakFullName, isValidJSONString, showToast } from "../../utils";
-import { ScreenNavigationProp } from "../../navigation/types";
-import { getPasswordConfirmationModal } from "../../utils/media";
 
 export type UserFormKeys = keyof Pick<UserProfile, "firstName" | "lastName" | "email" | "bio"> & "| profile";
 export type UserFormPayload = UserProfile & { profile: string };

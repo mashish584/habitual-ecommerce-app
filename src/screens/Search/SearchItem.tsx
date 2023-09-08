@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import HighlightText from "../../components/HighlightText";
+import HighlightText from "@components/HighlightText";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface SearchItem {
 	query: string;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Dimensions } from "react-native";
 
-import CategoryCard, { CategoryInfo } from "../../components/Cards/CategoryCard";
-import { useCategories } from "../../hooks/api";
+import CategoryCard, { CategoryInfo } from "@components/Cards/CategoryCard";
+import { useCategories } from "@hooks/api";
 
-import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Category } from "../../utils/schema.types";
-import theme from "../../utils/theme";
+import { ProfileSetupStackScreens, StackNavigationProps } from "@nav/types";
+import { Category } from "@utils/schema.types";
+import theme from "@utils/theme";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";

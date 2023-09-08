@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { ImageBackground, ImageStyle, ViewStyle, ImageSourcePropType, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface ThemeProps {
 	children: (top: number, bottom: number) => ReactNode;

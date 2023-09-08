@@ -15,20 +15,20 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import Container from "../../components/Container";
-import { Review } from "../../components/Product";
-import { Header } from "../../components/Header";
-import { SmallBag, Back } from "../../components/Svg";
+import Container from "@components/Container";
+import { Review } from "@components/Product";
+import { Header } from "@components/Header";
+import { SmallBag, Back } from "@components/Svg";
+
+import { ProductFooterActions } from "@utils/types";
+import { Product as ProductType, SlideColors } from "@utils/schema.types";
+import theme from "@utils/theme";
+import { useCart } from "@utils/store";
+import { useProductInfo } from "@hooks/api";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import images from "@assets/images";
 
 import Dot from "../Onboarding/Dot";
-
-import { ProductFooterActions } from "../../utils/types";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Product as ProductType, SlideColors } from "../../utils/schema.types";
-import theme from "../../utils/theme";
-import { useCart } from "../../utils/store";
-import { useProductInfo } from "../../hooks/api";
-
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 // import ColorCircle from "./ColorCircle";
@@ -274,7 +274,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								buttonChild: !isSlideOn ? (
 									<FontAwesomeIcon icon={faArrowRight as IconProp} />
 								) : (
-									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
+									<Image source={images.bagIcon} style={{ tintColor: theme.colors.shades.white }} />
 								),
 							}}
 							slideAnimate={productInfoSlideTiming}

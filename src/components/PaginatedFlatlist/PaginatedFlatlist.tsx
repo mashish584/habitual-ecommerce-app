@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator, FlatList, FlatListProps, View, ViewStyle } from "react-native";
-import { usePaginateAPI } from "../../hooks/api";
-import theme from "../../utils/theme";
-import { Urls } from "../../utils/types";
+
+import { usePaginateAPI } from "@hooks/api";
+
+import theme from "@utils/theme";
+import { Urls } from "@utils/types";
 
 interface PaginatedFlatlist extends Omit<FlatListProps<any>, "data"> {
 	url: Urls;

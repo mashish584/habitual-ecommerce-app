@@ -4,21 +4,21 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { Card } from "../../components/Cards";
-import Container from "../../components/Container";
-import Curve from "../../components/Container/Curve";
-import { Header } from "../../components/Header";
-import { Back } from "../../components/Svg";
-import { Button } from "../../components/Button";
-import AddressText from "../../components/AddressText";
+import { Card } from "@components/Cards";
+import Container from "@components/Container";
+import Curve from "@components/Container/Curve";
+import { Header } from "@components/Header";
+import { Back } from "@components/Svg";
+import { Button } from "@components/Button";
+import AddressText from "@components/AddressText";
+import AddressOptions from "@components/Sheet/AddressOptions";
+import Loader from "@components/Loader";
 
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import theme, { rgba } from "../../utils/theme";
-import { generateBoxShadowStyle } from "../../utils";
-import { useUser } from "../../utils/store";
-import useAddress from "../../hooks/logic/useAddress";
-import AddressOptions from "../../components/Sheet/AddressOptions";
-import Loader from "../../components/Loader";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import theme, { rgba } from "@utils/theme";
+import { generateBoxShadowStyle } from "@utils/index";
+import { useUser } from "@utils/store";
+import { useAddress } from "@hooks/logic";
 
 const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> = ({ navigation }) => {
 	const [options, setOptions] = React.useState<{ visible: boolean; index: number | null }>({ visible: false, index: null });

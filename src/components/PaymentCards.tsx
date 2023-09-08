@@ -2,11 +2,11 @@ import React from "react";
 import { Dimensions, View, Text } from "react-native";
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 
-import Dot from "../screens/Onboarding/Dot";
+import Dot from "@screens/Onboarding/Dot";
 
-import { useCards } from "../hooks/api";
-import { Card } from "../utils/schema.types";
-import theme from "../utils/theme";
+import { useCards } from "@hooks/api";
+import { Card } from "@utils/schema.types";
+import theme from "@utils/theme";
 
 import CreditCard from "./Cards/CreditCard";
 

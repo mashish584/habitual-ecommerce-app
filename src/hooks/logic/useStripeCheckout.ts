@@ -1,7 +1,8 @@
 import { Address, useStripe } from "@stripe/stripe-react-native";
 import { useCallback, useState } from "react";
-import { showToast } from "../../utils";
-import { useCart } from "../../utils/store";
+
+import { showToast } from "@utils/index";
+import { useCart } from "@utils/store";
 import { useCartCheckout, useUpdateTransaction } from "../api";
 
 interface CheckoutResponse {
@@ -14,7 +15,7 @@ interface CheckoutResponse {
 	cartTotal: number;
 }
 
-export const useStripeCheckout = () => {
+const useStripeCheckout = () => {
 	const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 	const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
@@ -68,3 +69,5 @@ export const useStripeCheckout = () => {
 
 	return { initiatePaymentSheet, isLoading: cartCheckout.isLoading || isPaymentProcessing };
 };
+
+export default useStripeCheckout;

@@ -1,8 +1,9 @@
 import React from "react";
 import { Dimensions, Image, ImageSourcePropType, Text, View, ViewStyle } from "react-native";
 
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+
 import { Button } from "../Button";
 
 const aspectRatio = 292 / 327;

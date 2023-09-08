@@ -6,11 +6,11 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import LottieView from "lottie-react-native";
 
-import Pill from "../Pill/Pill";
+import { calculateOriginalPrice, generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import { Product } from "@utils/schema.types";
 
-import { calculateOriginalPrice, generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
-import { Product } from "../../utils/schema.types";
+import { Pill } from "../Pill";
 
 type CardVariant = "large" | "small" | "wide";
 export type PressAction = "heart" | "card";

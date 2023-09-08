@@ -3,10 +3,10 @@ import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { DEV_URL, DEV_HOST } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Address, RequestMethods, Urls } from "../../utils/types";
-import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
-import { UserState } from "../../utils/store";
-import { showToast } from "../../utils";
+import { Address, RequestMethods, Urls } from "@utils/types";
+import { ErrorResponse, FetchConfig, SuccessResponse } from "@utils/interface";
+import { UserState } from "@utils/store";
+import { showToast } from "@utils/index";
 
 type AddressData = {
 	address?: Omit<Address, "id" | "default">;

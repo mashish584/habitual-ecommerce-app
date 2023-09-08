@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import theme from "../../../utils/theme";
-import { QuantityAction } from "../../../utils/store";
+import theme from "@utils/theme";
+import { QuantityAction } from "@utils/store";
+
 import styles from "./styles";
 
 interface AddCartActions {

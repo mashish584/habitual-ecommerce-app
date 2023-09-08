@@ -4,18 +4,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Home } from "../screens/Home";
-import Product from "../screens/Product/Product";
-import { Checkout, Address } from "../screens/Checkout";
-import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
-import Orders from "../screens/Orders/Orders";
-import { EditProfile, Profile, Addresses } from "../screens/Profile";
-import { ProfileSetupComplete } from "../screens/ProfileSetup";
-import { Wishlist } from "../screens/Wishlist";
-import { Search } from "../screens/Search";
-import GlobalUI from "../screens/GlobalUI";
+import { Home } from "@screens/Home";
+import Product from "@screens/Product/Product";
+import { Checkout, Address } from "@screens/Checkout";
+import CheckoutSuccess from "@screens/Checkout/CheckoutSuccess";
+import Orders from "@screens/Orders/Orders";
+import { EditProfile, Profile, Addresses } from "@screens/Profile";
+import { ProfileSetupComplete } from "@screens/ProfileSetup";
+import { Wishlist } from "@screens/Wishlist";
+import { Search } from "@screens/Search";
+import GlobalUI from "@screens/GlobalUI";
 
-import { UserState } from "../utils/store";
+import { UserState } from "@utils/store";
 
 import { navigationRef } from "./service";
 import { BottomTab } from "./BottomTab";
@@ -63,8 +63,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />

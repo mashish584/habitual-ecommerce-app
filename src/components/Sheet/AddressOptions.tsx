@@ -1,7 +1,8 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
+
 import { BottomSheet, BottomSheetI } from "../BottomSheet";
 import Line from "../Line";
 

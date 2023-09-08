@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
-import theme from "../utils/theme";
+
+import theme from "@utils/theme";
 
 interface HighlightText {
 	word: string;

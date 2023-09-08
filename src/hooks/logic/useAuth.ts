@@ -1,14 +1,14 @@
 import { useFormik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 
-import { Auth } from "../../utils/types";
-import { AuthSchema } from "../../utils/validation";
-import { User } from "../../utils/schema.types";
+import { Auth } from "@utils/types";
+import { AuthSchema } from "@utils/validation";
+import { User } from "@utils/schema.types";
+import { useUser } from "@utils/store";
+import { showToast } from "@utils/index";
 
+import { ScreenNavigationProp } from "@nav/types";
 import { useAuthAPI } from "../api";
-import { useUser } from "../../utils/store";
-import { ScreenNavigationProp } from "../../navigation/types";
-import { showToast } from "../../utils";
 
 const values: Auth = {
 	email: "",

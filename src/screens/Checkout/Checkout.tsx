@@ -1,22 +1,22 @@
 import React from "react";
 import { ScrollView, Text, View, Pressable, StyleProp, ViewStyle } from "react-native";
 
-import Container from "../../components/Container";
-import { Button } from "../../components/Button";
-import SectionHeading from "../../components/SectionHeading";
-import Header, { ActionType } from "../../components/Header/Header";
-// import { TextInput } from "../../components/TextInput";
-import { Back } from "../../components/Svg";
-import Line from "../../components/Line";
-import AddressText from "../../components/AddressText";
-import PaymentCards from "../../components/PaymentCards";
+import Container from "@components/Container";
+import { Button } from "@components/Button";
+import SectionHeading from "@components/SectionHeading";
+import Header, { ActionType } from "@components/Header/Header";
+// import { TextInput } from "@components/TextInput";
+import { Back } from "@components/Svg";
+import Line from "@components/Line";
+import AddressText from "@components/AddressText";
+import PaymentCards from "@components/PaymentCards";
 
-import theme from "../../utils/theme";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { useCart, useUser } from "../../utils/store";
+import theme from "@utils/theme";
+import { useCart, useUser } from "@utils/store";
+import { showToast } from "@utils/index";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
 
-import { useStripeCheckout } from "../../hooks/logic/useStripeCheckout";
-import { showToast } from "../../utils";
+import { useStripeCheckout } from "@hooks/logic";
 
 // spacing of bot
 const footerTopPadding = theme.spacing.medium;

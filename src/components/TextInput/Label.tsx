@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 import { Label as ILabel } from "./types";
 
 const Label = ({ label, isOptional, mb }: ILabel) => {

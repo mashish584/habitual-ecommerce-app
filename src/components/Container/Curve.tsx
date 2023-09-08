@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { View, ViewStyle, ScrollView } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface Curve {
 	isCurve: boolean;

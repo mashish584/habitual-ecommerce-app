@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from "react";
 import { Pressable, ViewStyle } from "react-native";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
 
 interface Card {
 	cardStyle?: ViewStyle;

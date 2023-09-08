@@ -1,9 +1,10 @@
 import React, { PropsWithChildren } from "react";
 import { Image, ViewStyle } from "react-native";
 
-import Container from "../../components/Container";
-import { Header } from "../../components/Header";
-import theme from "../../utils/theme";
+import Container from "@components/Container";
+import { Header } from "@components/Header";
+import theme from "@utils/theme";
+import images from "@assets/images";
 
 type HeaderTitle = Pick<Header, "title">;
 
@@ -21,12 +22,7 @@ const ProfileContainer = ({ title, children }: PropsWithChildren<ProfileContaine
 			{() => {
 				return (
 					<>
-						<Header
-							variant="secondary"
-							leftIcon={<Image source={require("../../assets/images/bag.png")} />}
-							title={title}
-							headerStyle={{ justifyContent: "flex-end" }}
-						/>
+						<Header variant="secondary" leftIcon={<Image source={images.bag} />} title={title} headerStyle={{ justifyContent: "flex-end" }} />
 						{children}
 					</>
 				);

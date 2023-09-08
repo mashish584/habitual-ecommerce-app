@@ -1,7 +1,8 @@
 import { ParamListBase, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Product, User } from "../utils/schema.types";
-import { Address } from "../utils/types";
+
+import { Product, User } from "@utils/schema.types";
+import { Address } from "@utils/types";
 
 export interface StackNavigationProps<ParamList extends ParamListBase, RouteName extends keyof ParamList = string> {
 	navigation: StackNavigationProp<ParamList, RouteName>;

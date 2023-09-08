@@ -1,18 +1,18 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import ProductCard, { PressAction } from "../../components/Cards/ProductCard";
-import { CategorySlider } from "../../components/CategorySlider";
-import Container from "../../components/Container";
-import ProfileImage from "../../components/ProfileImage";
-import SectionHeading from "../../components/SectionHeading";
-import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../../components/Skeltons/ProductCardSkelton";
+import ProductCard, { PressAction } from "@components/Cards/ProductCard";
+import { CategorySlider } from "@components/CategorySlider";
+import Container from "@components/Container";
+import ProfileImage from "@components/ProfileImage";
+import SectionHeading from "@components/SectionHeading";
+import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "@components/Skeltons/ProductCardSkelton";
 
-import { useHome } from "../../hooks/api";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
-import { Product } from "../../utils/schema.types";
-import theme from "../../utils/theme";
+import { useHome } from "@hooks/api";
+import { useProfileUpdate } from "@hooks/logic";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
+import { Product } from "@utils/schema.types";
+import theme from "@utils/theme";
 
 import Shape from "./Shape";
 

@@ -4,19 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import Container from "../../components/Container";
-import Header from "../../components/Header/Header";
-import { Back } from "../../components/Svg";
-import Curve from "../../components/Container/Curve";
-import { TextInput } from "../../components/TextInput";
-import { Button } from "../../components/Button";
+import Container from "@components/Container";
+import Header from "@components/Header/Header";
+import { Back } from "@components/Svg";
+import Curve from "@components/Container/Curve";
+import { TextInput } from "@components/TextInput";
+import { Button } from "@components/Button";
 
-import { defaultAvatar, generateBoxShadowStyle, isValidJSONString } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import useProfileUpdate, { UserFormKeys } from "../../hooks/logic/useProfileUpdate";
-
-import { openGallery } from "../../utils/media";
+import { defaultAvatar, generateBoxShadowStyle, isValidJSONString } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import { openGallery } from "@utils/media";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import { useProfileUpdate, UserFormKeys } from "@hooks/logic";
 
 import { styles as profileStyles } from "./Profile";
 

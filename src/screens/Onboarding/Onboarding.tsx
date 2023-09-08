@@ -9,12 +9,13 @@ import Animated, {
 	useDerivedValue,
 } from "react-native-reanimated";
 
-import { Button } from "../../components/Button";
-import Container from "../../components/Container";
-import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
+import { Button } from "@components/Button";
+import Container from "@components/Container";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
 
-import { isIOS } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+import { isIOS } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import images from "@assets/images";
 import Dot from "./Dot";
 
 const { width, height } = Dimensions.get("screen");
@@ -24,7 +25,7 @@ const slides = [
 		title: "Welcome!",
 		description: "It’s a pleasure to meet you. We are excited that you’re here so let’s get started!",
 		color: theme.colors.primary.yellow,
-		illustration: require("../../assets/images/illustration.png"),
+		illustration: images.onboardSlideFirstImage,
 		textStyle: theme.textStyles.h1,
 		ovalColor: rgba.yellow(0.2),
 	},
@@ -33,7 +34,7 @@ const slides = [
 		description:
 			"No need to rummage through irrelevant items anymore, we got you covered. Habitual sends you relevant items based off of your habits and interests.",
 		color: theme.colors.accents.teal,
-		illustration: require("../../assets/images/slide-illustration-2.png"),
+		illustration: images.onboardSlideSecondImage,
 		textStyle: theme.textStyles.h3,
 		ovalColor: rgba.teal(0.1),
 	},
@@ -41,7 +42,7 @@ const slides = [
 		title: "Your interests\nworking with you.",
 		description: "Tell us what you like. No, really, it helps a bunch when we serve you some great products. You just keep doing your thing.",
 		color: theme.colors.accents.red,
-		illustration: require("../../assets/images/slide-illustration-3.png"),
+		illustration: images.onboardSlideThirdImage,
 		textStyle: theme.textStyles.h3,
 		ovalColor: rgba.orange(0.1),
 	},
@@ -49,7 +50,7 @@ const slides = [
 		title: "And that’s the \ncherry on top!",
 		description: "Tell us what you like. No, really, it helps a bunch when we serve you some great products. You just keep doing your thing.",
 		color: theme.colors.secondary.blue,
-		illustration: require("../../assets/images/slide-illustration-4.png"),
+		illustration: images.onboardFourthSlideImage,
 		textStyle: theme.textStyles.h3,
 		ovalColor: rgba.blue(0.1),
 	},
@@ -245,7 +246,7 @@ const Onboarding: React.FC<StackNavigationProps<MergedRoutes, "Onboarding">> = (
 						</Animated.View>
 
 						<Animated.View style={[{ alignSelf: "center", top }, theme.rowStyle, styles.headerContent, styles.logo, rTransparentButtonStyle]}>
-							<Image source={require("../../assets/images/full-logo.png")} style={{ width: "100%", height: "100%" }} />
+							<Image source={images.logo} style={{ width: "100%", height: "100%" }} />
 						</Animated.View>
 					</>
 				);

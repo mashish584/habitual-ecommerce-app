@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
-import { deviceHeight } from "../../utils";
-import theme from "../../utils/theme";
+
+import { deviceHeight } from "@utils/index";
+import theme from "@utils/theme";
 
 export const CART_FOOTER_HEIGHT = 100;
 

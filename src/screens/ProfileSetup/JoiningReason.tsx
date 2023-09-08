@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import { Button } from "../../components/Button";
+import { Button } from "@components/Button";
 
-import theme from "../../utils/theme";
-import { User } from "../../utils/schema.types";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
+import theme from "@utils/theme";
+import { User } from "@utils/schema.types";
+import { useProfileUpdate } from "@hooks/logic";
+import { ProfileSetupStackScreens, StackNavigationProps } from "@nav/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";

@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import Loader from "../Loader";
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import images from "@assets/images";
 
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+import Loader from "../Loader";
 
 import Label from "./Label";
 import Message from "./Message";
@@ -72,7 +73,7 @@ const TextInput = ({ label, isOptional, messageType, message, style, ...props }:
 				)}
 				{props.type === "search" && (
 					<View style={[styles.searchIcon, props.searchIconStyle]}>
-						<Image source={require("../../assets/images/search.png")} />
+						<Image source={images.searchIcon} />
 					</View>
 				)}
 				{props.type === "password" && (

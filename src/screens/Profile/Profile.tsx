@@ -4,22 +4,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import Container from "../../components/Container";
-import Header from "../../components/Header/Header";
-import { Back, MapPin, Lock } from "../../components/Svg";
-import Curve from "../../components/Container/Curve";
-import Button from "../../components/Button/Button";
-import SectionHeading from "../../components/SectionHeading";
-import EmptyInfoCard from "../../components/Cards/EmptyInfoCard";
-import { Card, ColorCard } from "../../components/Cards";
+import Container from "@components/Container";
+import Header from "@components/Header/Header";
+import { Back, MapPin, Lock } from "@components/Svg";
+import Curve from "@components/Container/Curve";
+import Button from "@components/Button/Button";
+import SectionHeading from "@components/SectionHeading";
+import EmptyInfoCard from "@components/Cards/EmptyInfoCard";
+import { Card, ColorCard } from "@components/Cards";
 
-import theme, { rgba } from "../../utils/theme";
-import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "../../utils";
-import { useUI, useUser } from "../../utils/store";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import theme, { rgba } from "@utils/theme";
+import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "@utils/index";
+import { useUI, useUser } from "@utils/store";
+import { Category } from "@utils/schema.types";
+import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "@nav/types";
 
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { Category } from "../../utils/schema.types";
+import { useProfileUpdate } from "@hooks/logic";
 
 const AccountSettingOptions = [
 	// {

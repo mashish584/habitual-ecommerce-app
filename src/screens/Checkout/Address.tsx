@@ -1,17 +1,17 @@
 import React, { useRef } from "react";
 import { ScrollView, View, StyleSheet, TextInput as RNTextInput, Keyboard, StyleProp, ViewStyle } from "react-native";
 
-import { Button } from "../../components/Button";
-import Container from "../../components/Container";
-import { Header } from "../../components/Header";
-import { ActionType } from "../../components/Header/Header";
-import { Back } from "../../components/Svg";
-import { TextInput } from "../../components/TextInput";
-import useAddress from "../../hooks/logic/useAddress";
+import { Button } from "@components/Button";
+import Container from "@components/Container";
+import { Header } from "@components/Header";
+import { ActionType } from "@components/Header/Header";
+import { Back } from "@components/Svg";
+import { TextInput } from "@components/TextInput";
+import { useAddress } from "@hooks/logic";
 
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { isIOS } from "../../utils";
-import theme from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import { isIOS } from "@utils/index";
+import theme from "@utils/theme";
 
 const Address: React.FC<StackNavigationProps<RootStackScreens, "Address">> = ({ navigation, route }) => {
 	const { formik, isLoading } = useAddress(route.params?.address);

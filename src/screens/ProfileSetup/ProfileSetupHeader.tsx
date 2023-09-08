@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { Text, TextStyle, View } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface ProfileSetupHeader {
 	title: string;

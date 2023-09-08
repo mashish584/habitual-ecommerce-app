@@ -2,13 +2,13 @@ import React, { useCallback, useState } from "react";
 import { Text, TextInput as RNTextInput, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
-import Container from "../../components/Container";
-import { TextInput } from "../../components/TextInput";
-import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
-import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
+import Container from "@components/Container";
+import { TextInput } from "@components/TextInput";
+import { PaginatedFlatlist } from "@components/PaginatedFlatlist";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
 
-import theme from "../../utils/theme";
-import { debounce, isAndroid } from "../../utils";
+import theme from "@utils/theme";
+import { debounce, isAndroid } from "@utils/index";
 
 import SearchItem from "./SearchItem";
 

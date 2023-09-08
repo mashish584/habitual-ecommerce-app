@@ -1,6 +1,7 @@
 import React from "react";
 import { ActivityIndicator, View, StyleSheet, ViewStyle } from "react-native";
-import theme from "../utils/theme";
+
+import theme from "@utils/theme";
 
 interface Loader {
 	style?: ViewStyle;

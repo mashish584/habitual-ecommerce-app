@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Text, View, ViewStyle } from "react-native";
 import LottieView from "lottie-react-native";
 
-import theme from "../utils/theme";
+import theme from "@utils/theme";
 
 import { Button } from "./Button";
 import { variant } from "./Button/types";

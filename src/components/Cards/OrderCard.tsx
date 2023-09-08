@@ -7,10 +7,10 @@ import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTi
 
 import dayjs from "dayjs";
 
-import { generateBoxShadowStyle } from "../../utils";
-import { CartItem } from "../../utils/store";
-import theme, { rgba } from "../../utils/theme";
-import { OrderStatus } from "../../utils/types";
+import { generateBoxShadowStyle } from "@utils/index";
+import { CartItem } from "@utils/store";
+import theme, { rgba } from "@utils/theme";
+import { OrderStatus } from "@utils/types";
 
 interface OrderCard {
 	orders: Record<string, CartItem>;

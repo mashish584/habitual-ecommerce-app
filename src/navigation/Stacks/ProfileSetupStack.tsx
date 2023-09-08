@@ -1,7 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { JoiningReason, NarrowInterest, PickInterest, ProfileImage } from "@screens/ProfileSetup";
 import { ProfileSetupStackScreens } from "../types";
-import { JoiningReason, NarrowInterest, PickInterest, ProfileImage } from "../../screens/ProfileSetup";
 
 const ProfileSetupStack = createStackNavigator<ProfileSetupStackScreens>();
 

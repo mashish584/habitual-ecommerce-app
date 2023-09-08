@@ -1,16 +1,16 @@
 import React from "react";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
 
-import CheckBoxItem from "../../components/Checkbox/CheckBoxItem";
-import Pill from "../../components/Pill/Pill";
-import { TextInput } from "../../components/TextInput";
+import CheckBoxItem from "@components/Checkbox/CheckBoxItem";
+import Pill from "@components/Pill/Pill";
+import { TextInput } from "@components/TextInput";
 
-import { debounce, showToast } from "../../utils";
-import theme from "../../utils/theme";
-import { useCategories } from "../../hooks/api";
-import { Category, User } from "../../utils/schema.types";
-import { ProfileSetupStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import { debounce, showToast } from "@utils/index";
+import theme from "@utils/theme";
+import { Category, User } from "@utils/schema.types";
+import { useCategories } from "@hooks/api";
+import { useProfileUpdate } from "@hooks/logic";
+import { ProfileSetupStackScreens, RootStackScreens, StackNavigationProps } from "@nav/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";

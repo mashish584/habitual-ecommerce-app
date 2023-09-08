@@ -2,7 +2,8 @@ import React, { PropsWithChildren } from "react";
 import { View } from "react-native";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
+
 import { CategoryContainerStyle } from "../CategorySlider/CategorySlider";
 
 interface ProductCardSkelton {

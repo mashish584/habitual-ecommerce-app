@@ -1,6 +1,6 @@
 import React from "react";
 import Animated, { interpolate, Extrapolate, interpolateColor, useAnimatedStyle, SharedValue } from "react-native-reanimated";
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface Dot {
 	currentIndex: number;

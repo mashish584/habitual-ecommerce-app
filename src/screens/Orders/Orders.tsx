@@ -1,18 +1,19 @@
 import React from "react";
 import { View } from "react-native";
 
-import Container from "../../components/Container";
-import Header from "../../components/Header/Header";
-import Curve from "../../components/Container/Curve";
-import OrderCard, { ORDER_CARD_WIDTH } from "../../components/Cards/OrderCard";
-import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
-import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "../../components/Cards/EmptyInfoCard";
-import ProfileImage from "../../components/ProfileImage";
-import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
+import Container from "@components/Container";
+import Header from "@components/Header/Header";
+import Curve from "@components/Container/Curve";
+import OrderCard, { ORDER_CARD_WIDTH } from "@components/Cards/OrderCard";
+import { PaginatedFlatlist } from "@components/PaginatedFlatlist";
+import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "@components/Cards/EmptyInfoCard";
+import ProfileImage from "@components/ProfileImage";
+import { ProductCardSkelton } from "@components/Skeltons/ProductCardSkelton";
 
-import theme from "../../utils/theme";
-import { MergedRoutes, StackNavigationProps } from "../../navigation/types";
-import { CartItem } from "../../utils/store";
+import theme from "@utils/theme";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
+import { CartItem } from "@utils/store";
+import images from "@assets/images";
 
 const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ navigation }) => {
 	const isEmptyCard = false;
@@ -47,7 +48,7 @@ const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ naviga
 								ListEmptyComponent={() => (
 									<View style={{ flex: 1, paddingVertical: theme.spacing.xSmall, marginTop: EMPTY_ORDER_CARD_HEIGHT * 0.2 }}>
 										<EmptyInfoCard
-											illustration={require("../../assets/images/empty-illustration.png")}
+											illustration={images.emptyList}
 											title="Uh oh! You have no orders."
 											description="You have no orders at the moment. Go take a look at what we have an we’ll get your delivery to you asap!"
 											buttonText="View recommended products"

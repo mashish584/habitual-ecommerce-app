@@ -1,9 +1,9 @@
 import React from "react";
-import Success from "../../components/Success";
+import Success from "@components/Success";
 
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
 
 const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens, "CheckoutSuccess">> = ({ navigation }) => {
 	return (

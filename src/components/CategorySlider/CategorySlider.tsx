@@ -2,14 +2,14 @@ import React, { useRef, useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View, FlatList, ViewStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import { ScrollToIndexParams } from "@utils/types";
+import { Product } from "@utils/schema.types";
+
+import { ScreenNavigationProp } from "@nav/types";
+
 import ProductCard from "../Cards/ProductCard";
-
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
-import { ScrollToIndexParams } from "../../utils/types";
-import { Product } from "../../utils/schema.types";
-
-import { ScreenNavigationProp } from "../../navigation/types";
 
 interface CategorySlider {
 	data: Record<string, Product[]>;

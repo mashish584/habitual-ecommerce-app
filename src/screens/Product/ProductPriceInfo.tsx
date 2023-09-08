@@ -1,14 +1,14 @@
 import React from "react";
 import { Text, View, TouchableOpacity, ViewStyle } from "react-native";
 import Animated, { SharedValue, interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
-import Button from "../../components/Button/Button";
+import Button from "@components/Button/Button";
 
-import Pill from "../../components/Pill/Pill";
-import { calculateOriginalPrice } from "../../utils";
-import { Product } from "../../utils/schema.types";
-import { useCart } from "../../utils/store";
-import theme from "../../utils/theme";
-import { ProductFooterActions } from "../../utils/types";
+import Pill from "@components/Pill/Pill";
+import { calculateOriginalPrice } from "@utils/index";
+import { Product } from "@utils/schema.types";
+import { useCart } from "@utils/store";
+import theme from "@utils/theme";
+import { ProductFooterActions } from "@utils/types";
 
 type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "quantity"> & {
 	buttonChild?: JSX.Element;

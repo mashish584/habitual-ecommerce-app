@@ -1,7 +1,8 @@
 import React from "react";
 import { TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import Animated from "react-native-reanimated";
-import theme from "../../utils/theme";
+
+import theme from "@utils/theme";
 
 type PillVariant = "saved" | "default";
 type PillValue = {

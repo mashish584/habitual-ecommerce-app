@@ -4,7 +4,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import NetInfo from "@react-native-community/netinfo";
 import LottieView from "lottie-react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
+
 import { Button } from "../Button";
 
 const NoNetwork = () => {

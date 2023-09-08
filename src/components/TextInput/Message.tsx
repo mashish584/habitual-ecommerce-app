@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCircleInfo, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 import { TextInput } from "./types";
 
 type Message = Pick<TextInput, "message" | "messageType"> & { message: string; mt?: number };

@@ -1,9 +1,10 @@
 import React from "react";
 import { Dimensions, View, StyleSheet, Text } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { Card } from "../../utils/schema.types";
 
-import theme from "../../utils/theme";
+import { Card } from "@utils/schema.types";
+import theme from "@utils/theme";
+
 import Chip from "../Svg/Chip";
 
 const aspectRatio = 192 / 327;
