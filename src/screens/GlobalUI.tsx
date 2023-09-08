@@ -10,7 +10,7 @@ import { ScreenNavigationProp } from "../navigation/types";
 import { useCart, useUI, useUser } from "../utils/store";
 import theme from "../utils/theme";
 
-import Cart from "./Product/Cart";
+import { Cart } from "../components/Cart";
 
 const GlobalUI = () => {
 	const navigation = useNavigation<ScreenNavigationProp>();

@@ -1,21 +1,37 @@
-import React, { PropsWithChildren, useEffect, useMemo, useRef } from "react";
-import { StyleSheet, Pressable } from "react-native";
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef } from "react";
+import { StyleSheet, Pressable, Dimensions } from "react-native";
 import { SharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import GBottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
+import GBottomSheet, { BottomSheetFooter, BottomSheetFooterProps, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
 
 import { Header } from "../Header";
 
+import { isIOS } from "../../utils";
 import { rgba } from "../../utils/theme";
-
 import BottomSheetI from "./types";
 
-const BottomSheet = ({ visible, headerTitle, onClose, children }: PropsWithChildren<BottomSheetI>) => {
+const SCREEN_HEIGHT = Dimensions.get("screen").height;
+
+const BottomSheet = ({ visible, headerTitle, onClose, footerComponent, isFullViewSheet, children }: PropsWithChildren<BottomSheetI>) => {
 	const bottomSheetRef = useRef<GBottomSheet>(null);
-	const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, top } = useSafeAreaInsets();
+	const topSnapPoint = isIOS ? SCREEN_HEIGHT - top : "100%";
+
+	const initialSnapPoints = useMemo(() => (isFullViewSheet ? ["CONTENT_HEIGHT", topSnapPoint] : ["CONTENT_HEIGHT"]), [topSnapPoint]);
 
 	const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+
+	const sheetFooter = useCallback((props: BottomSheetFooterProps | null) => {
+		if (props && footerComponent) {
+			const Footer = footerComponent;
+			return (
+				<BottomSheetFooter {...props}>
+					<Footer />
+				</BottomSheetFooter>
+			);
+		}
+		return null;
+	}, []);
 
 	useEffect(() => {
 		if (visible) {
@@ -35,6 +51,7 @@ const BottomSheet = ({ visible, headerTitle, onClose, children }: PropsWithChild
 			handleHeight={animatedHandleHeight}
 			contentHeight={animatedContentHeight}
 			enablePanDownToClose={true}
+			footerComponent={sheetFooter}
 			handleComponent={(handleProps) => (
 				<Header
 					variant="primary"

@@ -7,6 +7,9 @@ import { DateFormats } from "./types";
 export const isIOS = Platform.OS === "ios";
 export const isAndroid = Platform.OS === "android";
 
+export const deviceHeight = Dimensions.get("screen").height;
+export const deviceWidth = Dimensions.get("screen").width;
+
 export const generateBoxShadowStyle = (
 	xOffset: number,
 	yOffset: number,

@@ -9,8 +9,8 @@
 		"test": "jest",
 		"prepare": "husky install",
 		"lint": "eslint --quiet . --ext .js,.jsx,.ts,.tsx",
+		"lint:fix": "eslint --quiet . --ext .js,.jsx,.ts,.tsx --fix",
 		"pretty": "prettier --write --config .prettierrc.json *.js **/**/*.{js,ts,tsx}",
-		"lint:fix": "eslint --quiet **/**.{ts,tsx} --fix",
 		"analyze": "cross-env BUNDLE_ANALYZE=true npm run build",
 		"analyze-code": "npm run pretty && npm run lint:fix && npm run lint",
 		"postinstall": "patch-package"
