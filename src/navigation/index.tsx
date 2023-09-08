@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SplashScreen from "react-native-splash-screen";
 
 import { Home } from "@screens/Home";
 import Product from "@screens/Product/Product";
@@ -41,11 +42,14 @@ const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigati
 
 				if (data && data.token && data.user) {
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
+					SplashScreen.hide();
 					navigation.replace(route);
 				} else {
+					SplashScreen.hide();
 					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
+				SplashScreen.hide();
 				navigation.replace("OnboardingStack");
 			}
 		})();
