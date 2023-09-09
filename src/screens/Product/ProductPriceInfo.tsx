@@ -4,7 +4,7 @@ import Animated, { SharedValue, interpolate, interpolateColor, useAnimatedStyle 
 import Button from "@components/Button/Button";
 
 import Pill from "@components/Pill/Pill";
-import { calculateOriginalPrice } from "@utils/index";
+import { calculateOriginalPrice, showToast } from "@utils/index";
 import { Product } from "@utils/schema.types";
 import { useCart } from "@utils/store";
 import theme from "@utils/theme";
@@ -24,7 +24,9 @@ interface ProductPriceInfo {
 }
 
 const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: ProductPriceInfo) => {
-	const { addItem, removeItem } = useCart();
+	const { addItem, removeItem, items } = useCart();
+
+	const isItemInCart = !!items[priceInfo.id];
 
 	const pillContainerStyle = useAnimatedStyle(() => {
 		const pillContainerColor = interpolateColor(slideAnimate.value, [0, 1], [theme.colors.secondary.green_20, theme.colors.primary.yellow_20]);
@@ -85,6 +87,9 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 						text="Remove"
 						style={{ flex: 0.2 }}
 						onPress={() => {
+							if (isItemInCart) {
+								showToast("success", { title: "Success", message: `${priceInfo.title} removed from cart.` });
+							}
 							removeItem(priceInfo.id);
 							props.onPress("removeCart");
 						}}
@@ -119,6 +124,9 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 								const item = { ...priceInfo };
 								delete item.buttonChild;
 								delete item.discount;
+								if (!isItemInCart) {
+									showToast("success", { title: "Success", message: `${item.title} added in cart.` });
+								}
 								addItem(item);
 								props.onPress("slideUp");
 							}}>

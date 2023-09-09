@@ -86,6 +86,7 @@ export const showToast = (type: "success" | "error", data: { title: string; mess
 		text1: data.title,
 		text2: data.message,
 		type,
+		autoHide: true,
 	});
 };
 

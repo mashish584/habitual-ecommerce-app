@@ -27,6 +27,9 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 	const { markProductAsFavourite, favouriteProductIds } = useProfileUpdate();
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
 
+	const isErrorInLoadingHomeData = !isLoading && !data?.data;
+	const showLoadingState = isLoading || isErrorInLoadingHomeData;
+
 	const handleCardAction = async (type: PressAction, product: Product) => {
 		try {
 			if (type === "card") {
@@ -55,7 +58,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{isLoading && <ProductCardListingSkelton />}
+								{showLoadingState && <ProductCardListingSkelton />}
 								{featuredProducts?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -89,7 +92,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 								})}
 							</ScrollView>
 							{/* Your Interests */}
-							{isLoading && <InterestsSkelton />}
+							{showLoadingState && <InterestsSkelton />}
 							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
 								<>
 									<SectionHeading title="Your Interests" />

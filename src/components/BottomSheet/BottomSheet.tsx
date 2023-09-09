@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef } from "react";
-import { StyleSheet, Pressable, Dimensions } from "react-native";
+import React, { PropsWithChildren, useEffect, useMemo, useRef } from "react";
+import { StyleSheet, Pressable, Dimensions, NativeEventSubscription, BackHandler } from "react-native";
 import { SharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import GBottomSheet, { BottomSheetFooter, BottomSheetFooterProps, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
+import GBottomSheet, { BottomSheetFooter, BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet";
 
 import { isIOS } from "@utils/index";
 import { rgba } from "@utils/theme";
@@ -21,26 +21,23 @@ const BottomSheet = ({ visible, headerTitle, onClose, footerComponent, isFullVie
 
 	const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
-	const sheetFooter = useCallback((props: BottomSheetFooterProps | null) => {
-		if (props && footerComponent) {
-			const Footer = footerComponent;
-			return (
-				<BottomSheetFooter {...props}>
-					<Footer />
-				</BottomSheetFooter>
-			);
-		}
-		return null;
-	}, []);
-
 	useEffect(() => {
+		let backHandler: NativeEventSubscription | null = null;
 		if (visible) {
 			bottomSheetRef.current?.expand();
+			backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+				onClose();
+				return true;
+			});
 		}
 
 		if (!visible) {
 			bottomSheetRef.current?.close();
 		}
+
+		return () => {
+			backHandler?.remove();
+		};
 	}, [visible]);
 
 	return (
@@ -51,7 +48,7 @@ const BottomSheet = ({ visible, headerTitle, onClose, footerComponent, isFullVie
 			handleHeight={animatedHandleHeight}
 			contentHeight={animatedContentHeight}
 			enablePanDownToClose={true}
-			footerComponent={sheetFooter}
+			footerComponent={footerComponent}
 			handleComponent={(handleProps) => (
 				<Header
 					variant="primary"
@@ -83,3 +80,4 @@ const BottomSheet = ({ visible, headerTitle, onClose, footerComponent, isFullVie
 };
 
 export default BottomSheet;
+export { BottomSheetFooter };

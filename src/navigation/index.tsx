@@ -15,7 +15,7 @@ import { Wishlist } from "@screens/Wishlist";
 import { Search } from "@screens/Search";
 import GlobalUI from "@screens/GlobalUI";
 
-import { UserState } from "@utils/store";
+import { UserState, useUser } from "@utils/store";
 
 import { getDataFromSecureStorage } from "@utils/index";
 import { navigationRef } from "./service";
@@ -81,11 +81,16 @@ const BottamTabScreen = () => {
 const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
+	const isUserId = useUser((store) => !!store.user?.id);
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
-			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
-			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
+			{!isUserId && (
+				<>
+					<RootStack.Screen name="UnauthStack" component={UnauthStack} />
+					<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
+				</>
+			)}
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />

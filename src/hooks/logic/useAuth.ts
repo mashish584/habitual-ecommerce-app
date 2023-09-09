@@ -28,7 +28,7 @@ function useAuth(isSignIn = false) {
 			authenticate.mutate(data, {
 				onSuccess: (response) => {
 					if (response?.data) {
-						showToast("success", { title: "Habitual Ecommerce", message: `Welcom back, ${response.data.fullname || response.data.email}.` });
+						showToast("success", { title: "Habitual Ecommerce", message: "Welcome to your habitual shopping experience, enjoy!" });
 						onLoginSuccess({ token: response.token, user: response.data });
 						if (isSignIn) {
 							navigation.replace("BottomStack");

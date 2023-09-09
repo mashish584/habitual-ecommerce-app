@@ -11,7 +11,7 @@ import Curve from "@components/Container/Curve";
 import { TextInput } from "@components/TextInput";
 import { Button } from "@components/Button";
 
-import { defaultAvatar, generateBoxShadowStyle, isValidJSONString } from "@utils/index";
+import { defaultAvatar, generateBoxShadowStyle, isIOS, isValidJSONString } from "@utils/index";
 import theme, { rgba } from "@utils/theme";
 import { openGallery } from "@utils/media";
 import { RootStackScreens, StackNavigationProps } from "@nav/types";
@@ -107,13 +107,15 @@ const EditProfile: React.FC<StackNavigationProps<RootStackScreens, "EditProfile"
 								style={styles.bioInput}
 							/>
 						</ScrollView>
-						<Button
-							variant="primary"
-							isLoading={isLoading}
-							text={"Save"}
-							style={{ marginBottom: bottom, marginHorizontal: theme.spacing.medium }}
-							onPress={handleSubmit}
-						/>
+						<View style={{ paddingBottom: isIOS && bottom > 0 ? 0 : theme.spacing.normal, paddingTop: theme.spacing.normal }}>
+							<Button
+								variant="primary"
+								isLoading={isLoading}
+								text={"Save"}
+								style={{ marginBottom: bottom, marginHorizontal: theme.spacing.medium }}
+								onPress={handleSubmit}
+							/>
+						</View>
 					</Curve>
 				</>
 			)}
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
 		height: 100,
 		paddingBottom: theme.spacing.small,
 		paddingTop: theme.spacing.small,
-		textAlignVertical: "center",
+		textAlignVertical: "top",
 	},
 });
 

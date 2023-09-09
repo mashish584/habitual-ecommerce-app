@@ -3,7 +3,7 @@ import { View, Image, Text, ScrollView } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { BottomSheet, BottomSheetI } from "@components/BottomSheet";
+import { BottomSheet, BottomSheetI, BottomSheetFooter, BottomSheetFooterProps } from "@components/BottomSheet";
 import { Button } from "@components/Button";
 
 import theme from "@utils/theme";
@@ -38,9 +38,16 @@ const Cart = (props: Cart) => {
 	const { items, updateQuantity, total } = useCart();
 	const { bottom } = useSafeAreaInsets();
 
-	const Footer = useCallback(() => {
-		return <CartFooter total={total} onCheckout={props.onCheckout} />;
-	}, [total, props.onCheckout]);
+	const Footer = useCallback(
+		(footerProps: BottomSheetFooterProps) => {
+			return (
+				<BottomSheetFooter {...footerProps}>
+					<CartFooter total={total} onCheckout={props.onCheckout} />
+				</BottomSheetFooter>
+			);
+		},
+		[total, props.onCheckout],
+	);
 
 	const cartItems = Object.keys(items);
 	const isCartEmpty = cartItems.length === 0;
