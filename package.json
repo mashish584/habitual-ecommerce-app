@@ -45,6 +45,7 @@
 		"react": "18.2.0",
 		"react-native": "0.72.4",
 		"react-native-dotenv": "^3.3.1",
+		"react-native-encrypted-storage": "^4.0.3",
 		"react-native-gesture-handler": "^2.12.1",
 		"react-native-image-crop-picker": "^0.37.3",
 		"react-native-keyboard-manager": "^6.5.4-4",

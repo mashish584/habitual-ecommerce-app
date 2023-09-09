@@ -3,6 +3,7 @@ import { persist, StoreApiWithPersist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Product, User } from "./schema.types";
+import { getSecureStorage } from "./index";
 
 export type CartProduct = Pick<Product, "id" | "image" | "title" | "price">;
 export type CartItem = { quantity: number; product: Omit<CartProduct, "id"> };
@@ -72,7 +73,7 @@ export const useUser = create<UserState, SetState<UserState>, GetState<UserState
 		}),
 		{
 			name: "user",
-			getStorage: () => AsyncStorage,
+			getStorage: getSecureStorage,
 		},
 	),
 );

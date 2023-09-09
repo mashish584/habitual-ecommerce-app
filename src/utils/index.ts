@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { Dimensions, Platform } from "react-native";
 import Toast from "react-native-toast-message";
+import EncryptedStorage from "react-native-encrypted-storage";
+
 import theme from "./theme";
 import { DateFormats } from "./types";
 
@@ -9,6 +11,7 @@ export const isAndroid = Platform.OS === "android";
 
 export const deviceHeight = Dimensions.get("screen").height;
 export const deviceWidth = Dimensions.get("screen").width;
+export const getSecureStorage = () => EncryptedStorage;
 
 export const generateBoxShadowStyle = (
 	xOffset: number,
@@ -84,4 +87,13 @@ export const showToast = (type: "success" | "error", data: { title: string; mess
 		text2: data.message,
 		type,
 	});
+};
+
+export const saveDataInSecureStorage = async (key: string, value: string) => {
+	await EncryptedStorage.setItem(key, value);
+};
+
+export const getDataFromSecureStorage = async (key: string) => {
+	let result = await EncryptedStorage.getItem(key);
+	return result;
 };

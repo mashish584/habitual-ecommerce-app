@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import SplashScreen from "react-native-splash-screen";
 
 import { Home } from "@screens/Home";
@@ -25,6 +24,7 @@ import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
+import { getDataFromSecureStorage } from "@utils/index";
 
 /**
  * Where ot navigation user
@@ -33,7 +33,7 @@ const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigati
 	useEffect(() => {
 		(async () => {
 			try {
-				const user = await AsyncStorage.getItem("user");
+				const user = await getDataFromSecureStorage("user");
 				let data;
 
 				if (user) {
@@ -67,8 +67,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
