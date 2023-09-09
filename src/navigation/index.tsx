@@ -17,6 +17,7 @@ import GlobalUI from "@screens/GlobalUI";
 
 import { UserState } from "@utils/store";
 
+import { getDataFromSecureStorage } from "@utils/index";
 import { navigationRef } from "./service";
 import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
@@ -24,7 +25,6 @@ import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
-import { getDataFromSecureStorage } from "@utils/index";
 
 /**
  * Where ot navigation user
@@ -67,7 +67,8 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}>
+			}}
+		>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
