@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TouchableOpacity, ViewStyle } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import Animated, { SharedValue, interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
 import Button from "@components/Button/Button";
 
@@ -9,6 +9,7 @@ import { Product } from "@utils/schema.types";
 import { useCart } from "@utils/store";
 import theme from "@utils/theme";
 import { ProductFooterActions } from "@utils/types";
+import styles from "./styles";
 
 type PriceInfo = Pick<Product, "id" | "title" | "image" | "price" | "quantity"> & {
 	buttonChild?: JSX.Element;
@@ -24,7 +25,9 @@ interface ProductPriceInfo {
 }
 
 const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: ProductPriceInfo) => {
-	const { addItem, removeItem, items } = useCart();
+	const addItem = useCart((store) => store.addItem);
+	const removeItem = useCart((store) => store.removeItem);
+	const items = useCart((store) => store.items);
 
 	const isItemInCart = !!items[priceInfo.id];
 
@@ -68,18 +71,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 	});
 
 	return (
-		<Animated.View
-			style={
-				[
-					{
-						flex: 0.15,
-						justifyContent: "center",
-						paddingHorizontal: theme.spacing.medium,
-						marginTop: -15,
-					},
-					rProductPriceContainerStyle,
-				] as any
-			}>
+		<Animated.View style={[styles.priceInfoContainer, rProductPriceContainerStyle] as any}>
 			{props.showCartAction ? (
 				<View style={[theme.rowStyle, { justifyContent: "space-between" }]}>
 					<Button
@@ -104,14 +96,10 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 			) : (
 				<View style={[theme.rowStyle, { justifyContent: "space-between", alignItems: "center" }]}>
 					<View>
-						<Animated.Text
-							style={[theme.textStyles.hint, { textTransform: "uppercase", marginBottom: theme.spacing.xxSmall } as ViewStyle, rHeadingStyle]}>
-							Starting At
-						</Animated.Text>
+						<Animated.Text style={[theme.textStyles.hint, styles.startingAtLabel, rHeadingStyle]}>Starting At</Animated.Text>
 						<View style={[theme.rowStyle, { alignItems: "center" }]}>
 							<Text style={[theme.textStyles.h4, { fontFamily: theme.fonts.lato.heavy }]}>${priceInfo?.price}</Text>
-							<Animated.Text
-								style={[theme.textStyles.strikethrough_reg, { color: theme.colors.shades.gray_60, marginHorizontal: theme.spacing.xxSmall }]}>
+							<Animated.Text style={[theme.textStyles.strikethrough_reg, styles.strikePrice]}>
 								${calculateOriginalPrice(priceInfo.price, priceInfo.discount || 0)}
 							</Animated.Text>
 							<Pill variant="saved" text={`${priceInfo?.discount}% OFF`} pillContainerStyle={pillContainerStyle} pillTextStyle={pillTextStyle} />
@@ -130,19 +118,7 @@ const ProductPriceInfo = ({ priceInfo, slideAnimate, translateY, ...props }: Pro
 								addItem(item);
 								props.onPress("slideUp");
 							}}>
-							<Animated.View
-								style={[
-									{
-										width: 48,
-										height: 48,
-										borderRadius: 50,
-										justifyContent: "center",
-										alignItems: "center",
-									},
-									rButtonBackgroundStyle,
-								]}>
-								{priceInfo.buttonChild}
-							</Animated.View>
+							<Animated.View style={[styles.priceInfoButton, rButtonBackgroundStyle]}>{priceInfo.buttonChild}</Animated.View>
 						</TouchableOpacity>
 					) : (
 						<Text style={{ color: theme.colors.accents.red, fontFamily: theme.fonts.lato.heavy }}>Out of Stock</Text>

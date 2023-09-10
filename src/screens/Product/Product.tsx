@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, Text, Pressable, StyleProp, ViewStyle } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Dimensions, Image, View, Text, Pressable, StyleProp, ViewStyle } from "react-native";
 import Animated, {
 	Easing,
 	WithTimingConfig,
@@ -158,6 +158,55 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 		};
 	});
 
+	const priceInfo = {
+		id: product.id,
+		image: product.image,
+		title: product.title,
+		price: productInfo.price,
+		discount: productInfo.discount,
+		quantity: productInfo.quantity,
+		buttonChild: !isSlideOn ? (
+			<FontAwesomeIcon icon={faArrowRight as IconProp} />
+		) : (
+			<Image source={images.bagIcon} style={{ tintColor: theme.colors.shades.white }} />
+		),
+	};
+
+	const onPriceInfoAction = useCallback(
+		(actionType: ProductFooterActions) => {
+			// 🔥 Action 1
+			//→ when user click on shopping bag we will slide screen up
+			//→ and action image will replaced with arrow
+			if (isSlideOn && actionType === "slideUp") {
+				transitionProductInfo(isSlideOn);
+				return;
+			}
+
+			// 🔥 Action 2
+			//→ when screen is slide up & action image is arrow
+			//→ display cart actions with GotoCart and Remove action
+			if (!isSlideOn) {
+				transitionProductInfo(isSlideOn);
+				setShowCartActions(true);
+				return;
+			}
+
+			// 🔥 Action 3
+			//→ when user click on Remove will back to Action 1
+			//→ if click on GoToCart open Cart Modal
+			if (actionType === "removeCart") {
+				setShowCartActions(false);
+				return;
+			}
+
+			if (actionType === "showCartModal") {
+				toggleCart(true);
+				return;
+			}
+		},
+		[isSlideOn],
+	);
+
 	useEffect(() => {
 		fetchProductInfo.mutateAsync(product.id);
 	}, []);
@@ -221,13 +270,7 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								<Animated.View style={[styles.contentLayer, rProductContentLayerStyle]} />
 								<View>
 									<Animated.Text
-										style={
-											[
-												theme.textStyles.h4,
-												{ color: textColors[0].color, marginBottom: theme.spacing.xxSmall },
-												isSlideOn && rSlideTextStyle,
-											] as TextStyle[]
-										}>
+										style={[theme.textStyles.h4, { color: textColors[0].color, marginBottom: theme.spacing.xxSmall }, isSlideOn && rSlideTextStyle]}>
 										{productInfo.title}
 									</Animated.Text>
 									<Review stars={0} transitionTextStyle={rSlideTextStyle} />
@@ -264,53 +307,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 						</Animated.View>
 						{/* Product Price Container  */}
 						<ProductPriceInfo
-							priceInfo={{
-								id: product.id,
-								image: product.image,
-								title: product.title,
-								price: productInfo.price,
-								discount: productInfo.discount,
-								quantity: productInfo.quantity,
-								buttonChild: !isSlideOn ? (
-									<FontAwesomeIcon icon={faArrowRight as IconProp} />
-								) : (
-									<Image source={images.bagIcon} style={{ tintColor: theme.colors.shades.white }} />
-								),
-							}}
+							priceInfo={priceInfo}
 							slideAnimate={productInfoSlideTiming}
 							translateY={productInfoPosition}
 							showCartAction={showCartActions}
-							onPress={(actionType: ProductFooterActions) => {
-								// 🔥 Action 1
-								//→ when user click on shopping bag we will slide screen up
-								//→ and action image will replaced with arrow
-								if (isSlideOn && actionType === "slideUp") {
-									transitionProductInfo(isSlideOn);
-									return;
-								}
-
-								// 🔥 Action 2
-								//→ when screen is slide up & action image is arrow
-								//→ display cart actions with GotoCart and Remove action
-								if (!isSlideOn) {
-									transitionProductInfo(isSlideOn);
-									setShowCartActions(true);
-									return;
-								}
-
-								// 🔥 Action 3
-								//→ when user click on Remove will back to Action 1
-								//→ if click on GoToCart open Cart Modal
-								if (actionType === "removeCart") {
-									setShowCartActions(false);
-									return;
-								}
-
-								if (actionType === "showCartModal") {
-									toggleCart(true);
-									return;
-								}
-							}}
+							onPress={onPriceInfoAction}
 						/>
 					</>
 				);

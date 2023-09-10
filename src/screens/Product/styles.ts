@@ -38,6 +38,29 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		borderColor: theme.colors.shades.gray_40,
 	},
+
+	// ProductPriceInfo
+	priceInfoContainer: {
+		flex: 0.15,
+		justifyContent: "center",
+		paddingHorizontal: theme.spacing.medium,
+		marginTop: -15,
+	},
+	startingAtLabel: {
+		textTransform: "uppercase",
+		marginBottom: theme.spacing.xxSmall,
+	},
+	strikePrice: {
+		color: theme.colors.shades.gray_60,
+		marginHorizontal: theme.spacing.xxSmall,
+	},
+	priceInfoButton: {
+		width: 48,
+		height: 48,
+		borderRadius: 50,
+		justifyContent: "center",
+		alignItems: "center",
+	},
 });
 
 export default styles;
