@@ -13,6 +13,7 @@ import { useProfileUpdate } from "@hooks/logic";
 import { MergedRoutes, StackNavigationProps } from "@nav/types";
 import { Product } from "@utils/schema.types";
 import theme from "@utils/theme";
+import { isAndroid } from "@utils/index";
 
 import Shape from "./Shape";
 
@@ -43,11 +44,12 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
+				const topSpace = top + (isAndroid ? 10 : 5);
 				return (
 					<>
 						<Shape />
 
-						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: top + 30 }} showsVerticalScrollIndicator={false}>
+						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: topSpace }} showsVerticalScrollIndicator={false}>
 							{/* Header */}
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
