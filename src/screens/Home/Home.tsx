@@ -13,7 +13,6 @@ import { useProfileUpdate } from "@hooks/logic";
 import { MergedRoutes, StackNavigationProps } from "@nav/types";
 import { Product } from "@utils/schema.types";
 import theme from "@utils/theme";
-import { isAndroid } from "@utils/index";
 
 import Shape from "./Shape";
 
@@ -44,7 +43,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
-				const topSpace = top + (isAndroid ? 10 : 5);
+				const topSpace = top === 0 ? top + 20 : top + 10;
 				return (
 					<>
 						<Shape />
@@ -53,7 +52,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 							{/* Header */}
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
-									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
+									<Text style={theme.textStyles.pill_reg}>Suggested For You</Text>
 									<ProfileImage />
 								</View>
 								<Text style={{ ...theme.textStyles.h3, fontSize: theme.fontSizes.normal }}>Find the stuff you love.</Text>
@@ -78,7 +77,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 							{/* Hot Deals */}
 							<SectionHeading title="Hot Deals" />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{isLoading && <HotDealListing />}
+								{showLoadingState && <HotDealListing />}
 								{hotDeals?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -94,7 +93,12 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 								})}
 							</ScrollView>
 							{/* Your Interests */}
-							{showLoadingState && <InterestsSkelton />}
+							{showLoadingState && (
+								<>
+									<SectionHeading title="Your Interests" />
+									<InterestsSkelton />
+								</>
+							)}
 							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
 								<>
 									<SectionHeading title="Your Interests" />

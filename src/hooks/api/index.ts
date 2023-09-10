@@ -35,7 +35,6 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		if (!endpoint.includes("http")) {
 			const isHostUrl = Platform.OS === "android" && __DEV__;
 			endpoint = `${isHostUrl ? DEV_HOST : DEV_URL}${endpoint}`;
-			console.log({ endpoint });
 		}
 
 		if (options.path) {

@@ -9,19 +9,14 @@ import { CategoryContainerStyle } from "../CategorySlider/CategorySlider";
 interface ProductCardSkelton {
 	width: number;
 	height: number;
-	mh?: number;
 	mb?: number;
+	ml?: number;
 }
 
 const ProductCardSkelton = (props: PropsWithChildren<ProductCardSkelton>) => {
 	return (
 		<SkeletonPlaceholder>
-			<SkeletonPlaceholder.Item
-				width={props.width}
-				minHeight={props.height}
-				borderRadius={10}
-				marginHorizontal={props.mh || theme.spacing.xxSmall}
-				marginBottom={props.mb || 0}>
+			<SkeletonPlaceholder.Item width={props.width} minHeight={props.height} borderRadius={10} marginLeft={props.ml} marginBottom={props.mb || 0}>
 				{props.children}
 			</SkeletonPlaceholder.Item>
 		</SkeletonPlaceholder>
@@ -32,7 +27,7 @@ const ProductCardListingSkelton = () => {
 	return (
 		<>
 			{new Array(5).fill(1).map((_, index) => (
-				<ProductCardSkelton key={index} width={284} height={312} />
+				<ProductCardSkelton key={index} ml={index === 0 ? 0 : theme.spacing.small} width={284} height={312} />
 			))}
 		</>
 	);
@@ -42,7 +37,7 @@ const HotDealListing = () => {
 	return (
 		<>
 			{new Array(5).fill(1).map((_, index) => (
-				<ProductCardSkelton key={index} width={156} height={253} />
+				<ProductCardSkelton key={index} ml={index === 0 ? 0 : theme.spacing.small} width={156} height={253} />
 			))}
 		</>
 	);

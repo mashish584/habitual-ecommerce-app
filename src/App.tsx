@@ -4,6 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import analytics from "@react-native-firebase/analytics";
+import codePush, { CodePushOptions } from "react-native-code-push";
 
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
@@ -12,6 +13,7 @@ import { STRIPE_PUBLIC_KEY } from "@env";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Navigation from "./navigation";
+import { isIOS } from "./utils";
 
 LogBox.ignoreLogs([
 	"Sending `onAnimatedValueUpdate` with no listeners registered.",
@@ -48,4 +50,9 @@ const App = () => {
 	);
 };
 
-export default App;
+export default isIOS
+	? App
+	: codePush({
+		checkFrequency: codePush.CheckFrequency.ON_APP_START,
+		mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
+	  } as CodePushOptions)(App);

@@ -12,7 +12,7 @@ const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens, "Checkout
 			description="Your order has been placed and you will get a shipping confirmation soon."
 			buttonVariant="primary"
 			buttonText="Continue"
-			buttonStyle={{ backgroundColor: theme.colors.shades.white, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(1)) }}
+			buttonStyle={{ backgroundColor: theme.colors.primary.yellow, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(0.5)) }}
 			onAction={() => navigation.navigate("BottomStack")}
 		/>
 	);

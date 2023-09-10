@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Habitual Ecommerce</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">@string/CODEPUSH_DEPLOYMENT_KEY</string>
 </resources>
