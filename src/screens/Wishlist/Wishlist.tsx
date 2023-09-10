@@ -59,6 +59,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 									query="?take=5"
 									contentContainerStyle={{ paddingBottom: bottom * 2, alignItems: "center" }}
 									showsVerticalScrollIndicator={false}
+									isRefresh={true}
 									keyExtractor={(item) => item.id}
 									renderItem={({ item }) => {
 										const product = item as Product;

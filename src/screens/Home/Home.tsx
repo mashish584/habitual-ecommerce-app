@@ -56,7 +56,7 @@ const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation
 									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
 									<ProfileImage />
 								</View>
-								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
+								<Text style={{ ...theme.textStyles.h3, fontSize: theme.fontSizes.normal }}>Find the stuff you love.</Text>
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>

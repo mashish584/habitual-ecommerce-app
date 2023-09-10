@@ -32,6 +32,8 @@ const getStatusText = (status: OrderStatus) => {
 	}
 };
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 const OrderCard = (props: OrderCard) => {
 	const rotateAnimate = useSharedValue(0);
 	const [showCompleteDetail, setShowCompleteDetail] = React.useState(false);
@@ -56,17 +58,15 @@ const OrderCard = (props: OrderCard) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				<Image source={{ uri: order.product.image }} style={{ width: "80%", height: "80%" }} resizeMode="contain" />
+				<Image source={{ uri: order.product.image }} style={styles.imageView} resizeMode="contain" />
 			</View>
-			<View style={{ width: "70%", marginLeft: theme.spacing.small }}>
-				<View style={[theme.rowStyle, { alignItems: "center", position: "relative" }]}>
+			<View style={styles.productInfoContainer}>
+				<View style={[theme.rowStyle, styles.productInfoTitleContainer]}>
 					<Text style={theme.textStyles.body_reg}>{title}</Text>
 					{totalCartItems > 1 && (
-						<Animated.View style={[{ position: "absolute", right: theme.spacing.small }, rRotateStyle]}>
-							<Pressable style={{ padding: theme.spacing.xSmall }} onPress={toggleDetails}>
-								<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
-							</Pressable>
-						</Animated.View>
+						<AnimatedPressable style={[rRotateStyle, { padding: theme.spacing.xxSmall }]} onPress={toggleDetails}>
+							<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
+						</AnimatedPressable>
 					)}
 				</View>
 				{totalCartItems > 1 && showCompleteDetail && (
@@ -74,9 +74,7 @@ const OrderCard = (props: OrderCard) => {
 						{Object.keys(props.orders).map((product, index) => {
 							const item = props.orders[product];
 							return (
-								<Text
-									key={`${id}_${index}`}
-									style={[theme.textStyles.body_sm, { fontFamily: theme.fonts.lato.regular, marginBottom: theme.spacing.xxSmall / 2 }]}>
+								<Text key={`${id}_${index}`} style={[theme.textStyles.body_sm, styles.productListText]}>
 									{item.product.title} x {item.quantity} (${item.product.price})
 								</Text>
 							);
@@ -117,6 +115,23 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		...generateBoxShadowStyle(0, 10, rgba.black(0.09), 1, 20, 10, rgba.black(1)),
+	},
+	productInfoContainer: {
+		width: "70%",
+		marginLeft: theme.spacing.small,
+	},
+	productInfoTitleContainer: {
+		alignItems: "center",
+		position: "relative",
+		justifyContent: "space-between",
+	},
+	imageView: {
+		width: "80%",
+		height: "80%",
+	},
+	productListText: {
+		fontFamily: theme.fonts.lato.regular,
+		marginBottom: theme.spacing.xxSmall / 2,
 	},
 });
 

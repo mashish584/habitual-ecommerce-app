@@ -1,12 +1,11 @@
 import { Platform } from "react-native";
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
 import { DEV_URL, DEV_HOST } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Address, RequestMethods, Urls } from "@utils/types";
 import { ErrorResponse, FetchConfig, SuccessResponse } from "@utils/interface";
 import { UserState } from "@utils/store";
-import { showToast } from "@utils/index";
+import { getDataFromSecureStorage, showToast } from "@utils/index";
 
 type AddressData = {
 	address?: Omit<Address, "id" | "default">;
@@ -23,7 +22,7 @@ async function handleAPIError(response: any, endpoint: string) {
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
 	try {
-		const userAsyncData = await AsyncStorage.getItem("user");
+		const userAsyncData = await getDataFromSecureStorage("user");
 		let token;
 
 		if (userAsyncData) {
