@@ -1,0 +1,30 @@
+{
+	"cli": {
+		"version": ">= 5.1.0"
+	},
+	"build": {
+		"debugging": {
+			"distribution": "internal",
+			"android": {
+				"gradleCommand": ":app:assembleDebug"
+			},
+			"ios": {
+				"buildConfiguration": "Debug",
+				"simulator": true
+			}
+		},
+		"preview": {
+			"distribution": "internal",
+			"android": {
+				"credentialsSource": "local"
+			},
+			"ios": {
+				"simulator": true
+			}
+		},
+		"production": {}
+	},
+	"submit": {
+		"production": {}
+	}
+}

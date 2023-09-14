@@ -1,11 +1,11 @@
+import { Platform } from "react-native";
 import { useInfiniteQuery, useMutation, useQuery } from "react-query";
-import { DEV_URL } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DEV_URL, DEV_HOST } from "@env";
 
-import { Address, RequestMethods, Urls } from "../../utils/types";
-import { ErrorResponse, FetchConfig, SuccessResponse } from "../../utils/interface";
-import { UserState } from "../../utils/store";
-import { showToast } from "../../utils";
+import { Address, RequestMethods, Urls } from "@utils/types";
+import { ErrorResponse, FetchConfig, SuccessResponse } from "@utils/interface";
+import { UserState } from "@utils/store";
+import { getDataFromSecureStorage, showToast } from "@utils/index";
 
 type AddressData = {
 	address?: Omit<Address, "id" | "default">;
@@ -13,7 +13,7 @@ type AddressData = {
 	default?: boolean;
 };
 
-async function handleAPIError(response, endpoint: string) {
+async function handleAPIError(response: any, endpoint: string) {
 	response = await response.json();
 	const message = response.message || `Unable to fetch ${endpoint}`;
 	showToast("error", { title: "Error", message });
@@ -22,7 +22,7 @@ async function handleAPIError(response, endpoint: string) {
 //Fetch config to work with react-query
 const appFetch = async (url: Urls, options: FetchConfig) => {
 	try {
-		const userAsyncData = await AsyncStorage.getItem("user");
+		const userAsyncData = await getDataFromSecureStorage("user");
 		let token;
 
 		if (userAsyncData) {
@@ -33,8 +33,8 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 		let endpoint = `${options.url || url}${options.path || ""}${options.query || ""}`;
 
 		if (!endpoint.includes("http")) {
-			//for local -> API_URL else DEV_URL
-			endpoint = `${DEV_URL}${endpoint}`;
+			const isHostUrl = Platform.OS === "android" && __DEV__;
+			endpoint = `${isHostUrl ? DEV_HOST : DEV_URL}${endpoint}`;
 		}
 
 		if (options.path) {
@@ -67,7 +67,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
-		showToast("error", { title: "Network Error", message: error?.message });
+		showToast("error", { title: "Network Error", message: (error as Error)?.message });
 	}
 };
 
@@ -85,7 +85,7 @@ export const useUserProfile = <T extends string, M>() => {
 	});
 };
 
-export const useCategories = <T extends string, M>(query) => {
+export const useCategories = <T extends string, M>(query: string) => {
 	return useMutation<SuccessResponse<M>, ErrorResponse<T>, string | null>((mutateQuery) => {
 		return appFetch("category/", {
 			method: "GET",

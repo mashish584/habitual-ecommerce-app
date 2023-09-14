@@ -1,18 +1,18 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import ProductCard, { PressAction } from "../../components/Cards/ProductCard";
-import { CategorySlider } from "../../components/CategorySlider";
-import Container from "../../components/Container";
-import ProfileImage from "../../components/ProfileImage";
-import SectionHeading from "../../components/SectionHeading";
-import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "../../components/Skeltons/ProductCardSkelton";
+import ProductCard, { PressAction } from "@components/Cards/ProductCard";
+import { CategorySlider } from "@components/CategorySlider";
+import Container from "@components/Container";
+import ProfileImage from "@components/ProfileImage";
+import SectionHeading from "@components/SectionHeading";
+import { HotDealListing, InterestsSkelton, ProductCardListingSkelton } from "@components/Skeltons/ProductCardSkelton";
 
-import { useHome } from "../../hooks/api";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Product } from "../../utils/schema.types";
-import theme from "../../utils/theme";
+import { useHome } from "@hooks/api";
+import { useProfileUpdate } from "@hooks/logic";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
+import { Product } from "@utils/schema.types";
+import theme from "@utils/theme";
 
 import Shape from "./Shape";
 
@@ -22,10 +22,13 @@ interface HomeInfo {
 	userInterests: Record<string, Product[]>;
 }
 
-const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({ navigation }) => {
+const Home: React.FC<StackNavigationProps<MergedRoutes, "Home">> = ({ navigation }) => {
 	const { data, isLoading } = useHome<"", HomeInfo>();
 	const { markProductAsFavourite, favouriteProductIds } = useProfileUpdate();
 	const { featuredProducts, hotDeals, userInterests } = data?.data || ({} as HomeInfo);
+
+	const isErrorInLoadingHomeData = !isLoading && !data?.data;
+	const showLoadingState = isLoading || isErrorInLoadingHomeData;
 
 	const handleCardAction = async (type: PressAction, product: Product) => {
 		try {
@@ -40,22 +43,23 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 	return (
 		<Container avoidTopNotch={true} avoidHomBar={true}>
 			{(top) => {
+				const topSpace = top === 0 ? top + 20 : top + 10;
 				return (
 					<>
 						<Shape />
 
-						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: top + 30 }} showsVerticalScrollIndicator={false}>
+						<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: topSpace }} showsVerticalScrollIndicator={false}>
 							{/* Header */}
 							<View style={{ paddingHorizontal: theme.spacing.medium }}>
 								<View style={[theme.rowStyle, { alignItems: "center", justifyContent: "space-between" }]}>
-									<Text style={theme.textStyles.pill_sm}>Suggested For You</Text>
+									<Text style={theme.textStyles.pill_reg}>Suggested For You</Text>
 									<ProfileImage />
 								</View>
-								<Text style={theme.textStyles.h3}>Find the stuff you love.</Text>
+								<Text style={{ ...theme.textStyles.h3, fontSize: theme.fontSizes.normal }}>Find the stuff you love.</Text>
 							</View>
 							{/* Horizontal Products Listing */}
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{isLoading && <ProductCardListingSkelton />}
+								{showLoadingState && <ProductCardListingSkelton />}
 								{featuredProducts?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -73,7 +77,7 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 							{/* Hot Deals */}
 							<SectionHeading title="Hot Deals" />
 							<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: theme.spacing.medium }}>
-								{isLoading && <HotDealListing />}
+								{showLoadingState && <HotDealListing />}
 								{hotDeals?.map((product, index) => {
 									product.image = product.images[0].url;
 									return (
@@ -89,7 +93,12 @@ const Home: React.FC<StackNavigationProps<RootStackScreens, "BottomStack">> = ({
 								})}
 							</ScrollView>
 							{/* Your Interests */}
-							{isLoading && <InterestsSkelton />}
+							{showLoadingState && (
+								<>
+									<SectionHeading title="Your Interests" />
+									<InterestsSkelton />
+								</>
+							)}
 							{typeof userInterests === "object" && Object.keys(userInterests)?.length > 0 && (
 								<>
 									<SectionHeading title="Your Interests" />

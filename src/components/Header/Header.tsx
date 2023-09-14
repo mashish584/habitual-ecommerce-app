@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Text, TouchableOpacity, View, TextStyle, ViewStyle } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 /**
  * @variant
@@ -54,7 +54,11 @@ const Header = ({ title, variant, titleStyle, headerStyle, ...props }: Header) =
 				headerStyle,
 			]}>
 			{props.leftIcon && (
-				<TouchableOpacity onPress={onLeftIconPress} style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
+				<TouchableOpacity
+					activeOpacity={!onLeftIconPress ? 1 : 0.8}
+					disabled={!onLeftIconPress}
+					onPress={onLeftIconPress}
+					style={[theme.iconButtonStyle, { position: "absolute", left: theme.spacing.medium }]}>
 					{props.leftIcon}
 				</TouchableOpacity>
 			)}

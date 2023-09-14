@@ -1,19 +1,20 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Pressable, ViewStyle } from "react-native";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
 
 interface Card {
 	cardStyle?: ViewStyle;
-	onPress?: () => void;
+	index: number;
+	onPress?: (index: number) => void;
 }
 
-const Card: React.FC<Card> = ({ cardStyle, onPress, children }) => {
+const Card = ({ cardStyle, index, onPress, children }: PropsWithChildren<Card>) => {
 	return (
 		<Pressable
-			onPress={onPress}
+			onPress={() => onPress?.(index)}
 			style={{
-				// height: "100%",
 				aspectRatio: 1,
 				borderRadius: 10,
 				backgroundColor: theme.colors.shades.white,

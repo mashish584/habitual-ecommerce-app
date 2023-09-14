@@ -1,7 +1,8 @@
 import React from "react";
 import { Text } from "react-native";
-import theme from "../utils/theme";
-import { Address } from "../utils/types";
+
+import theme from "@utils/theme";
+import { Address } from "@utils/types";
 
 interface AddressText {
 	address: Address;

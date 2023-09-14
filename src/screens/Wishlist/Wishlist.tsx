@@ -1,18 +1,19 @@
 import React from "react";
 
-import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "../../components/Cards/EmptyInfoCard";
-import ProductCard, { PressAction } from "../../components/Cards/ProductCard";
-import Container from "../../components/Container";
-import Curve from "../../components/Container/Curve";
-import Header from "../../components/Header/Header";
-import { PaginatedFlatlist } from "../../components/PaginatedFlatlist";
-import ProfileImage from "../../components/ProfileImage";
-import { ProductCardSkelton } from "../../components/Skeltons/ProductCardSkelton";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "@components/Cards/EmptyInfoCard";
+import ProductCard, { PressAction } from "@components/Cards/ProductCard";
+import Container from "@components/Container";
+import Curve from "@components/Container/Curve";
+import Header from "@components/Header/Header";
+import { PaginatedFlatlist } from "@components/PaginatedFlatlist";
+import ProfileImage from "@components/ProfileImage";
+import { ProductCardSkelton } from "@components/Skeltons/ProductCardSkelton";
+import { useProfileUpdate } from "@hooks/logic";
 
-import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Product } from "../../utils/schema.types";
-import theme from "../../utils/theme";
+import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "@nav/types";
+import { Product } from "@utils/schema.types";
+import theme from "@utils/theme";
+import images from "@assets/images";
 
 const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScreens, "Wishlist">> = ({ navigation }) => {
 	const { markProductAsFavourite, favouriteProductIds } = useProfileUpdate();
@@ -45,7 +46,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 							{isEmptyList ? (
 								<EmptyInfoCard
 									style={{ marginTop: -EMPTY_ORDER_CARD_HEIGHT / 2 }}
-									illustration={require("../../assets/images/person-in-box-illustration.png")}
+									illustration={images.emptyList}
 									title="You have no saved products."
 									description="You have no saved products. Start saving to add to wishlists or create one now."
 									buttonText="+ Create a wishlist"
@@ -58,6 +59,7 @@ const Wishlist: React.FC<StackNavigationProps<BottomStackScreens & RootStackScre
 									query="?take=5"
 									contentContainerStyle={{ paddingBottom: bottom * 2, alignItems: "center" }}
 									showsVerticalScrollIndicator={false}
+									isRefresh={true}
 									keyExtractor={(item) => item.id}
 									renderItem={({ item }) => {
 										const product = item as Product;

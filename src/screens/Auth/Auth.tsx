@@ -6,16 +6,17 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 // import { faFacebook, faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
-import { Button } from "../../components/Button";
-import Container from "../../components/Container";
-import { Header } from "../../components/Header";
-import Seperator from "../../components/Seperator";
-import { TextInput } from "../../components/TextInput";
+import { Button } from "@components/Button";
+import Container from "@components/Container";
+import { Header } from "@components/Header";
+import Seperator from "@components/Seperator";
+import { TextInput } from "@components/TextInput";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
-import { ScreenNavigationProp } from "../../navigation/types";
-import useAuth from "../../hooks/logic/useAuth";
+import { ScreenNavigationProp } from "@nav/types";
+import { useAuth } from "@hooks/logic";
+import images from "@assets/images";
 
 // const socialLogins = [
 // 	{
@@ -63,7 +64,7 @@ const Auth = ({ type }: Auth) => {
 							}}
 						/>
 						<ScrollView style={{ paddingHorizontal: theme.spacing.medium, paddingTop: theme.spacing.medium }} keyboardShouldPersistTaps="always">
-							<Image source={require("../../assets/images/full-logo.png")} style={styles.logo} resizeMode="contain" />
+							<Image source={images.logo} style={styles.logo} resizeMode="contain" />
 							<TextInput
 								label="Email"
 								type="text"

@@ -1,19 +1,18 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
-import Loader from "../../components/Loader";
+import Loader from "@components/Loader";
 
-import { openGallery } from "../../utils/media";
-import theme from "../../utils/theme";
-import { User } from "../../utils/schema.types";
-import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import { openGallery } from "@utils/media";
+import theme from "@utils/theme";
+import { User } from "@utils/schema.types";
+import { ProfileSetupStackScreens, StackNavigationProps } from "@nav/types";
+import { useProfileUpdate } from "@hooks/logic";
+import images from "@assets/images";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
 import ProfileSetupHeader from "./ProfileSetupHeader";
-
-const timeoutIds: NodeJS.Timeout[] = [];
 
 const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "ProfileImage">> = ({ navigation }) => {
 	const { profile, updateUserInfo, isLoading } = useProfileUpdate<keyof Pick<User, "profile">>();
@@ -27,25 +26,14 @@ const ProfileImage: React.FC<StackNavigationProps<ProfileSetupStackScreens, "Pro
 			const response = await updateUserInfo({ profile: images[0] });
 
 			if (response.data) {
-				const id = setTimeout(() => {
-					navigation.navigate("JoiningReason");
-				}, 1500);
-				timeoutIds.push(id);
+				navigation.navigate("JoiningReason");
 			}
 		}
 	};
 
 	const goToJoiningReason = () => navigation.navigate("JoiningReason");
 
-	const userProfileImage = profile ? { uri: profile } : require("../../assets/images/avatar.png");
-
-	React.useEffect(() => {
-		return () => {
-			timeoutIds.map((id) => {
-				clearTimeout(id);
-			});
-		};
-	}, []);
+	const userProfileImage = profile ? { uri: profile } : images.avatar;
 
 	return (
 		<ProfileContainer title="Step 1 of 4">

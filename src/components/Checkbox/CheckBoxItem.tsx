@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 import Checkbox, { CheckboxI } from "./Checkbox";
 
 interface CheckBoxItem extends Pick<CheckboxI, "checkBoxStyle" | "checked"> {

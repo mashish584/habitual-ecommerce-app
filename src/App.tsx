@@ -3,14 +3,15 @@ import { LogBox, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
-import SplashScreen from "react-native-splash-screen";
 import analytics from "@react-native-firebase/analytics";
+import codePush, { CodePushOptions } from "react-native-code-push";
 
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
 
 import { STRIPE_PUBLIC_KEY } from "@env";
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Navigation from "./navigation";
 
 LogBox.ignoreLogs([
@@ -18,6 +19,8 @@ LogBox.ignoreLogs([
 	"[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 	"Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).",
 ]);
+
+console.warn = () => {};
 
 const queryClient = new QueryClient();
 
@@ -31,18 +34,22 @@ const App = () => {
 		if (Platform.OS === "ios") {
 			KeyboardManager.setEnable(true);
 		}
-		SplashScreen.hide();
 	}, []);
 
 	return (
 		<SafeAreaProvider>
 			<StripeProvider publishableKey={STRIPE_PUBLIC_KEY} merchantIdentifier="merchant.identifier">
 				<QueryClientProvider client={queryClient}>
-					<Navigation />
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<Navigation />
+					</GestureHandlerRootView>
 				</QueryClientProvider>
 			</StripeProvider>
 		</SafeAreaProvider>
 	);
 };
 
-export default App;
+export default codePush({
+	checkFrequency: codePush.CheckFrequency.ON_APP_START,
+	mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
+} as CodePushOptions)(App);

@@ -1,10 +1,10 @@
 import React from "react";
 import { View, ViewStyle } from "react-native";
 
-import { Button } from "../../components/Button";
-import { ButtonI } from "../../components/Button/types";
+import { Button } from "@components/Button";
+import { ButtonI } from "@components/Button/types";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface ProfileSetupFooter {
 	button1: ButtonI;

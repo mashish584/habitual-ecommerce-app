@@ -3,13 +3,13 @@ import { Animated, Dimensions, Image, ImageURISource, StyleSheet, TouchableOpaci
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { BottomStackScreens, RootStackScreens } from "../types";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
-import { useCart, useUI, useUser } from "../../utils/store";
-import { getPasswordConfirmationModal } from "../../utils/media";
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
+import { useCart, useUI, useUser } from "@utils/store";
+import { getPasswordConfirmationModal } from "@utils/media";
+import images from "@assets/images";
 
-type Screens = keyof RootStackScreens | keyof BottomStackScreens;
+import { BottomStackScreens, MergedRoutes } from "../types";
 
 type MenuOption = {
 	label: String;
@@ -20,27 +20,27 @@ type MenuOption = {
 const menuOptions: MenuOption[] = [
 	{
 		label: "Home",
-		image: require("../../assets/images/tabs/home.png"),
+		image: images.homeIcon,
 		route: "Home",
 	},
 	{
 		label: "Wishlist",
-		image: require("../../assets/images/tabs/heart.png"),
+		image: images.heartIcon,
 		route: "Wishlist",
 	},
 	{
 		label: "Search",
-		image: require("../../assets/images/search.png"),
+		image: images.searchIcon,
 		route: "Search",
 	},
 	{
 		label: "Orders",
-		image: require("../../assets/images/tabs/order.png"),
+		image: images.ordersIcon,
 		route: "Orders",
 	},
 	{
 		label: "Cart",
-		image: require("../../assets/images/tabs/bag.png"),
+		image: images.bagIcon,
 		route: "Cart",
 	},
 ];
@@ -67,7 +67,7 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 			: theme.colors.shades.gray_40;
 	};
 
-	const onNavigate = (route: Screens) => {
+	const onNavigate = (route: keyof MergedRoutes) => {
 		props.navigation.navigate(route);
 	};
 

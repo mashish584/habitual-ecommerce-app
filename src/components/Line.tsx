@@ -1,6 +1,7 @@
 import React from "react";
 import { View, ViewStyle } from "react-native";
-import theme from "../utils/theme";
+
+import theme from "@utils/theme";
 
 interface LineI {
 	style?: ViewStyle;

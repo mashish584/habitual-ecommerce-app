@@ -1,7 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { NarrowInterest, PickInterest } from "@screens/ProfileSetup";
 import { AddInterestStackScreens } from "../types";
-import { NarrowInterest, PickInterest } from "../../screens/ProfileSetup";
 
 const AddInterestStack = createStackNavigator<AddInterestStackScreens>();
 

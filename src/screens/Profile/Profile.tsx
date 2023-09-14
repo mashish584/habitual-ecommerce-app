@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
-import { Image, Text, View, ScrollView, StyleSheet } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { Image, Text, View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import Container from "../../components/Container";
-import Header from "../../components/Header/Header";
-import { Back, MapPin, Lock } from "../../components/Svg";
-import Curve from "../../components/Container/Curve";
-import Button from "../../components/Button/Button";
-import SectionHeading from "../../components/SectionHeading";
-import EmptyInfoCard from "../../components/Cards/EmptyInfoCard";
-import { Card, ColorCard } from "../../components/Cards";
+import Container from "@components/Container";
+import Header from "@components/Header/Header";
+import { Back, MapPin, Lock } from "@components/Svg";
+import Curve from "@components/Container/Curve";
+import Button from "@components/Button/Button";
+import SectionHeading from "@components/SectionHeading";
+import EmptyInfoCard from "@components/Cards/EmptyInfoCard";
+import { Card, ColorCard } from "@components/Cards";
 
-import theme, { rgba } from "../../utils/theme";
-import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "../../utils";
-import { useUI, useUser } from "../../utils/store";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "../../navigation/types";
+import theme, { rgba } from "@utils/theme";
+import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "@utils/index";
+import { useUI, useUser } from "@utils/store";
+import { Category } from "@utils/schema.types";
+import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "@nav/types";
 
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
-import { Category } from "../../utils/schema.types";
+import { useProfileUpdate } from "@hooks/logic";
 
 const AccountSettingOptions = [
 	// {
@@ -44,7 +44,7 @@ const AccountSettingOptions = [
 
 const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens & BottomStackScreens, "Profile">> = ({ navigation }) => {
 	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
-	const { fetchUserInfo } = useProfileUpdate(profile);
+	const { fetchUserInfo } = useProfileUpdate();
 	const updateValue = useUI((store) => store.updateValue);
 
 	useEffect(() => {
@@ -66,6 +66,30 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 		navigation.navigate("AddInterest");
 	};
 
+	const onCardTap = useCallback((index: number) => {
+		const { type } = AccountSettingOptions[index];
+		if (type === "LOGOUT") {
+			updateValue({
+				showConfirmationModal: true,
+				message: "Are you sure you want to logout?",
+				onAction: (action) => {
+					if (action === "Yes") {
+						updateValue({ showConfirmationModal: false });
+						removeToken();
+						navigation.navigate("Home");
+					} else {
+						updateValue({ showConfirmationModal: false });
+					}
+				},
+			});
+		}
+
+		if (type === "ADDRESS") {
+			navigation.navigate("Addresses");
+			return;
+		}
+	}, []);
+
 	return (
 		<Container avoidHomBar={true} viewContainerStyle={{ backgroundColor: profile?.id ? theme.colors.primary.yellow : theme.colors.shades.white }}>
 			{(top) => (
@@ -75,7 +99,7 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 							<Header
 								variant="primary"
 								title="Profile"
-								leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+								leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 								headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
 								onAction={(type) => {
 									if (type === "left") {
@@ -174,27 +198,8 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 										{AccountSettingOptions.map(({ label, Icon, type }, index) => (
 											<Card
 												key={`${label}_${index}`}
-												onPress={() => {
-													if (type === "LOGOUT") {
-														updateValue({
-															showConfirmationModal: true,
-															message: "Are you sure you want to logout?",
-															onAction: (action) => {
-																if (action === "Yes") {
-																	updateValue({ showConfirmationModal: false });
-																	removeToken();
-																} else {
-																	updateValue({ showConfirmationModal: false });
-																}
-															},
-														});
-													}
-
-													if (type === "ADDRESS") {
-														navigation.navigate("Addresses");
-														return;
-													}
-												}}
+												index={index}
+												onPress={onCardTap}
 												cardStyle={{
 													width: 113,
 													height: 108,

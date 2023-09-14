@@ -1,9 +1,9 @@
 import React from "react";
-import Success from "../../components/Success";
+import Success from "@components/Success";
 
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { generateBoxShadowStyle } from "../../utils";
-import theme, { rgba } from "../../utils/theme";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import { generateBoxShadowStyle } from "@utils/index";
+import theme, { rgba } from "@utils/theme";
 
 const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens, "CheckoutSuccess">> = ({ navigation }) => {
 	return (
@@ -12,7 +12,7 @@ const CheckoutSuccess: React.FC<StackNavigationProps<RootStackScreens, "Checkout
 			description="Your order has been placed and you will get a shipping confirmation soon."
 			buttonVariant="primary"
 			buttonText="Continue"
-			buttonStyle={{ backgroundColor: theme.colors.shades.white, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(1)) }}
+			buttonStyle={{ backgroundColor: theme.colors.primary.yellow, ...generateBoxShadowStyle(0, 5, rgba.black(1), 0.1, 15, 10, rgba.black(0.5)) }}
 			onAction={() => navigation.navigate("BottomStack")}
 		/>
 	);

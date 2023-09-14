@@ -1,7 +1,7 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { View, ViewStyle, ScrollView } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface Curve {
 	isCurve: boolean;
@@ -9,7 +9,7 @@ interface Curve {
 	style?: ViewStyle;
 }
 
-const Curve: React.FC<Curve> = ({ isCurve, isScrollView, style, children }) => {
+const Curve = ({ isCurve, isScrollView, style, children }: PropsWithChildren<Curve>) => {
 	return (
 		<View
 			style={{

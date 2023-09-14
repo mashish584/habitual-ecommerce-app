@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, View, ActivityIndicator } from "react-native";
+import { ReText } from "react-native-redash";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 import { ButtonI, variant } from "./types";
 
 const getButtonStyles = (variant: variant) => {
@@ -38,6 +39,7 @@ const getButtonStyles = (variant: variant) => {
 
 const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: ButtonI) => {
 	const { buttonStyle, textStyle } = getButtonStyles(variant);
+
 	return (
 		<TouchableOpacity
 			activeOpacity={0.7}
@@ -49,7 +51,8 @@ const Button = ({ variant, onPress, text, style, buttonTextStyle, ...props }: Bu
 			{props.iconComponent ? (
 				<View style={[{ position: "absolute", left: theme.spacing.medium }, props.iconStyle]}>{props.iconComponent}</View>
 			) : null}
-			<Text style={[theme.textStyles.button, textStyle, buttonTextStyle]}>{text}</Text>
+			{text ? <Text style={[theme.textStyles.button, textStyle, buttonTextStyle]}>{text}</Text> : null}
+			{props.animatedText ? <ReText style={{ color: "#222" }} text={props.animatedText} /> : null}
 			{props.isLoading && <ActivityIndicator size="small" color={theme.colors.shades.gray} style={{ marginLeft: 10 }} />}
 		</TouchableOpacity>
 	);

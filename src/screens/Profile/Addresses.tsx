@@ -1,24 +1,24 @@
 import React from "react";
-import { StyleSheet, Pressable, ScrollView, View, Text } from "react-native";
+import { StyleSheet, Pressable, ScrollView, View, Text, StyleProp, ViewStyle } from "react-native";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { Card } from "../../components/Cards";
-import Container from "../../components/Container";
-import Curve from "../../components/Container/Curve";
-import { Header } from "../../components/Header";
-import { Back } from "../../components/Svg";
-import { Button } from "../../components/Button";
-import AddressText from "../../components/AddressText";
+import { Card } from "@components/Cards";
+import Container from "@components/Container";
+import Curve from "@components/Container/Curve";
+import { Header } from "@components/Header";
+import { Back } from "@components/Svg";
+import { Button } from "@components/Button";
+import AddressText from "@components/AddressText";
+import AddressOptions from "@components/Sheet/AddressOptions";
+import Loader from "@components/Loader";
 
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import theme, { rgba } from "../../utils/theme";
-import { generateBoxShadowStyle } from "../../utils";
-import { useUser } from "../../utils/store";
-import useAddress from "../../hooks/logic/useAddress";
-import AddressOptions from "../../components/Sheet/AddressOptions";
-import Loader from "../../components/Loader";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import theme, { rgba } from "@utils/theme";
+import { generateBoxShadowStyle } from "@utils/index";
+import { useUser } from "@utils/store";
+import { useAddress } from "@hooks/logic";
 
 const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> = ({ navigation }) => {
 	const [options, setOptions] = React.useState<{ visible: boolean; index: number | null }>({ visible: false, index: null });
@@ -32,7 +32,7 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> =
 					<Header
 						variant="primary"
 						title="Addresses"
-						leftIcon={<Back fill={theme.colors.shades.gray_80} />}
+						leftIcon={<Back style={{ color: theme.colors.shades.gray_80 } as StyleProp<ViewStyle>} />}
 						headerStyle={{ marginTop: top / 2, borderBottomWidth: 0 }}
 						onAction={(type) => {
 							if (type === "left") {
@@ -81,7 +81,7 @@ const Addresses: React.FC<StackNavigationProps<RootStackScreens, "Addresses">> =
 						visible={options.visible}
 						headerTitle="Choose Option"
 						onAction={(type) => {
-							if (options.index) {
+							if (options.index !== null) {
 								const address = addresses[options.index];
 								setOptions({ visible: false, index: null });
 								if (type === "edit") {

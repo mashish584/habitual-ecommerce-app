@@ -1,11 +1,12 @@
 import React from "react";
-import { ImageURISource, Text, TouchableOpacity, ViewStyle, Image } from "react-native";
+import { ImageURISource, Text, TouchableOpacity, ViewStyle, Image, Alert } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import theme, { rgba } from "../../utils/theme";
-import { COLOR_CARD_WIDTH, generateBoxShadowStyle } from "../../utils";
+import theme, { rgba } from "@utils/theme";
+import { COLOR_CARD_WIDTH, generateBoxShadowStyle } from "@utils/index";
+
 import Card from "./Card";
 
 interface ColorCard {
@@ -45,7 +46,7 @@ const ColorCard = ({ variant, width, text, ...props }: ColorCard) => {
 			)}
 			{!props.hideButtton && (
 				<TouchableOpacity
-					onPress={() => alert("To be implemented.")}
+					onPress={() => Alert.alert("To be implemented.")}
 					activeOpacity={0.9}
 					style={{
 						width: 32,

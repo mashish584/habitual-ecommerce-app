@@ -1,26 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Image, TextStyle, View, Text, Pressable } from "react-native";
-import Animated, { Easing, interpolate, timing } from "react-native-reanimated";
-import { interpolateColor, useScrollHandler, useValue } from "react-native-redash";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Dimensions, Image, View, Text, Pressable, StyleProp, ViewStyle } from "react-native";
+import Animated, {
+	Easing,
+	WithTimingConfig,
+	interpolate,
+	useAnimatedScrollHandler,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+	interpolateColor,
+} from "react-native-reanimated";
+
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-// import crashlytics from "@react-native-firebase/crashlytics";
 
-import Container from "../../components/Container";
-import { Review } from "../../components/Product";
-import { Header } from "../../components/Header";
-import { SmallBag, Back } from "../../components/Svg";
+import Container from "@components/Container";
+import { Review } from "@components/Product";
+import { Header } from "@components/Header";
+import { SmallBag, Back } from "@components/Svg";
+
+import { ProductFooterActions } from "@utils/types";
+import { Product as ProductType, SlideColors } from "@utils/schema.types";
+import theme from "@utils/theme";
+import { useCart } from "@utils/store";
+import { useProductInfo } from "@hooks/api";
+import { RootStackScreens, StackNavigationProps } from "@nav/types";
+import images from "@assets/images";
 
 import Dot from "../Onboarding/Dot";
-
-import { ProductFooterActions } from "../../utils/types";
-import { RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Product as ProductType, SlideColors } from "../../utils/schema.types";
-import theme from "../../utils/theme";
-import { useCart } from "../../utils/store";
-import { useProductInfo } from "../../hooks/api";
-
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
 // import ColorCircle from "./ColorCircle";
@@ -57,86 +65,147 @@ function getSlideColors(slideColors: SlideColors[], length: number) {
 
 const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ navigation, route }) => {
 	const sliderRef = useRef<Animated.ScrollView>(null);
+
 	const product = route.params.product;
 	const [] = useState(product);
 
 	const toggleCart = useCart((store) => store.toggleCart);
 	const fetchProductInfo = useProductInfo<string, ProductType>();
 
-	const productInfoPosition = useValue(0);
-	const productInfoSlideTiming = useValue(0);
-	const productContentHeight = useValue(95);
-	const slideImagePosition = useValue(0);
+	const translateX = useSharedValue(0);
+	const productInfoPosition = useSharedValue(0);
+	const productInfoSlideTiming = useSharedValue(0);
+	const productContentHeight = useSharedValue(95);
+	const slideImagePosition = useSharedValue(0);
+
+	const scrollHandler = useAnimatedScrollHandler((e) => {
+		translateX.value = e.contentOffset.x;
+	});
 
 	// const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
 	// const [showCart, setShowCart] = useState(false);
 
-	const { scrollHandler, x } = useScrollHandler();
-
 	const productInfo = fetchProductInfo.data?.data || product;
 
 	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length || 2);
 
 	// → Slide Transitions
-	const slideBackgroundColor = interpolateColor(x, {
-		inputRange: slides.map((_, i) => i * SLIDER_WIDTH),
-		outputRange: slides.map((_) => _.color),
+	const rSlideContainerStyle = useAnimatedStyle(() => {
+		const slideBackgroundColor = interpolateColor(
+			translateX.value,
+			slides.map((_, i) => i * SLIDER_WIDTH),
+			slides.map((_) => _.color),
+		);
+
+		return {
+			backgroundColor: slideBackgroundColor,
+		};
 	});
 
-	const slideTextColor = interpolateColor(x, {
-		inputRange: textColors.map((_, i) => i * SLIDER_WIDTH),
-		outputRange: textColors.map((_) => _.color),
+	const rSlideTextStyle = useAnimatedStyle(() => {
+		const slideTextColor = interpolateColor(
+			translateX.value,
+			textColors.map((_, i) => i * SLIDER_WIDTH),
+			textColors.map((_) => _.color),
+		);
+
+		return {
+			color: slideTextColor,
+		};
 	});
 
 	// → Price Info Transitions
-	const productInfoBorderRadius = interpolate(productInfoSlideTiming, {
-		inputRange: [0, 1],
-		outputRange: [15, 0],
-	});
-
-	const productContentLayerOpacity = interpolate(productContentHeight, {
-		inputRange: [95, 220],
-		outputRange: [0, 1],
+	const rProductContentLayerStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(productContentHeight.value, [95, 220], [0, 1]);
+		return {
+			opacity,
+		};
 	});
 
 	const transitionProductInfo = (isSlide: boolean) => {
-		const config: Animated.TimingConfig = {
+		const config: WithTimingConfig = {
 			duration: 500,
-			toValue: 0,
 			easing: Easing.linear,
 		};
 
 		//timer for interpolating styles
-		const timingTransition = timing(productInfoSlideTiming, { ...config, duration: 100, toValue: isSlide ? 1 : 0 });
-
-		//top -> bottom
-		const priceInfoTransition1 = timing(productInfoPosition, { ...config, duration: 100, toValue: 200 });
-
-		//bottom -> top
-		const priceInfoTransition2 = timing(productInfoPosition, { ...config, duration: 100, toValue: 0 });
+		productInfoPosition.value = withTiming(200, { ...config, duration: 100 }, (isFinished) => {
+			if (isFinished) {
+				productInfoSlideTiming.value = withTiming(isSlide ? 1 : 0, { ...config, duration: 100 });
+				productInfoPosition.value = withTiming(0, { ...config, duration: 100 });
+			}
+		});
 
 		// slide image up if isSlide false vice versa
-		const imageTransition = timing(slideImagePosition, { ...config, duration: 100, toValue: isSlide ? -50 : 0 });
-
+		slideImagePosition.value = withTiming(isSlide ? -50 : 0, { ...config, duration: 100 });
 		// section height transition from min to max
-		const productContentTransition = timing(productContentHeight, {
-			...config,
-			duration: 200,
-			easing: Easing.elastic(1),
-			toValue: isSlide ? 220 : 95,
-		});
+		productContentHeight.value = withTiming(isSlide ? 220 : 95, { ...config, duration: 200, easing: Easing.elastic(1) });
 
 		setIsSlideOn(!isSlide);
-
-		productContentTransition.start();
-		imageTransition.start();
-		priceInfoTransition1.start(() => {
-			timingTransition.start();
-			priceInfoTransition2.start();
-		});
 	};
+
+	const rProductImageStyle = useAnimatedStyle(() => {
+		return {
+			transform: [{ translateY: slideImagePosition.value }],
+		};
+	});
+
+	const rProductContentStyle = useAnimatedStyle(() => {
+		return {
+			height: productContentHeight.value,
+		};
+	});
+
+	const priceInfo = {
+		id: product.id,
+		image: product.image,
+		title: product.title,
+		price: productInfo.price,
+		discount: productInfo.discount,
+		quantity: productInfo.quantity,
+		buttonChild: !isSlideOn ? (
+			<FontAwesomeIcon icon={faArrowRight as IconProp} />
+		) : (
+			<Image source={images.bagIcon} style={{ tintColor: theme.colors.shades.white }} />
+		),
+	};
+
+	const onPriceInfoAction = useCallback(
+		(actionType: ProductFooterActions) => {
+			// 🔥 Action 1
+			//→ when user click on shopping bag we will slide screen up
+			//→ and action image will replaced with arrow
+			if (isSlideOn && actionType === "slideUp") {
+				transitionProductInfo(isSlideOn);
+				return;
+			}
+
+			// 🔥 Action 2
+			//→ when screen is slide up & action image is arrow
+			//→ display cart actions with GotoCart and Remove action
+			if (!isSlideOn) {
+				transitionProductInfo(isSlideOn);
+				setShowCartActions(true);
+				return;
+			}
+
+			// 🔥 Action 3
+			//→ when user click on Remove will back to Action 1
+			//→ if click on GoToCart open Cart Modal
+			if (actionType === "removeCart") {
+				setShowCartActions(false);
+				return;
+			}
+
+			if (actionType === "showCartModal") {
+				toggleCart(true);
+				return;
+			}
+		},
+		[isSlideOn],
+	);
 
 	useEffect(() => {
 		fetchProductInfo.mutateAsync(product.id);
@@ -148,13 +217,13 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 				return (
 					<>
 						{/* Slider  */}
-						<Animated.View style={{ flex: 0.85, backgroundColor: slideBackgroundColor } as any}>
+						<Animated.View style={[{ flex: 0.85 }, rSlideContainerStyle]}>
 							<Header
 								variant="secondary"
-								leftIcon={<Back fill={slideTextColor} />}
+								leftIcon={<Back style={rSlideTextStyle as StyleProp<ViewStyle>} />}
 								rightIcon={
 									<Pressable onPress={() => toggleCart(true)}>
-										<SmallBag fill={slideTextColor} />
+										<SmallBag style={rSlideTextStyle as StyleProp<ViewStyle>} />
 									</Pressable>
 								}
 								headerStyle={{ position: "absolute", top, width: "100%", zIndex: 1 }}
@@ -167,18 +236,19 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							<Animated.ScrollView
 								horizontal
 								ref={sliderRef}
+								onScroll={scrollHandler}
 								scrollEnabled={isSlideOn}
 								bounces={false}
+								scrollEventThrottle={16}
 								showsHorizontalScrollIndicator={false}
 								decelerationRate="fast"
-								snapToInterval={SLIDER_WIDTH}
-								{...scrollHandler}>
-								{productInfo.images?.map((image) => {
+								snapToInterval={SLIDER_WIDTH}>
+								{productInfo.images?.map((image: any) => {
 									return (
 										<View key={image.fileId} style={{ width: SLIDER_WIDTH, justifyContent: "center", alignItems: "center" }}>
 											<Animated.Image
 												source={{ uri: image.url }}
-												style={{ width: "100%", height: "100%", transform: [{ translateY: slideImagePosition }] }}
+												style={[{ width: "100%", height: "100%" }, rProductImageStyle]}
 												resizeMode="contain"
 											/>
 										</View>
@@ -190,34 +260,20 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 							{/* Slide Indicator */}
 							{productInfo?.images?.length > 1 && (
 								<View style={[theme.rowStyle, styles.slideIndicators]}>
-									{productInfo.images.map((file, index) => {
-										return <Dot key={file.fileId} currentIndex={index} width={SLIDER_WIDTH} scrollX={x} mh={index === 1 ? 6 : 0} />;
+									{productInfo.images.map((file: any, index: number) => {
+										return <Dot key={file.fileId} currentIndex={index} width={SLIDER_WIDTH} scrollX={translateX} mh={index === 1 ? 6 : 0} />;
 									})}
 								</View>
 							)}
-							<Animated.View
-								style={{
-									...styles.productContent,
-									height: productContentHeight,
-								}}>
+							<Animated.View style={[styles.productContent, rProductContentStyle]}>
 								{/* Product Info */}
-								<Animated.View
-									style={{
-										...styles.contentLayer,
-										opacity: productContentLayerOpacity,
-									}}
-								/>
+								<Animated.View style={[styles.contentLayer, rProductContentLayerStyle]} />
 								<View>
 									<Animated.Text
-										style={
-											[
-												theme.textStyles.h4,
-												{ color: !isSlideOn ? textColors[0].color : slideTextColor, marginBottom: theme.spacing.xxSmall },
-											] as TextStyle[]
-										}>
+										style={[theme.textStyles.h4, { color: textColors[0].color, marginBottom: theme.spacing.xxSmall }, isSlideOn && rSlideTextStyle]}>
 										{productInfo.title}
 									</Animated.Text>
-									<Review stars={0} color={slideTextColor} />
+									<Review stars={0} transitionTextStyle={rSlideTextStyle} />
 									{!isSlideOn && <Text style={[theme.textStyles.body_sm, { marginTop: theme.spacing.small }]}>{productInfo?.description}</Text>}
 									{/* {!isSlideOn && (
 										<View style={{ marginTop: theme.spacing.medium }}>
@@ -251,54 +307,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 						</Animated.View>
 						{/* Product Price Container  */}
 						<ProductPriceInfo
-							priceInfo={{
-								id: product.id,
-								image: product.image,
-								title: product.title,
-								price: productInfo.price,
-								discount: productInfo.discount,
-								quantity: productInfo.quantity,
-								buttonChild: !isSlideOn ? (
-									<FontAwesomeIcon icon={faArrowRight as IconProp} />
-								) : (
-									<Image source={require("../../assets/images/tabs/bag.png")} style={{ tintColor: theme.colors.shades.white }} />
-								),
-							}}
+							priceInfo={priceInfo}
 							slideAnimate={productInfoSlideTiming}
 							translateY={productInfoPosition}
-							borderRadius={productInfoBorderRadius}
 							showCartAction={showCartActions}
-							onPress={(actionType: ProductFooterActions) => {
-								// 🔥 Action 1
-								//→ when user click on shopping bag we will slide screen up
-								//→ and action image will replaced with arrow
-								if (isSlideOn && actionType === "slideUp") {
-									transitionProductInfo(isSlideOn);
-									return;
-								}
-
-								// 🔥 Action 2
-								//→ when screen is slide up & action image is arrow
-								//→ display cart actions with GotoCart and Remove action
-								if (!isSlideOn) {
-									transitionProductInfo(isSlideOn);
-									setShowCartActions(true);
-									return;
-								}
-
-								// 🔥 Action 3
-								//→ when user click on Remove will back to Action 1
-								//→ if click on GoToCart open Cart Modal
-								if (actionType === "removeCart") {
-									setShowCartActions(false);
-									return;
-								}
-
-								if (actionType === "showCartModal") {
-									toggleCart(true);
-									return;
-								}
-							}}
+							onPress={onPriceInfoAction}
 						/>
 					</>
 				);

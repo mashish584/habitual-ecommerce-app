@@ -1,10 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { SignIn, SignUp } from "../../screens/Auth";
-import { Onboarding } from "../../screens/Onboarding";
+import { SignIn, SignUp } from "@screens/Auth";
+import { Onboarding } from "@screens/Onboarding";
+import { UnauthStackScreens } from "../types";
 
-const OnboardingStack = createStackNavigator();
+const OnboardingStack = createStackNavigator<UnauthStackScreens>();
 
 export default () => {
 	return (

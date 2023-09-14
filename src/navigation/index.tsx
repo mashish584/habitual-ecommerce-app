@@ -2,50 +2,54 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import SplashScreen from "react-native-splash-screen";
 
-import { Home } from "../screens/Home";
-import Product from "../screens/Product/Product";
-import { Checkout, Address } from "../screens/Checkout";
-import CheckoutSuccess from "../screens/Checkout/CheckoutSuccess";
-import Orders from "../screens/Orders/Orders";
-import { EditProfile, Profile, Addresses } from "../screens/Profile";
-import { ProfileSetupComplete } from "../screens/ProfileSetup";
-import { Wishlist } from "../screens/Wishlist";
-import { Search } from "../screens/Search";
-import GlobalUI from "../screens/GlobalUI";
+import { Home } from "@screens/Home";
+import Product from "@screens/Product/Product";
+import { Checkout, Address } from "@screens/Checkout";
+import CheckoutSuccess from "@screens/Checkout/CheckoutSuccess";
+import Orders from "@screens/Orders/Orders";
+import { EditProfile, Profile, Addresses } from "@screens/Profile";
+import { ProfileSetupComplete } from "@screens/ProfileSetup";
+import { Wishlist } from "@screens/Wishlist";
+import { Search } from "@screens/Search";
+import GlobalUI from "@screens/GlobalUI";
 
-import { UserState } from "../utils/store";
+import { UserState, useUser } from "@utils/store";
 
+import { getDataFromSecureStorage } from "@utils/index";
 import { navigationRef } from "./service";
 import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps } from "./types";
+import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
 import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
 
 /**
  * Where ot navigation user
  */
-const Start: React.FC<StackNavigationProps<RootStackScreens>> = ({ navigation }) => {
+const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigation }) => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const user = await AsyncStorage.getItem("user");
+				const user = await getDataFromSecureStorage("user");
 				let data;
 
 				if (user) {
 					data = JSON.parse(user)?.state as Pick<UserState, "token" | "user">;
 				}
 
-				if (data.token && data.user) {
+				if (data && data.token && data.user) {
 					const route = data.user.joining_reasons?.length === 0 ? "ProfileSetup" : "BottomStack";
+					SplashScreen.hide();
 					navigation.replace(route);
 				} else {
+					SplashScreen.hide();
 					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
+				SplashScreen.hide();
 				navigation.replace("OnboardingStack");
 			}
 		})();
@@ -69,7 +73,7 @@ const BottamTabScreen = () => {
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
 			<BottomTabStack.Screen name="Orders" component={Orders} />
-			<BottomTabStack.Screen name="Cart" component={Home} />
+			<BottomTabStack.Screen name="Cart" component={() => null} />
 		</BottomTabStack.Navigator>
 	);
 };
@@ -77,11 +81,16 @@ const BottamTabScreen = () => {
 const RootStack = createStackNavigator<RootStackScreens>();
 
 const RootStackScreen = () => {
+	const isUserId = useUser((store) => !!store.user?.id);
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
-			<RootStack.Screen name="UnauthStack" component={UnauthStack} />
-			<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
+			{!isUserId && (
+				<>
+					<RootStack.Screen name="UnauthStack" component={UnauthStack} />
+					<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
+				</>
+			)}
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />

@@ -37,10 +37,10 @@ Core package versions info.
 
 | Package                                                                        | Version | Info                                      |
 | ------------------------------------------------------------------------------ | ------- | ----------------------------------------- |
-| [react-native](https://reactnative.dev/)                                       | 0.66.4  | Migration to latest architecture pending. |
-| [react](https://reactjs.org/)                                                  | 17.0.2  | Migration to lates version pending.       |
-| [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) | 1.13.4  | Migration to latest version pending.      |
-| [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/)    | 2.2.0   | Migration to latest version pending.      |
+| [react-native](https://reactnative.dev/)                                       | 0.72.4  | Migration to latest architecture pending. |
+| [react](https://reactjs.org/)                                                  | 18.2.0  | Migration to lates version pending.       |
+| [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) | ^3.4.2  | Migration to latest version pending.      |
+| [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/)    | ^4.4.7  | Migration to latest version pending.      |
 | [react-navigation](https://reactnavigation.org/)                               | 6.0.+   | No update needed.                         |
 
 ## Feedback

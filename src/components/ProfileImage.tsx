@@ -2,11 +2,11 @@ import React from "react";
 import { Image, TouchableOpacity, ViewStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { ScreenNavigationProp } from "../navigation/types";
+import { ScreenNavigationProp } from "@nav/types";
 
-import { defaultAvatar } from "../utils";
-import { useUser } from "../utils/store";
-import theme from "../utils/theme";
+import { defaultAvatar } from "@utils/index";
+import { useUser } from "@utils/store";
+import theme from "@utils/theme";
 
 interface ProfileImage {
 	containerStyle?: ViewStyle;

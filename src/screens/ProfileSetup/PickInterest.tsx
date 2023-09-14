@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Dimensions } from "react-native";
 
-import CategoryCard, { CategoryInfo } from "../../components/Cards/CategoryCard";
-import { useCategories } from "../../hooks/api";
+import CategoryCard, { CategoryInfo } from "@components/Cards/CategoryCard";
+import { useCategories } from "@hooks/api";
 
-import { ProfileSetupStackScreens, StackNavigationProps } from "../../navigation/types";
-import { Category } from "../../utils/schema.types";
-import theme from "../../utils/theme";
+import { ProfileSetupStackScreens, StackNavigationProps } from "@nav/types";
+import { Category } from "@utils/schema.types";
+import theme from "@utils/theme";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -20,7 +20,7 @@ const GRID_SPACING = theme.spacing.small;
 const CARD_WIDTH = (windowWidth - (theme.spacing.medium * 2 + GRID_SPACING)) / 2;
 
 const PickInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens, "PickInterest">> = ({ navigation, route }) => {
-	const [interests, setInterests] = useState<Record<"string", CategoryInfo>>({} as Record<"string", CategoryInfo>);
+	const [interests, setInterests] = useState<Record<string, CategoryInfo>>({} as Record<"string", CategoryInfo>);
 
 	const categoriesQuery = useCategories<"", Category[]>("?parent=true");
 	const hideSteps = route.params?.showSteps == false;

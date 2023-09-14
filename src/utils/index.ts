@@ -1,11 +1,17 @@
 import dayjs from "dayjs";
 import { Dimensions, Platform } from "react-native";
 import Toast from "react-native-toast-message";
+import EncryptedStorage from "react-native-encrypted-storage";
+
 import theme from "./theme";
 import { DateFormats } from "./types";
 
 export const isIOS = Platform.OS === "ios";
 export const isAndroid = Platform.OS === "android";
+
+export const deviceHeight = Dimensions.get("screen").height;
+export const deviceWidth = Dimensions.get("screen").width;
+export const getSecureStorage = () => EncryptedStorage;
 
 export const generateBoxShadowStyle = (
 	xOffset: number,
@@ -38,9 +44,9 @@ export const formatTimeStamp = (timestamp: string, format: DateFormats) => {
 export const formatToIso = (timestamp: string, format: DateFormats) => dayjs(timestamp, format).toISOString();
 
 export const debounce = (fn: (...args: any) => void, duration: number) => {
-	let timer: NodeJS.Timer | null = null;
+	let timer: any = null;
 
-	return (...args) => {
+	return (...args: any) => {
 		if (timer) {
 			clearTimeout(timer);
 			timer = null;
@@ -51,7 +57,7 @@ export const debounce = (fn: (...args: any) => void, duration: number) => {
 	};
 };
 
-export const calculateOriginalPrice = (currentPrice, discount) => ((currentPrice / (100 - discount)) * 100).toFixed(2);
+export const calculateOriginalPrice = (currentPrice: number, discount: number) => ((currentPrice / (100 - discount)) * 100).toFixed(2);
 
 export const defaultAvatar = "https://ik.imagekit.io/imashish/avatar_3x_1izETN4cA.png";
 
@@ -80,5 +86,15 @@ export const showToast = (type: "success" | "error", data: { title: string; mess
 		text1: data.title,
 		text2: data.message,
 		type,
+		autoHide: true,
 	});
+};
+
+export const saveDataInSecureStorage = async (key: string, value: string) => {
+	await EncryptedStorage.setItem(key, value);
+};
+
+export const getDataFromSecureStorage = async (key: string) => {
+	let result = await EncryptedStorage.getItem(key);
+	return result;
 };

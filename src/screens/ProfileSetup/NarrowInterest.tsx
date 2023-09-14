@@ -1,16 +1,16 @@
 import React from "react";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
 
-import CheckBoxItem from "../../components/Checkbox/CheckBoxItem";
-import Pill from "../../components/Pill/Pill";
-import { TextInput } from "../../components/TextInput";
+import CheckBoxItem from "@components/Checkbox/CheckBoxItem";
+import Pill from "@components/Pill/Pill";
+import { TextInput } from "@components/TextInput";
 
-import { debounce, showToast } from "../../utils";
-import theme from "../../utils/theme";
-import { useCategories } from "../../hooks/api";
-import { Category, User } from "../../utils/schema.types";
-import { ProfileSetupStackScreens, RootStackScreens, StackNavigationProps } from "../../navigation/types";
-import useProfileUpdate from "../../hooks/logic/useProfileUpdate";
+import { debounce, showToast } from "@utils/index";
+import theme from "@utils/theme";
+import { Category, User } from "@utils/schema.types";
+import { useCategories } from "@hooks/api";
+import { useProfileUpdate } from "@hooks/logic";
+import { ProfileSetupStackScreens, RootStackScreens, StackNavigationProps } from "@nav/types";
 
 import ProfileContainer, { containerStyle } from "./ProfileContainer";
 import ProfileSetupFooter from "./ProfileSetupFooter";
@@ -62,7 +62,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		//👀 for selected interests in searchResults
 		let results = searchResults || [];
 		const selectedInterests: Record<string, SubCategory> = results.reduce((prev, interest) => {
-			const data = { ...prev };
+			const data = { ...prev } as Record<string, SubCategory>;
 			if (selectedInterestsIds.includes(interest.id)) {
 				excludeCategories.current.push(interest.id);
 				data[interest.id] = interest;
@@ -80,7 +80,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		setSearchResults(filterResults.map((category) => ({ ...category, selected: false })));
 	}, 1000);
 
-	const updateInterestSelection = (value) => {
+	const updateInterestSelection = (value: string) => {
 		const selectedIds = [...selectedInterestsIds];
 		const index = selectedIds.indexOf(value);
 		if (index !== -1) {
@@ -107,7 +107,7 @@ const NarrowInterest: React.FC<StackNavigationProps<ProfileSetupStackScreens & P
 		(async () => {
 			const response = await categoriesQuery.mutateAsync(null);
 			if (response.data.length) {
-				const categories = {};
+				const categories = {} as Record<string, Interest>;
 				response.data.map((category) => {
 					const { id, name } = category.parentCategory;
 					excludeCategories.current.push(category.id);

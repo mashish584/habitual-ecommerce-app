@@ -3,14 +3,14 @@ import { Dimensions, View, Image, Text, Pressable, StyleSheet } from "react-nati
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import Animated, { Easing } from "react-native-reanimated";
-import { useValue } from "react-native-redash";
+import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+
 import dayjs from "dayjs";
 
-import { generateBoxShadowStyle } from "../../utils";
-import { CartItem } from "../../utils/store";
-import theme, { rgba } from "../../utils/theme";
-import { OrderStatus } from "../../utils/types";
+import { generateBoxShadowStyle } from "@utils/index";
+import { CartItem } from "@utils/store";
+import theme, { rgba } from "@utils/theme";
+import { OrderStatus } from "@utils/types";
 
 interface OrderCard {
 	orders: Record<string, CartItem>;
@@ -32,8 +32,10 @@ const getStatusText = (status: OrderStatus) => {
 	}
 };
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 const OrderCard = (props: OrderCard) => {
-	const rotateAnimate = useValue(0);
+	const rotateAnimate = useSharedValue(0);
 	const [showCompleteDetail, setShowCompleteDetail] = React.useState(false);
 
 	const { text, color } = getStatusText(props.status);
@@ -43,32 +45,28 @@ const OrderCard = (props: OrderCard) => {
 
 	const toggleDetails = () => {
 		setShowCompleteDetail(!showCompleteDetail);
-		Animated.timing(rotateAnimate, {
-			duration: 100,
-			toValue: showCompleteDetail ? 0 : 1,
-			easing: Easing.ease,
-		}).start();
+		rotateAnimate.value = withTiming(showCompleteDetail ? 0 : 1, { duration: 100, easing: Easing.ease });
 	};
 
-	const rotate = rotateAnimate.interpolate({
-		inputRange: [0, 1],
-		outputRange: ["0 deg", "180 deg"],
+	const rRotateStyle = useAnimatedStyle(() => {
+		const rotate = interpolate(rotateAnimate.value, [0, 1], [0, 180]);
+		return {
+			transform: [{ rotate: `${rotate} deg` }],
+		};
 	});
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				<Image source={{ uri: order.product.image }} style={{ width: "80%", height: "80%" }} resizeMode="contain" />
+				<Image source={{ uri: order.product.image }} style={styles.imageView} resizeMode="contain" />
 			</View>
-			<View style={{ width: "70%", marginLeft: theme.spacing.small }}>
-				<View style={[theme.rowStyle, { alignItems: "center", position: "relative" }]}>
+			<View style={styles.productInfoContainer}>
+				<View style={[theme.rowStyle, styles.productInfoTitleContainer]}>
 					<Text style={theme.textStyles.body_reg}>{title}</Text>
 					{totalCartItems > 1 && (
-						<Animated.View style={{ position: "absolute", right: theme.spacing.small, transform: [{ rotate }] }}>
-							<Pressable style={{ padding: theme.spacing.xSmall }} onPress={toggleDetails}>
-								<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
-							</Pressable>
-						</Animated.View>
+						<AnimatedPressable style={[rRotateStyle, { padding: theme.spacing.xxSmall }]} onPress={toggleDetails}>
+							<FontAwesomeIcon icon={faAngleDown as IconProp} color={theme.colors.shades.gray_80} />
+						</AnimatedPressable>
 					)}
 				</View>
 				{totalCartItems > 1 && showCompleteDetail && (
@@ -76,9 +74,7 @@ const OrderCard = (props: OrderCard) => {
 						{Object.keys(props.orders).map((product, index) => {
 							const item = props.orders[product];
 							return (
-								<Text
-									key={`${id}_${index}`}
-									style={[theme.textStyles.body_sm, { fontFamily: theme.fonts.lato.regular, marginBottom: theme.spacing.xxSmall / 2 }]}>
+								<Text key={`${id}_${index}`} style={[theme.textStyles.body_sm, styles.productListText]}>
 									{item.product.title} x {item.quantity} (${item.product.price})
 								</Text>
 							);
@@ -119,6 +115,23 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		...generateBoxShadowStyle(0, 10, rgba.black(0.09), 1, 20, 10, rgba.black(1)),
+	},
+	productInfoContainer: {
+		width: "70%",
+		marginLeft: theme.spacing.small,
+	},
+	productInfoTitleContainer: {
+		alignItems: "center",
+		position: "relative",
+		justifyContent: "space-between",
+	},
+	imageView: {
+		width: "80%",
+		height: "80%",
+	},
+	productListText: {
+		fontFamily: theme.fonts.lato.regular,
+		marginBottom: theme.spacing.xxSmall / 2,
 	},
 });
 

@@ -1,5 +1,8 @@
 import ImagePicker, { ImageOrVideo, Options } from "react-native-image-crop-picker";
+
+import { MergedRoutes } from "@nav/types";
 import { checkGalleryPermission } from "./permissions";
+import { UIInterface } from "./store";
 
 const ImageConfig: Options = {
 	width: 400,
@@ -46,13 +49,16 @@ export const openGallery = async (options?: Options) => {
 
 // password confirmation object
 
-export const getPasswordConfirmationModal = (updateValue, onNavigate) => ({
+export const getPasswordConfirmationModal = (
+	updateValue: (options: Pick<UIInterface, "showConfirmationModal">) => void,
+	onNavigate: (screen: keyof MergedRoutes) => void,
+) => ({
 	showConfirmationModal: true,
 	headerTitle: "Habitual Ecommerce",
 	message: "Please login to continue.",
 	acceptText: "Login",
 	rejectText: "Cancel",
-	onAction: (action) => {
+	onAction: (action: "Yes" | "No") => {
 		if (action === "Yes") {
 			updateValue({ showConfirmationModal: false });
 			onNavigate("UnauthStack");

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Text, TextStyle, View } from "react-native";
 
-import theme from "../../utils/theme";
+import theme from "@utils/theme";
 
 interface ProfileSetupHeader {
 	title: string;
@@ -10,7 +10,7 @@ interface ProfileSetupHeader {
 	descriptionStyle?: TextStyle;
 }
 
-const ProfileSetupHeader: React.FC<ProfileSetupHeader> = ({ title, titleStyle, description, descriptionStyle, children }) => {
+const ProfileSetupHeader = ({ title, titleStyle, description, descriptionStyle, children }: PropsWithChildren<ProfileSetupHeader>) => {
 	return (
 		<View style={{ alignItems: "center", paddingTop: theme.spacing.large }}>
 			<Text style={[theme.textStyles.h3, theme.textStyles.center, titleStyle]}>{title}</Text>
