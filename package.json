@@ -16,7 +16,9 @@
 		"postinstall": "patch-package",
 		"postversion": "react-native-version --never-amend",
 		"codepush": "appcenter codepush release-react -a ashishmehra.dev-gmail.com/Habitual-Ecommerce -d Production",
-		"codepush-testing": "appcenter codepush release-react -a ashishmehra.dev-gmail.com/Habitual-Ecommerce -d Testing"
+		"codepush-testing": "appcenter codepush release-react -a ashishmehra.dev-gmail.com/Habitual-Ecommerce -d Testing",
+		"codepush-ios": "appcenter codepush release-react -a ashishmehra.dev-gmail.com/Habitual-Ecommerce-IOS -d Testing",
+		"codepush-testing-ios": "appcenter codepush release-react -a ashishmehra.dev-gmail.com/Habitual-Ecommerce-IOS -d Production"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.3.0",
