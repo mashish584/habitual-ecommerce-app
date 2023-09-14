@@ -13,7 +13,6 @@ import { STRIPE_PUBLIC_KEY } from "@env";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Navigation from "./navigation";
-import { isIOS } from "./utils";
 
 LogBox.ignoreLogs([
 	"Sending `onAnimatedValueUpdate` with no listeners registered.",
@@ -50,9 +49,7 @@ const App = () => {
 	);
 };
 
-export default isIOS
-	? App
-	: codePush({
-		checkFrequency: codePush.CheckFrequency.ON_APP_START,
-		mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
-	  } as CodePushOptions)(App);
+export default codePush({
+	checkFrequency: codePush.CheckFrequency.ON_APP_START,
+	mandatoryInstallMode: codePush.InstallMode.ON_NEXT_RESTART,
+} as CodePushOptions)(App);

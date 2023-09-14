@@ -75,3 +75,5 @@ buck-out/
 # testing
 /coverage
 
+#IOS Config
+tmp.xcconfig
