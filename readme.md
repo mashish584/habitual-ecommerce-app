@@ -1,7 +1,6 @@
 # Habitual E-commerce App
 
-Mobile application to search & buy products easily. This whole application divided in 3 phases.
-Currently I've completed phase-1 which involve MVP of the platform which include below mentioned features.
+A side project inspired from [**ZTM UI/UX**](https://www.udemy.com/course/complete-web-designer-mobile-designer-zero-to-mastery/?utm_source=adwords&utm_medium=udemyads&utm_campaign=LongTail_la.EN_cc.INDIA&utm_content=deal4584&utm_term=_._ag_77882236703_._ad_533093955816_._kw__._de_c_._dm__._pl__._ti_dsa-1007766171592_._li_9061704_._pd__._&matchtype=&gclid=EAIaIQobChMImq-D_PKpgQMVDxeDAx0NFwX2EAAYASAAEgLFbPD_BwE) course which I'm building to implement my learnings.
 
 #### Demo: [Application Video](https://www.linkedin.com/posts/mehraas_design-ecommerce-reactnative-activity-6943989872491659264-o6kc?utm_source=share&utm_medium=member_desktop)
 
@@ -23,7 +22,14 @@ Currently I've completed phase-1 which involve MVP of the platform which include
   can create it.
 - Search screen to search product across the platform which check keyword in description, title of product system and return the matches.
 
-#### Download apk: [Habitual E-commerce](https://drive.google.com/file/d/1d9h0HWm-55JlYyOQu1Fmefy06xT2aSd7/view?usp=sharing)
+#### Download apk: [Habitual E-commerce](https://play.google.com/store/apps/details?id=com.habitual.ecommerce.project.app)
+
+#### Download IOS build image: [Habitual E-commerce IOS](https://drive.google.com/file/d/1UalqenRLyaCg_Oi7_B_pXGLZrCH86bXh/view?usp=sharing) (Only IOS Simulators)
+
+#### How to install IOS build image?
+
+- Open simulator
+- Drag and drop the downloaded fille in simulator.
 
 ## Project Info
 
@@ -38,10 +44,10 @@ Core package versions info.
 | Package                                                                        | Version | Info                                      |
 | ------------------------------------------------------------------------------ | ------- | ----------------------------------------- |
 | [react-native](https://reactnative.dev/)                                       | 0.72.4  | Migration to latest architecture pending. |
-| [react](https://reactjs.org/)                                                  | 18.2.0  | Migration to lates version pending.       |
-| [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) | ^3.4.2  | Migration to latest version pending.      |
-| [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/)    | ^4.4.7  | Migration to latest version pending.      |
-| [react-navigation](https://reactnavigation.org/)                               | 6.0.+   | No update needed.                         |
+| [react](https://reactjs.org/)                                                  | 18.2.0  |                                           |
+| [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/) | ^3.4.2  |                                           |
+| [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/)    | ^4.4.7  |                                           |
+| [react-navigation](https://reactnavigation.org/)                               | 6.0.+   |                                           |
 
 ## Feedback
 
