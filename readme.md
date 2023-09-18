@@ -49,6 +49,10 @@ Core package versions info.
 | [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/)    | ^4.4.7  |                                           |
 | [react-navigation](https://reactnavigation.org/)                               | 6.0.+   |                                           |
 
+
+## Upload Checklist
+[App Upload Checklist] (https://ashismehra.notion.site/App-Upload-Checklist-45ba6bff66b94c39a7078c3f0fdab434?pvs=4)
+
 ## Feedback
 
 If you find any issues or have any suggestions. Feel free to open a ticket.
