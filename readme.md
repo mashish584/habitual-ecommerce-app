@@ -51,7 +51,7 @@ Core package versions info.
 
 
 ## Upload Checklist
-(App Upload Checklist)[https://ashismehra.notion.site/App-Upload-Checklist-45ba6bff66b94c39a7078c3f0fdab434?pvs=4]
+[App Upload Checklist](https://ashismehra.notion.site/App-Upload-Checklist-45ba6bff66b94c39a7078c3f0fdab434?pvs=4)
 
 ## Feedback
 
