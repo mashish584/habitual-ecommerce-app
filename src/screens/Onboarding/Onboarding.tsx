@@ -48,7 +48,7 @@ const slides = [
 	},
 	{
 		title: "And that’s the \ncherry on top!",
-		description: "Tell us what you like. No, really, it helps a bunch when we serve you some great products. You just keep doing your thing.",
+		description: "No fees, free shipping and amazing customer service.",
 		color: theme.colors.secondary.blue,
 		illustration: images.onboardFourthSlideImage,
 		textStyle: theme.textStyles.h3,
