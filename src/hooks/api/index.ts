@@ -109,7 +109,7 @@ export const useHome = <T extends String, M>() => {
 		},
 		{
 			onError: () => {
-				console.log(`On Error `);
+				console.log("On Error ");
 			},
 		},
 	);
