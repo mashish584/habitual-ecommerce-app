@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, Image, ImageURISource, StyleSheet, TouchableOpacity, View } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { generateBoxShadowStyle } from "@utils/index";
@@ -9,7 +11,7 @@ import { useCart, useUI, useUser } from "@utils/store";
 import { getPasswordConfirmationModal } from "@utils/media";
 import images from "@assets/images";
 
-import { BottomStackScreens, MergedRoutes } from "../types";
+import { BottomStackScreens, RootStackScreens, UnauthStackScreens } from "../types";
 
 type MenuOption = {
 	label: String;
@@ -49,6 +51,8 @@ const SPACING = theme.spacing.medium;
 const TAB_WIDTH = (Dimensions.get("screen").width - SPACING * 2) / menuOptions.length;
 
 const BottomTab: React.FC<BottomTabBarProps> = (props) => {
+	const navigation =
+		useNavigation<StackNavigationProp<Omit<RootStackScreens, "UnauthStack"> & UnauthStackScreens & BottomStackScreens, "BottomStack">>();
 	const barPosition = useRef(new Animated.Value(0)).current;
 
 	const { bottom } = useSafeAreaInsets();
@@ -65,10 +69,6 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 			: (routeIndex === index && index !== 2) || index === 2
 			? theme.colors.shades.gray
 			: theme.colors.shades.gray_40;
-	};
-
-	const onNavigate = (route: keyof MergedRoutes) => {
-		props.navigation.navigate(route);
 	};
 
 	const translateBarPosition = (index: number) => {
@@ -105,11 +105,16 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 							}
 
 							if (["Wishlist", "Orders"].includes(option.route) && !userId) {
-								updateValue(getPasswordConfirmationModal(updateValue, onNavigate));
+								function navigateToSignIn() {
+									navigation.navigate("UnauthStack", {
+										screen: "SignIn",
+									});
+								}
+								updateValue(getPasswordConfirmationModal(updateValue, navigateToSignIn));
 								return;
 							}
 
-							onNavigate(option.route);
+							navigation.navigate(option.route);
 						}}
 						style={[styles.tab, { marginBottom: bottom / 2 }]}>
 						{index === 2 && <View style={[styles.background, { backgroundColor: searchBackgroundColor }]} />}

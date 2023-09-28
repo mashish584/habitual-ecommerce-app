@@ -12,7 +12,7 @@ export interface StackNavigationProps<ParamList extends ParamListBase, RouteName
 export type RootStackScreens = {
 	Start: undefined;
 	UnauthStack: undefined;
-	OnboardingStack: undefined;
+	Onboarding: undefined;
 	ProfileSetup: undefined;
 	AddInterest: undefined;
 	Product: {
@@ -33,6 +33,7 @@ export type RootStackScreens = {
 };
 
 export type BottomStackScreens = {
+	BottomStack?: undefined;
 	Home: undefined;
 	Wishlist: undefined;
 	Search: undefined;
@@ -41,10 +42,15 @@ export type BottomStackScreens = {
 };
 
 export type UnauthStackScreens = {
+	UnauthStack?: UnauthStackScreenParams;
+	Onboarding: undefined;
 	SignIn: undefined;
 	SignUp: undefined;
-	Onboarding: undefined;
 };
+export type UnauthStackScreenParams = {
+	screen: "SignIn" | "SignUp";
+};
+export type UnauthStackNavigationProp = StackNavigationProp<UnauthStackScreens, "UnauthStack">;
 
 export type ProfileSetupStackScreens = {
 	ProfileImage: undefined;

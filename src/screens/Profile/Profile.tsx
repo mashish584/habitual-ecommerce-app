@@ -42,7 +42,9 @@ const AccountSettingOptions = [
 	// },
 ];
 
-const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens & BottomStackScreens, "Profile">> = ({ navigation }) => {
+const Profile: React.FC<StackNavigationProps<Omit<RootStackScreens, "UnauthStack"> & UnauthStackScreens & BottomStackScreens, "Profile">> = ({
+	navigation,
+}) => {
 	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
 	const { fetchUserInfo } = useProfileUpdate();
 	const updateValue = useUI((store) => store.updateValue);
@@ -223,7 +225,16 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 							<Text style={[theme.textStyles.body_reg, { marginTop: theme.spacing.small }]}>
 								Log in to start and explore your personalized shopping experience.
 							</Text>
-							<Button variant="primary" text={"Login"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.replace("UnauthStack")} />
+							<Button
+								variant="primary"
+								text={"Login"}
+								style={{ marginTop: theme.spacing.small }}
+								onPress={() =>
+									navigation.replace("UnauthStack", {
+										screen: "SignIn",
+									})
+								}
+							/>
 							<Button variant="transparent" text={"Go to Home"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.goBack()} />
 						</View>
 					)}
