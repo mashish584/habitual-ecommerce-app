@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Dimensions, View, Text, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import NetInfo from "@react-native-community/netinfo";
 import LottieView from "lottie-react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 import theme from "@utils/theme";
 
@@ -15,9 +15,9 @@ const NoNetwork = () => {
 
 	const checkStatus = async () => {
 		const response = await NetInfo.fetch();
-		if (response.isConnected === true && response.isInternetReachable === true) {
-			setIsNetworkAvailable(true);
-		}
+		const isInternetReachable = Boolean(response.isConnected && response.isInternetReachable);
+
+		setIsNetworkAvailable(isInternetReachable);
 	};
 
 	React.useEffect(() => {
@@ -34,11 +34,11 @@ const NoNetwork = () => {
 	return (
 		<View
 			style={{
+				...StyleSheet.absoluteFillObject,
 				height: Dimensions.get("window").height,
 				backgroundColor: theme.colors.shades.white,
 				paddingHorizontal: theme.spacing.medium,
 				paddingBottom: insets.bottom,
-				...StyleSheet.absoluteFillObject,
 				paddingTop: insets.top,
 				justifyContent: "center",
 			}}>
@@ -46,7 +46,7 @@ const NoNetwork = () => {
 				<LottieView source={require("../../assets/lottie/no-connection.json")} loop={true} autoPlay={true} />
 			</View>
 			<Text style={[theme.textStyles.h5, { fontFamily: theme.fonts.lato.regular, alignSelf: "center" }]}>Please check your internet connection.</Text>
-			<Button variant="primary" style={{ width: 150, alignSelf: "center", marginTop: theme.spacing.large }} text="Retry" onPress={checkStatus} />
+			<Button variant="primary" style={{ width: 150, alignSelf: "center", marginTop: theme.spacing.large }} text="Check" onPress={checkStatus} />
 		</View>
 	);
 };

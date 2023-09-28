@@ -58,7 +58,6 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			// options.headers.Authorization = `Bearer ${token}`;
 			options.headers["token"] = `Bearer ${token}`;
 		}
-
 		const response = await fetch(endpoint, { ...options });
 
 		if (response.status === 200) {
@@ -67,7 +66,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
-		showToast("error", { title: "Network Error", message: (error as Error)?.message });
+		throw Error("Network Error");
 	}
 };
 
@@ -98,14 +97,22 @@ export const useCategories = <T extends string, M>(query: string) => {
 };
 
 export const useHome = <T extends String, M>() => {
-	return useQuery<SuccessResponse<M>, ErrorResponse<T>>("home", () => {
-		return appFetch("home/", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
+	return useQuery<SuccessResponse<M>, ErrorResponse<T>>(
+		"home",
+		() => {
+			return appFetch("home/", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+		},
+		{
+			onError: () => {
+				console.log(`On Error `);
 			},
-		});
-	});
+		},
+	);
 };
 
 export const useProductInfo = <T extends string, M>() => {

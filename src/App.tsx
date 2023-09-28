@@ -13,6 +13,7 @@ import { STRIPE_PUBLIC_KEY } from "@env";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Navigation from "./navigation";
+import { showToast } from "./utils";
 
 LogBox.ignoreLogs([
 	"Sending `onAnimatedValueUpdate` with no listeners registered.",
@@ -22,7 +23,18 @@ LogBox.ignoreLogs([
 
 console.warn = () => {};
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: (failureCount, error) => {
+				if (failureCount === 0) {
+					showToast("error", { title: "Network Error", message: (error as Error)?.message });
+				}
+				return true;
+			},
+		},
+	},
+});
 
 const App = () => {
 	const appInit = async () => {

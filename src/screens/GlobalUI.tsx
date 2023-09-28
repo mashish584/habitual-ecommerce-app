@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import NoNetwork from "@components/Sheet/NoNetwork";
+import NoNetwork from "@components/NoNetwork";
 import Confirmation from "@components/Sheet/Confirmation";
 import { Cart } from "@components/Cart";
 
