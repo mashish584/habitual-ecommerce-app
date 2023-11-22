@@ -1,6 +1,6 @@
 {
 	"name": "habitual_ecommerce_app",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"private": true,
 	"scripts": {
 		"android": "react-native run-android",
@@ -67,6 +67,7 @@
 		"react-native-svg": "^12.1.1",
 		"react-native-toast-message": "^2.1.1",
 		"react-query": "^3.34.19",
+		"singular-react-native": "^3.3.0",
 		"yup": "^0.32.11",
 		"zustand": "^3.7.1"
 	},

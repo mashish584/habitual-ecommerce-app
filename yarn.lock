@@ -7866,6 +7866,11 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
+singular-react-native@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/singular-react-native/-/singular-react-native-3.3.0.tgz#1d02bfc129222e8feb682e08ac1ffe0c8c172e16"
+  integrity sha512-/VmVudntUYvBuN7s23CAQm1AEE9D3YHbtWmO/4WfjOCCkI084wgfrCCeq94Jgh+bLxSJarCYThyO2t5hKRPfDQ==
+
 sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"

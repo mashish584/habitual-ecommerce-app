@@ -23,3 +23,9 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
+allprojects {
+    repositories {
+      maven { url 'https://maven.singular.net/' }
+    }
+}
