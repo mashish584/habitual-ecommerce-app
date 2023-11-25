@@ -46,6 +46,7 @@
 		18846EF5AC23C2DED05AA4C7 /* Pods-habitual_ecommerce_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habitual_ecommerce_app.release.xcconfig"; path = "Target Support Files/Pods-habitual_ecommerce_app/Pods-habitual_ecommerce_app.release.xcconfig"; sourceTree = "<group>"; };
 		2B000727BDBCF5F283093C95 /* libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-habitual_ecommerce_app-habitual_ecommerce_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7367EDD52AB2EC5B0058AFD7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7390CE7B2B1222C70031E98A /* habitual_ecommerce_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = habitual_ecommerce_app.entitlements; path = habitual_ecommerce_app/habitual_ecommerce_app.entitlements; sourceTree = "<group>"; };
 		73AC224A2A99187D00FA8F20 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		76DE5CEC221C685366F65F7F /* Pods-habitual_ecommerce_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habitual_ecommerce_app.debug.xcconfig"; path = "Target Support Files/Pods-habitual_ecommerce_app/Pods-habitual_ecommerce_app.debug.xcconfig"; sourceTree = "<group>"; };
 		80E61DD88BEF4E4E85AF7A93 /* Lato-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Semibold.ttf"; path = "../src/assets/fonts/Lato-Semibold.ttf"; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 		13B07FAE1A68108700A75B9A /* habitual_ecommerce_app */ = {
 			isa = PBXGroup;
 			children = (
+				7390CE7B2B1222C70031E98A /* habitual_ecommerce_app.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				73AC224A2A99187D00FA8F20 /* GoogleService-Info.plist */,
@@ -516,6 +518,7 @@
 			baseConfigurationReference = 986EE6903E8BD3ED8FCE4883 /* Pods-habitual_ecommerce_app-habitual_ecommerce_appTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 98D42UDJ8T;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -532,7 +535,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.habitual.ecommerce.project.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/habitual_ecommerce_app.app/habitual_ecommerce_app";
 			};
@@ -544,6 +547,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 98D42UDJ8T;
 				INFOPLIST_FILE = habitual_ecommerce_appTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -556,7 +560,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.habitual.ecommerce.project.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/habitual_ecommerce_app.app/habitual_ecommerce_app";
 			};
@@ -568,7 +572,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = habitual_ecommerce_app/habitual_ecommerce_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 98D42UDJ8T;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = habitual_ecommerce_app/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Habitual Store";
@@ -584,7 +590,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.habitual.ecommerce.project.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
 				PRODUCT_NAME = habitual_ecommerce_app;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -598,7 +604,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = habitual_ecommerce_app/habitual_ecommerce_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 98D42UDJ8T;
 				INFOPLIST_FILE = habitual_ecommerce_app/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Habitual Store";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
@@ -613,7 +621,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.habitual.ecommerce.project.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
 				PRODUCT_NAME = habitual_ecommerce_app;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -58,3 +58,5 @@ Core package versions info.
 ## Feedback
 
 If you find any issues or have any suggestions. Feel free to open a ticket.
+
+https://bytelearn.sng.link/Bxa1i/3295q/3yfh?_p='%7B%22referral%22%3A%22asdas%22%7D'

@@ -2,8 +2,9 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h> 
+#import <Singular-React-Native/SingularBridge.h>
 #import <CodePush/CodePush.h>
-#import "RNSplashScreen.h" 
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -31,8 +32,13 @@
   //         NSLog(@"--Font name: %@", fontName);
   //     }
   // }
-
+  [SingularBridge startSessionWithLaunchOptions:launchOptions];
   return didFinish;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id> * _Nullable))restorationHandler{
+  [SingularBridge startSessionWithUserActivity:userActivity];
+  return YES;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
