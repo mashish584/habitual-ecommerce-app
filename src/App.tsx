@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { Alert, LogBox, Platform } from "react-native";
+import { LogBox, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import analytics from "@react-native-firebase/analytics";
 import codePush, { CodePushOptions } from "react-native-code-push";
-import { Singular, SingularConfig } from "singular-react-native";
 
 import KeyboardManager from "react-native-keyboard-manager";
 import "react-native-gesture-handler";
@@ -47,21 +46,6 @@ const App = () => {
 		if (Platform.OS === "ios") {
 			KeyboardManager.setEnable(true);
 		}
-
-		//Singular initialization
-		const config = new SingularConfig("bytelearn_8f969cad", "7e886327d8e9434cb87c9ad3ff007e4a");
-		config.withLoggingEnabled();
-		config.withCustomUserId("ashishmehra@bytelearn.ai");
-		config.withManualSkanConversionManagement();
-		config.withSingularLink((singularLinksParams) => {
-			// const deeplink = singularLinksParams.deeplink;
-			// const passthrough = singularLinksParams.passthrough;
-			// const isDeferred = singularLinksParams.isDeferred;
-			// const urlParameters = singularLinksParams.urlParameters;
-			Alert.alert("Deep link", JSON.stringify({ singularLinksParams }, null, 2));
-			// Add your code here to handle the deep link
-		});
-		Singular.init(config);
 	}, []);
 
 	return (

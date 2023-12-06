@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -18,6 +18,7 @@ import GlobalUI from "@screens/GlobalUI";
 import { UserState, useUser } from "@utils/store";
 
 import { getDataFromSecureStorage } from "@utils/index";
+import SingularInit from "@components/Singular";
 import { navigationRef } from "./service";
 import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
@@ -101,10 +102,12 @@ const RootStackScreen = () => {
 };
 
 export default () => {
+	const [isNavigationReady, setIsNavigationReady] = useState(false);
 	return (
-		<NavigationContainer ref={navigationRef}>
+		<NavigationContainer onReady={() => setIsNavigationReady(true)} ref={navigationRef}>
 			<RootStackScreen />
 			<GlobalUI />
+			{isNavigationReady && <SingularInit />}
 		</NavigationContainer>
 	);
 };

@@ -590,7 +590,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn;
 				PRODUCT_NAME = habitual_ecommerce_app;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -621,7 +621,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn.test.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bytelearn;
 				PRODUCT_NAME = habitual_ecommerce_app;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

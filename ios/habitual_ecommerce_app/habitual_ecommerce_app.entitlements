@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:bytelearn.sng.link</string>
+		<string>applinks:app-bytelearn.sng.link</string>
 		<string>applinks:ashishmehra.dev</string>
 	</array>
 </dict>
