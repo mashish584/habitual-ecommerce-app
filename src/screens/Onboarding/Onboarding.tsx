@@ -228,7 +228,7 @@ const Onboarding: React.FC<StackNavigationProps<MergedRoutes, "Onboarding">> = (
 								text="Ask me again later"
 								onPress={() => {
 									//will take user to home screen
-									navigation.navigate("BottomStack");
+									navigation.replace("BottomStack");
 								}}
 								style={{ marginHorizontal: theme.spacing.medium }}
 							/>

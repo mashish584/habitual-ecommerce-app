@@ -42,6 +42,7 @@ const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ naviga
 								url="user/orders/"
 								query="?take=5"
 								contentContainerStyle={{ paddingBottom: bottom * 2 }}
+								skeltonContainerStyle={{ alignItems: "center" }}
 								isRefresh={true}
 								showsVerticalScrollIndicator={false}
 								keyExtractor={(item) => item.id}
