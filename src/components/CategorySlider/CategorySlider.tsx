@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View, FlatList, ViewStyle } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { Dimensions, View, FlatList, ViewStyle, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { generateBoxShadowStyle } from "@utils/index";
@@ -10,6 +10,7 @@ import { Product } from "@utils/schema.types";
 import { ScreenNavigationProp } from "@nav/types";
 
 import ProductCard from "../Cards/ProductCard";
+import CategoryMenu, { CategoryMenuAPI } from "./CategoryMenu";
 
 interface CategorySlider {
 	data: Record<string, Product[]>;
@@ -31,8 +32,9 @@ const WIDTH = Dimensions.get("screen").width;
 const CategorySlider = ({ margin, data }: CategorySlider) => {
 	const navigation = useNavigation<ScreenNavigationProp>();
 
-	const categoryListRef = useRef<FlatList>(null);
+	const categoryMenuApi = useRef<CategoryMenuAPI | null>(null);
 	const categoryContentRef = useRef<FlatList>(null);
+
 	const [index, setIndex] = useState(0);
 
 	const scrollTo = (ref: React.RefObject<FlatList<any>>, index: number, viewPosition?: number) => {
@@ -43,46 +45,31 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 		ref.current?.scrollToIndex(config);
 	};
 
-	const productsData = Object.keys(data)?.map((category) => {
+	const onScrollChange = (index: number) => {
+		scrollTo(categoryContentRef, index);
+		setIndex(index);
+	};
+
+	const onMomentumScrollEnd = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		const step = Math.round(e.nativeEvent.contentOffset.x / (WIDTH - margin * 2));
+		categoryMenuApi.current?.updateMenuPosition(step);
+		setIndex(step);
+	}, []);
+
+	const categories = Object.keys(data);
+	const productsData = categories?.map((category) => {
 		return data[category];
 	});
 
 	return (
 		<View style={[CategoryContainerStyle, { margin }]}>
-			<View style={{ height: 25, marginTop: theme.spacing.xSmall }}>
-				<FlatList
-					ref={categoryListRef}
-					horizontal
-					showsHorizontalScrollIndicator={false}
-					bounces={false}
-					snapToInterval={WIDTH - margin * 2}
-					decelerationRate="fast"
-					contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
-					data={Object.keys(data)}
-					renderItem={({ item, index: fIndex }) => {
-						const selected = fIndex === index;
-						return (
-							<TouchableOpacity
-								onPress={() => {
-									scrollTo(categoryListRef, fIndex, 0.5);
-									scrollTo(categoryContentRef, fIndex);
-									setIndex(fIndex);
-								}}
-								style={{ paddingHorizontal: theme.spacing.normal }}>
-								<Text style={selected ? theme.textStyles.h5 : { ...theme.textStyles.body_reg, color: theme.colors.shades.gray_40 }}>{item}</Text>
-
-								<View
-									style={{
-										width: "100%",
-										height: 2,
-										borderRadius: 1,
-										backgroundColor: selected ? theme.colors.shades.gray_80 : "transparent",
-										marginTop: 2,
-									}}
-								/>
-							</TouchableOpacity>
-						);
-					}}
+			<View style={{ marginTop: theme.spacing.xSmall }}>
+				<CategoryMenu
+					ref={categoryMenuApi}
+					containerWidth={WIDTH - margin * 2}
+					items={categories}
+					activeIndex={index}
+					onScrollChange={onScrollChange}
 				/>
 			</View>
 			<FlatList
@@ -90,15 +77,10 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				bounces={false}
-				snapToInterval={WIDTH - margin * 2}
-				decelerationRate="fast"
+				pagingEnabled={true}
 				contentContainerStyle={{ marginTop: theme.spacing.medium, justifyContent: "center" }}
 				data={productsData}
-				onMomentumScrollEnd={(e) => {
-					const step = e.nativeEvent.contentOffset.x / (WIDTH - margin * 2);
-					scrollTo(categoryListRef, step, 0.5);
-					setIndex(step);
-				}}
+				onMomentumScrollEnd={onMomentumScrollEnd}
 				renderItem={({ item }) => {
 					return (
 						<View style={{ width: WIDTH - margin * 2, paddingHorizontal: theme.spacing.small }}>

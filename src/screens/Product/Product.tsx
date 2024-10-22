@@ -270,7 +270,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								<Animated.View style={[styles.contentLayer, rProductContentLayerStyle]} />
 								<View>
 									<Animated.Text
-										style={[theme.textStyles.h4, { color: textColors[0].color, marginBottom: theme.spacing.xxSmall }, isSlideOn && rSlideTextStyle]}>
+										style={[
+											theme.textStyles.h4,
+											{ color: !isSlideOn ? theme.colors.shades.gray_80 : textColors[0].color, marginBottom: theme.spacing.xxSmall },
+											isSlideOn && rSlideTextStyle,
+										]}>
 										{productInfo.title}
 									</Animated.Text>
 									<Review stars={0} transitionTextStyle={rSlideTextStyle} />
