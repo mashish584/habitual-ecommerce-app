@@ -55,7 +55,7 @@ const Auth = ({ type }: Auth) => {
 					<>
 						<Header
 							variant="primary"
-							leftIcon={<FontAwesomeIcon icon={faClose as IconProp} />}
+							leftIcon={navigation.canGoBack() ? <FontAwesomeIcon icon={faClose as IconProp} /> : null}
 							title={isSignIn ? "Log in" : "Sign Up"}
 							onAction={(type) => {
 								if (type === "left") {

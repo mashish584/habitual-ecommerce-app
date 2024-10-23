@@ -17,7 +17,7 @@ import theme, { rgba } from "@utils/theme";
 import { COLOR_CARD_WIDTH, defaultAvatar, generateBoxShadowStyle } from "@utils/index";
 import { useUI, useUser } from "@utils/store";
 import { Category } from "@utils/schema.types";
-import { BottomStackScreens, RootStackScreens, StackNavigationProps, UnauthStackScreens } from "@nav/types";
+import { MergedRoutes, StackNavigationProps } from "@nav/types";
 
 import { useProfileUpdate } from "@hooks/logic";
 
@@ -42,7 +42,9 @@ const AccountSettingOptions = [
 	// },
 ];
 
-const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScreens & BottomStackScreens, "Profile">> = ({ navigation }) => {
+const Profile: React.FC<StackNavigationProps<MergedRoutes, "Profile">> = ({
+	navigation,
+}) => {
 	const { profile, removeToken } = useUser((store) => ({ profile: store.user, removeToken: store.removeToken }));
 	const { fetchUserInfo } = useProfileUpdate();
 	const updateValue = useUI((store) => store.updateValue);
@@ -223,7 +225,11 @@ const Profile: React.FC<StackNavigationProps<RootStackScreens & UnauthStackScree
 							<Text style={[theme.textStyles.body_reg, { marginTop: theme.spacing.small }]}>
 								Log in to start and explore your personalized shopping experience.
 							</Text>
-							<Button variant="primary" text={"Login"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.replace("UnauthStack")} />
+							<Button variant="primary" text={"Login"} style={{ marginTop: theme.spacing.small }} onPress={() => {
+								navigation.replace("UnauthStack", {
+									screen: "SignIn",
+								});
+							}} />
 							<Button variant="transparent" text={"Go to Home"} style={{ marginTop: theme.spacing.small }} onPress={() => navigation.goBack()} />
 						</View>
 					)}

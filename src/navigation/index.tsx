@@ -23,11 +23,10 @@ import { BottomTab } from "./BottomTab";
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
 import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
-import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
 
 /**
- * Where ot navigation user
+ * Where to navigation user
  */
 const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigation }) => {
 	useEffect(() => {
@@ -45,12 +44,12 @@ const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigati
 					SplashScreen.hide();
 					navigation.replace(route);
 				} else {
+					navigation.replace("UnauthStack");
 					SplashScreen.hide();
-					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
+				navigation.replace("UnauthStack");
 				SplashScreen.hide();
-				navigation.replace("OnboardingStack");
 			}
 		})();
 	}, []);
@@ -67,8 +66,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
@@ -85,12 +83,7 @@ const RootStackScreen = () => {
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
-			{!isUserId && (
-				<>
-					<RootStack.Screen name="UnauthStack" component={UnauthStack} />
-					<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
-				</>
-			)}
+			{!isUserId && <RootStack.Screen name="UnauthStack" component={UnauthStack} />}
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />

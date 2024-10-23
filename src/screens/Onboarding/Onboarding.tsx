@@ -212,7 +212,9 @@ const Onboarding: React.FC<StackNavigationProps<MergedRoutes, "Onboarding">> = (
 								animatedText={ctaText}
 								onPress={() => {
 									if (isLastSlide) {
-										navigation.navigate("SignUp");
+										navigation.replace("UnauthStack", {
+											screen: "SignUp",
+										});
 									} else {
 										moveToSlide();
 									}
@@ -238,7 +240,9 @@ const Onboarding: React.FC<StackNavigationProps<MergedRoutes, "Onboarding">> = (
 						<Animated.View style={[{ alignSelf: "flex-end", top }, styles.headerContent, rDotStyle]}>
 							<TouchableOpacity
 								onPress={() => {
-									navigation.navigate("SignIn");
+									navigation.replace("UnauthStack", {
+										screen: "SignIn",
+									});
 								}}
 								style={{ padding: theme.spacing.small }}>
 								<Text style={[theme.textStyles.strikethrough_reg, { textDecorationLine: "none" }]}>Skip</Text>

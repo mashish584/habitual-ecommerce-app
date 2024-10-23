@@ -6,10 +6,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { generateBoxShadowStyle } from "@utils/index";
 import theme, { rgba } from "@utils/theme";
 import { useCart, useUI, useUser } from "@utils/store";
-import { getPasswordConfirmationModal } from "@utils/media";
+import { getConfirmationModal } from "@utils/media";
 import images from "@assets/images";
 
-import { BottomStackScreens, MergedRoutes } from "../types";
+import { BottomStackScreens } from "../types";
 
 type MenuOption = {
 	label: String;
@@ -67,10 +67,6 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 			: theme.colors.shades.gray_40;
 	};
 
-	const onNavigate = (route: keyof MergedRoutes) => {
-		props.navigation.navigate(route);
-	};
-
 	const translateBarPosition = (index: number) => {
 		Animated.timing(barPosition, {
 			toValue: index * TAB_WIDTH,
@@ -105,11 +101,16 @@ const BottomTab: React.FC<BottomTabBarProps> = (props) => {
 							}
 
 							if (["Wishlist", "Orders"].includes(option.route) && !userId) {
-								updateValue(getPasswordConfirmationModal(updateValue, onNavigate));
+								function navigateToSignIn() {
+									props.navigation.navigate("UnauthStack", {
+										screen: "SignIn",
+									});
+								}
+								updateValue(getConfirmationModal(updateValue, navigateToSignIn));
 								return;
 							}
 
-							onNavigate(option.route);
+							props.navigation.navigate(option.route);
 						}}
 						style={[styles.tab, { marginBottom: bottom / 2 }]}>
 						{index === 2 && <View style={[styles.background, { backgroundColor: searchBackgroundColor }]} />}

@@ -67,7 +67,7 @@ const appFetch = async (url: Urls, options: FetchConfig) => {
 			handleAPIError(response, endpoint);
 		}
 	} catch (error) {
-		showToast("error", { title: "Network Error", message: (error as Error)?.message });
+		throw Error("Network Error");
 	}
 };
 

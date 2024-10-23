@@ -19,8 +19,7 @@ const ProfileImage: React.FC<ProfileImage> = ({ containerStyle }) => {
 	return (
 		<TouchableOpacity
 			style={{ width: 32, height: 32, borderRadius: 50, overflow: "hidden", backgroundColor: theme.colors.shades.white, ...containerStyle }}
-			onPress={() => navigation.push("Profile")}
-		>
+			onPress={() => navigation.push("Profile")}>
 			<Image source={{ uri: profile || defaultAvatar }} style={{ width: "100%", height: "100%" }} />
 		</TouchableOpacity>
 	);

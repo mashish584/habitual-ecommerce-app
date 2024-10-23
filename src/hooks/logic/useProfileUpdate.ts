@@ -6,9 +6,9 @@ import { User } from "@utils/schema.types";
 import { useUI, useUser } from "@utils/store";
 import { ProfileSchema, UserProfile } from "@utils/validation";
 import { breakFullName, isValidJSONString, showToast } from "@utils/index";
-import { getPasswordConfirmationModal } from "@utils/media";
+import { getConfirmationModal } from "@utils/media";
 
-import { ScreenNavigationProp } from "@nav/types";
+import { UnauthStackNavigationProp } from "@nav/types";
 import { useFavouriteProduct, useUpdateUser, useUserProfile } from "../api";
 
 export type UserFormKeys = keyof Pick<UserProfile, "firstName" | "lastName" | "email" | "bio"> & "| profile";
@@ -27,7 +27,7 @@ const userProfile = (user: User) => {
 };
 
 function useProfileUpdate<T extends string>() {
-	const navigation = useNavigation<ScreenNavigationProp>();
+	const navigation = useNavigation<UnauthStackNavigationProp>();
 
 	const [user, setUser] = useUser((store) => [store.user, store.setUser]);
 	const updateValue = useUI((store) => store.updateValue);
@@ -81,7 +81,12 @@ function useProfileUpdate<T extends string>() {
 	const markProductAsFavourite = useCallback(
 		async (productId: string) => {
 			if (!userId) {
-				updateValue(getPasswordConfirmationModal(updateValue, navigation.navigate));
+				function navigateToSignIn() {
+					navigation.navigate("UnauthStack", {
+						screen: "SignIn",
+					});
+				}
+				updateValue(getConfirmationModal(updateValue, navigateToSignIn));
 				return;
 			}
 
