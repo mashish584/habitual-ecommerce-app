@@ -78,3 +78,4 @@ export type AddInterestStackScreens = {
 
 export type MergedRoutes = RootStackScreens & BottomStackScreens & UnauthStackScreens;
 export type ScreenNavigationProp = StackNavigationProp<MergedRoutes>;
+export type ScreenNames = keyof MergedRoutes;

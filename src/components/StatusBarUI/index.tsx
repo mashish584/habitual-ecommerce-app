@@ -1,22 +1,45 @@
-import { useEffect } from "react";
-import { navigationRef } from "@nav/service";
-import { EventListenerCallback, NavigationContainerEventMap } from "@react-navigation/native";
+import React, { ForwardedRef, useEffect, useImperativeHandle } from "react";
+import { StatusBar } from "react-native";
+import { ScreenNames } from "@nav/types";
+import { getTextColorForBackground } from "@utils/index";
 
-const StatusBarUI = () => {
-	useEffect(() => {
-		const onStateChange: EventListenerCallback<NavigationContainerEventMap, "state"> = (event) => {
-			const state = event.data.state;
-			const activeIndex = typeof state?.index === "number" ? state?.index : -1;
-			if (activeIndex !== -1) {
-				const activeRoute = state?.routes[activeIndex];
-				const routeName = activeRoute?.name;
-				console.log({ routeName });
-			}
-		};
-		navigationRef.addListener("state", onStateChange);
-		return () => navigationRef.removeListener("state", onStateChange);
-	}, []);
-	return null;
+export type StatusBarApi = {
+	updateActiveRoute: (screenName: ScreenNames) => void;
 };
 
-export default StatusBarUI;
+export const updateStatusBarColor = (color: string) => {
+	const barStyle = getTextColorForBackground(color);
+	StatusBar.setBarStyle(barStyle, true);
+};
+
+const StatusBarUI = React.forwardRef((_, ref: ForwardedRef<StatusBarApi>) => {
+	function updateStatusBar() {
+		StatusBar.setTranslucent(true);
+		StatusBar.setBackgroundColor("transparent");
+		StatusBar.setBarStyle("dark-content");
+	}
+
+	function updateActiveRoute(screenName: ScreenNames) {
+		if (screenName !== "Product") {
+			StatusBar.setBarStyle("dark-content", true);
+		}
+	}
+
+	useEffect(() => {
+		updateStatusBar();
+	}, []);
+
+	useImperativeHandle(
+		ref,
+		() => {
+			return {
+				updateActiveRoute,
+			};
+		},
+		[],
+	);
+
+	return null;
+});
+
+export default React.memo(StatusBarUI);
