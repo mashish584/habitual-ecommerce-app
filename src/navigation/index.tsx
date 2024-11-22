@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,18 +16,18 @@ import { Search } from "@screens/Search";
 import GlobalUI from "@screens/GlobalUI";
 
 import { UserState, useUser } from "@utils/store";
-
 import { getDataFromSecureStorage } from "@utils/index";
-import { navigationRef } from "./service";
-import { BottomTab } from "./BottomTab";
+import StatusBarUI, { StatusBarApi } from "@components/StatusBarUI";
+
 import ProfileSetupStack from "./Stacks/ProfileSetupStack";
 import UnauthStack from "./Stacks/UnauthStack";
-import { BottomStackScreens, MergedRoutes, RootStackScreens, StackNavigationProps } from "./types";
-import OnboardingStack from "./Stacks/OnboardingStack";
 import AddInterestStack from "./Stacks/AddInterestStack";
+import { navigationRef } from "./service";
+import { BottomTab } from "./BottomTab";
+import { BottomStackScreens, MergedRoutes, RootStackScreens, ScreenNames, StackNavigationProps } from "./types";
 
 /**
- * Where ot navigation user
+ * Where to navigation user
  */
 const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigation }) => {
 	useEffect(() => {
@@ -45,12 +45,12 @@ const Start: React.FC<StackNavigationProps<MergedRoutes, "Start">> = ({ navigati
 					SplashScreen.hide();
 					navigation.replace(route);
 				} else {
+					navigation.replace("UnauthStack");
 					SplashScreen.hide();
-					navigation.replace("OnboardingStack");
 				}
 			} catch (err) {
+				navigation.replace("UnauthStack");
 				SplashScreen.hide();
-				navigation.replace("OnboardingStack");
 			}
 		})();
 	}, []);
@@ -67,8 +67,7 @@ const BottamTabScreen = () => {
 			initialRouteName="Home"
 			screenOptions={{
 				headerShown: false,
-			}}
-		>
+			}}>
 			<BottomTabStack.Screen name="Home" component={Home} />
 			<BottomTabStack.Screen name="Wishlist" component={Wishlist} />
 			<BottomTabStack.Screen name="Search" component={Search} />
@@ -85,12 +84,7 @@ const RootStackScreen = () => {
 	return (
 		<RootStack.Navigator initialRouteName={"Start"} screenOptions={{ headerShown: false }}>
 			<RootStack.Screen name="Start" component={Start} />
-			{!isUserId && (
-				<>
-					<RootStack.Screen name="UnauthStack" component={UnauthStack} />
-					<RootStack.Screen name="OnboardingStack" component={OnboardingStack} />
-				</>
-			)}
+			{!isUserId && <RootStack.Screen name="UnauthStack" component={UnauthStack} />}
 			<RootStack.Screen name="ProfileSetup" component={ProfileSetupStack} />
 			<RootStack.Screen name="AddInterest" component={AddInterestStack} />
 			<RootStack.Screen name="ProfileSetupComplete" component={ProfileSetupComplete} />
@@ -107,10 +101,25 @@ const RootStackScreen = () => {
 };
 
 export default () => {
+	const statusBarRef = useRef<StatusBarApi | null>(null);
+
 	return (
-		<NavigationContainer ref={navigationRef}>
+		<NavigationContainer
+			onStateChange={(state) => {
+				const activeRouteState = state?.routes[0].state;
+				if (activeRouteState) {
+					const activeRouteIndex = activeRouteState.index;
+					if (typeof activeRouteIndex === "number") {
+						// 👉 To handle case if need to handle status bar styles based on active screen
+						const activeRouteName = activeRouteState.routes[activeRouteIndex];
+						statusBarRef.current?.updateActiveRoute(activeRouteName.name as ScreenNames);
+					}
+				}
+			}}
+			ref={navigationRef}>
 			<RootStackScreen />
 			<GlobalUI />
+			<StatusBarUI ref={statusBarRef} />
 		</NavigationContainer>
 	);
 };

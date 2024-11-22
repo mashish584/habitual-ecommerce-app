@@ -1,19 +1,17 @@
 import React from "react";
-import { View } from "react-native";
 
 import Container from "@components/Container";
 import Header from "@components/Header/Header";
 import Curve from "@components/Container/Curve";
 import OrderCard, { ORDER_CARD_WIDTH } from "@components/Cards/OrderCard";
 import { PaginatedFlatlist } from "@components/PaginatedFlatlist";
-import EmptyInfoCard, { EMPTY_ORDER_CARD_HEIGHT } from "@components/Cards/EmptyInfoCard";
 import ProfileImage from "@components/ProfileImage";
 import { ProductCardSkelton } from "@components/Skeltons/ProductCardSkelton";
 
 import theme from "@utils/theme";
 import { MergedRoutes, StackNavigationProps } from "@nav/types";
 import { CartItem } from "@utils/store";
-import images from "@assets/images";
+import EmptyCard from "./EmptyCard";
 
 const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ navigation }) => {
 	const isEmptyCard = false;
@@ -42,21 +40,12 @@ const Orders: React.FC<StackNavigationProps<MergedRoutes, "Orders">> = ({ naviga
 								url="user/orders/"
 								query="?take=5"
 								contentContainerStyle={{ paddingBottom: bottom * 2 }}
+								skeltonContainerStyle={{ alignItems: "center" }}
 								isRefresh={true}
 								showsVerticalScrollIndicator={false}
 								keyExtractor={(item) => item.id}
-								ListEmptyComponent={() => (
-									<View style={{ flex: 1, paddingVertical: theme.spacing.xSmall, marginTop: EMPTY_ORDER_CARD_HEIGHT * 0.2 }}>
-										<EmptyInfoCard
-											illustration={images.emptyList}
-											title="Uh oh! You have no orders."
-											description="You have no orders at the moment. Go take a look at what we have an we’ll get your delivery to you asap!"
-											buttonText="View recommended products"
-											onAction={() => navigation.navigate("Home")}
-										/>
-									</View>
-								)}
-								renderItem={({ item, index }) => {
+								ListEmptyComponent={EmptyCard}
+								renderItem={({ item }) => {
 									const orderItems = item.details[0] as Record<string, CartItem>;
 									return <OrderCard amount={item.amount} status={item.orderStatus} date={item.createdAt} orders={orderItems} />;
 								}}

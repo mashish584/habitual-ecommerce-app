@@ -11,12 +11,19 @@ interface ProductCardSkelton {
 	height: number;
 	mb?: number;
 	ml?: number;
+	mh?: number;
 }
 
 const ProductCardSkelton = (props: PropsWithChildren<ProductCardSkelton>) => {
 	return (
 		<SkeletonPlaceholder>
-			<SkeletonPlaceholder.Item width={props.width} minHeight={props.height} borderRadius={10} marginLeft={props.ml} marginBottom={props.mb || 0}>
+			<SkeletonPlaceholder.Item
+				width={props.width}
+				minHeight={props.height}
+				borderRadius={10}
+				marginLeft={props.ml}
+				marginBottom={props.mb || 0}
+				marginHorizontal={props.mh || 0}>
 				{props.children}
 			</SkeletonPlaceholder.Item>
 		</SkeletonPlaceholder>

@@ -9,6 +9,7 @@ import Animated, {
 	useSharedValue,
 	withTiming,
 	interpolateColor,
+	runOnJS,
 } from "react-native-reanimated";
 
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -28,6 +29,7 @@ import { useProductInfo } from "@hooks/api";
 import { RootStackScreens, StackNavigationProps } from "@nav/types";
 import images from "@assets/images";
 
+import { updateStatusBarColor } from "@components/StatusBarUI";
 import Dot from "../Onboarding/Dot";
 import ProductPriceInfo from "./ProductPriceInfo";
 import styles from "./styles";
@@ -78,10 +80,6 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 	const productContentHeight = useSharedValue(95);
 	const slideImagePosition = useSharedValue(0);
 
-	const scrollHandler = useAnimatedScrollHandler((e) => {
-		translateX.value = e.contentOffset.x;
-	});
-
 	// const [productColors, setProductColors] = useState([...productColorVariants]);
 	const [showCartActions, setShowCartActions] = useState(false);
 	const [isSlideOn, setIsSlideOn] = useState(true);
@@ -91,6 +89,10 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 
 	const { slides, textColors } = getSlideColors(product?.slideColors, product?.images?.length || 2);
 
+	const scrollHandler = useAnimatedScrollHandler((e) => {
+		translateX.value = e.contentOffset.x;
+	});
+
 	// → Slide Transitions
 	const rSlideContainerStyle = useAnimatedStyle(() => {
 		const slideBackgroundColor = interpolateColor(
@@ -98,6 +100,12 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 			slides.map((_, i) => i * SLIDER_WIDTH),
 			slides.map((_) => _.color),
 		);
+
+		const activeSlide = translateX.value / SLIDER_WIDTH;
+		const activeSlideColor = slides[activeSlide]?.color;
+		if (activeSlideColor) {
+			runOnJS(updateStatusBarColor)(activeSlideColor);
+		}
 
 		return {
 			backgroundColor: slideBackgroundColor,
@@ -270,7 +278,11 @@ const Product: React.FC<StackNavigationProps<RootStackScreens, "Product">> = ({ 
 								<Animated.View style={[styles.contentLayer, rProductContentLayerStyle]} />
 								<View>
 									<Animated.Text
-										style={[theme.textStyles.h4, { color: textColors[0].color, marginBottom: theme.spacing.xxSmall }, isSlideOn && rSlideTextStyle]}>
+										style={[
+											theme.textStyles.h4,
+											{ color: !isSlideOn ? theme.colors.shades.gray_80 : textColors[0].color, marginBottom: theme.spacing.xxSmall },
+											isSlideOn && rSlideTextStyle,
+										]}>
 										{productInfo.title}
 									</Animated.Text>
 									<Review stars={0} transitionTextStyle={rSlideTextStyle} />

@@ -8,7 +8,7 @@ import { PaginatedFlatlist } from "@components/PaginatedFlatlist";
 import { MergedRoutes, StackNavigationProps } from "@nav/types";
 
 import theme from "@utils/theme";
-import { debounce, isAndroid } from "@utils/index";
+import { debounce } from "@utils/index";
 
 import SearchItem from "./SearchItem";
 
@@ -45,7 +45,7 @@ const Search: React.FC<StackNavigationProps<MergedRoutes, "Search">> = ({ naviga
 								type="search"
 								ref={searchInputRef}
 								placeholder="Search by keyword"
-								style={{ borderWidth: 0, paddingBottom: 0, paddingTop: isAndroid ? 15 : 0 }}
+								style={{ borderWidth: 0, paddingVertical: 0 }}
 								placeholderTextColor={theme.colors.shades.gray_40}
 								containerStyle={{ marginBottom: 0 }}
 								searchIconStyle={{ left: 0 }}

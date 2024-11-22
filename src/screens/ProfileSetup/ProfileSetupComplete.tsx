@@ -9,7 +9,7 @@ const ProfileSetupComplete: React.FC<StackNavigationProps<RootStackScreens, "Pro
 			description={"Registration complete! Get ready to have the best shopping experiences of your life."}
 			buttonText="Let the shopping begin!"
 			buttonVariant="primary"
-			onAction={() => navigation.navigate("BottomStack")}
+			onAction={() => navigation.replace("BottomStack")}
 		/>
 	);
 };

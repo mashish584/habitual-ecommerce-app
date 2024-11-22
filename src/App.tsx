@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { LogBox, Platform } from "react-native";
+import { LogBox, Platform, Text, TextInput } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { StripeProvider } from "@stripe/stripe-react-native";
@@ -12,6 +12,7 @@ import "react-native-gesture-handler";
 import { STRIPE_PUBLIC_KEY } from "@env";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { showToast } from "./utils";
 import Navigation from "./navigation";
 
 LogBox.ignoreLogs([
@@ -22,7 +23,31 @@ LogBox.ignoreLogs([
 
 console.warn = () => {};
 
-const queryClient = new QueryClient();
+//⚠️ Disabling font-scaling for now
+const RNText = Text as typeof Text & { defaultProps: any };
+const RNTextInput = TextInput as typeof TextInput & { defaultProps: any };
+if (RNText.defaultProps == null) {
+	RNText.defaultProps = {};
+	RNText.defaultProps.allowFontScaling = false;
+}
+
+if (RNTextInput.defaultProps == null) {
+	RNTextInput.defaultProps = {};
+	RNTextInput.defaultProps.allowFontScaling = false;
+}
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: (failureCount, error) => {
+				if (failureCount === 0) {
+					showToast("error", { title: "Network Error", message: (error as Error)?.message });
+				}
+				return true;
+			},
+		},
+	},
+});
 
 const App = () => {
 	const appInit = async () => {

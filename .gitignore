@@ -80,3 +80,6 @@ tmp.xcconfig
 
 #EAS
 credentials.json
+
+#Test File
+*.practice.tsx

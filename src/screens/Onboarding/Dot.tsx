@@ -14,7 +14,7 @@ const Dot = ({ currentIndex, scrollX, mh, width, activeColor = theme.colors.shad
 	const rDotStyle = useAnimatedStyle(() => {
 		const interpolateWidth = interpolate(
 			scrollX.value,
-			[(currentIndex - 0.5) * width, currentIndex * width, (currentIndex + 0.5) * width],
+			[(currentIndex - 1) * width, currentIndex * width, (currentIndex + 1) * width],
 			[6, 16, 6],
 			Extrapolate.CLAMP,
 		);

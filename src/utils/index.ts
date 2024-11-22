@@ -98,3 +98,49 @@ export const getDataFromSecureStorage = async (key: string) => {
 	let result = await EncryptedStorage.getItem(key);
 	return result;
 };
+
+export const getTextColorForBackground = (colorString: string) => {
+	let rgba: [number, number, number, number];
+
+	if (colorString.startsWith("#")) {
+		// Handle hex format
+		const hex = colorString.slice(1); // Remove '#'
+		let r: number, g: number, b: number;
+
+		if (hex.length === 6) {
+			// Full hex format (RRGGBB)
+			r = parseInt(hex.slice(0, 2), 16);
+			g = parseInt(hex.slice(2, 4), 16);
+			b = parseInt(hex.slice(4, 6), 16);
+		} else if (hex.length === 3) {
+			// Short hex format (RGB)
+			r = parseInt(hex[0] + hex[0], 16);
+			g = parseInt(hex[1] + hex[1], 16);
+			b = parseInt(hex[2] + hex[2], 16);
+		} else {
+			throw new Error("Invalid hex color format");
+		}
+
+		rgba = [r, g, b, 1];
+	} else {
+		rgba = colorString
+			.replace(/rgba?\(/, "")
+			.replace(/\)/, "")
+			.split(",")
+			.map((v) => parseFloat(v.trim())) as [number, number, number, number];
+	}
+
+	const [r, g, b] = rgba;
+
+	// Convert RGB to sRGB
+	const srgb = [r, g, b].map((v) => {
+		const value = v / 255;
+		return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+	});
+
+	// Calculate relative luminance
+	const luminance = 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+
+	// Return 'dark-content' or 'light-content' based on luminance
+	return luminance > 0.5 ? "dark-content" : "light-content";
+};
