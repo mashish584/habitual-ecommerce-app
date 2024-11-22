@@ -92,7 +92,7 @@ const CategorySlider = ({ margin, data }: CategorySlider) => {
 										variant="wide"
 										item={product}
 										onPress={() => navigation.navigate("Product", { product })}
-										containerStyle={{ marginBottom: index === productsData.length - 1 ? 0 : 10, marginHorizontal: 0 }}
+										containerStyle={{ marginBottom: 10, marginHorizontal: 0 }}
 									/>
 								);
 							})}
